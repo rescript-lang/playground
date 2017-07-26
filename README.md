@@ -1,4 +1,5 @@
 
+[![Build Status](https://travis-ci.org/BuckleScript/bucklescript.svg?branch=master)](https://travis-ci.org/bucklescript/bucklescript)
 
 This is the repo for BuckleScript playground
 
