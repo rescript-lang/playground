@@ -24,7 +24,16 @@ function queryGist() {
             var s = item.split("="), k = s[0], v = s[1] && decodeURIComponent(s[1]); (k in qd) ? qd[k].push(v) : qd[k] = [v]
         }
     );
-    return qd['gist'][0].replace(/^\/+|\/+$/gm,'');
+    if (qd.gist){
+        if (qd.gist[0]){
+            return qd.gist[0].replace(/^\/+|\/+$/gm,'');
+        } else {
+            return qd.gist.replace(/^\/+|\/+$/gm,'');
+        }
+    } else {
+        return undefined
+    }
+    
 }
 function loadGist (gist) {
     if(gist){
