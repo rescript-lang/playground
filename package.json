@@ -5,7 +5,7 @@
     "description": "In-browser code editing made bearable",
     "license": "MIT",
     "directories": {"lib": "./lib"},
-    "scripts": {"test": "node ./test/run.js"},
+    "scripts": {"test": "node ./compiler_test.js"},
     "devDependencies": {"node-static": "0.7.9",
                         "phantomjs": "2.1.7",
                         "blint": ">=1.0.2"},
