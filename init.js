@@ -24,7 +24,7 @@ function queryGist() {
             var s = item.split("="), k = s[0], v = s[1] && decodeURIComponent(s[1]); (k in qd) ? qd[k].push(v) : qd[k] = [v]
         }
     );
-    return qd['gist'];
+    return qd['gist'][0].replace(/^\/+|\/+$/gm,'');
 }
 function loadGist (gist) {
     if(gist){
