@@ -203,12 +203,12 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
     }
     
     var prng = Block.__(246, [(function () {
-            return Curry._1(Random.State[/* make_self_init */1], /* () */0);
+            return Random.State[/* make_self_init */1](/* () */0);
           })]);
     
     function temp_file_name(temp_dir, prefix, suffix) {
       var tag = prng.tag | 0;
-      var rnd = Curry._1(Random.State[/* bits */3], tag === 250 ? prng[0] : (
+      var rnd = Random.State[/* bits */3](tag === 250 ? prng[0] : (
               tag === 246 ? CamlinternalLazy.force_lazy_block(prng) : prng
             )) & 16777215;
       return concat(temp_dir, Curry._3(Printf.sprintf(/* Format */[

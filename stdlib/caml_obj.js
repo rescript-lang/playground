@@ -3,7 +3,7 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
   function(exports, Block, Caml_builtin_exceptions){
     'use strict';
     function caml_obj_dup(x) {
-      var len = x.length;
+      var len = x.length | 0;
       var v = new Array(len);
       for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
         v[i] = x[i];
@@ -13,7 +13,7 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
     }
     
     function caml_obj_truncate(x, new_size) {
-      var len = x.length;
+      var len = x.length | 0;
       if (new_size <= 0 || new_size > len) {
         throw [
               Caml_builtin_exceptions.invalid_argument,
@@ -35,7 +35,7 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
     }
     
     function caml_update_dummy(x, y) {
-      var len = y.length;
+      var len = y.length | 0;
       for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
         x[i] = y[i];
       }
@@ -125,8 +125,8 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
                 return 1;
               }
             } else {
-              var len_a = a.length;
-              var len_b = b.length;
+              var len_a = a.length | 0;
+              var len_b = b.length | 0;
               if (len_a === len_b) {
                 var a$1 = a;
                 var b$1 = b;
@@ -234,8 +234,8 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
               } else if (tag_a !== tag_b) {
                 return /* false */0;
               } else {
-                var len_a = a.length;
-                var len_b = b.length;
+                var len_a = a.length | 0;
+                var len_b = b.length | 0;
                 if (len_a === len_b) {
                   var a$1 = a;
                   var b$1 = b;

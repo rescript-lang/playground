@@ -106,6 +106,7 @@ define(["exports"],
     exports.andThen     = andThen;
     exports.map         = map;
     exports.$$default   = $$default;
+    exports.default     = $$default;
     exports.filter      = filter;
     exports.firstSome   = firstSome;
     
