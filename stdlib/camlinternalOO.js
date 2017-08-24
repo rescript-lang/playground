@@ -588,18 +588,18 @@ define(["exports", "./obj.js", "./sys.js", "./list.js", "./array.js", "./curry.j
       var by_label = [/* Empty */0];
       List.iter2((function (met, label) {
               by_name[0] = add$1(met, label, by_name[0]);
-              var $js;
+              var tmp;
               try {
-                $js = find$1(label, table[/* methods_by_label */3]);
+                tmp = find$1(label, table[/* methods_by_label */3]);
               }
               catch (exn){
                 if (exn === Caml_builtin_exceptions.not_found) {
-                  $js = /* true */1;
+                  tmp = /* true */1;
                 } else {
                   throw exn;
                 }
               }
-              by_label[0] = add$2(label, $js, by_label[0]);
+              by_label[0] = add$2(label, tmp, by_label[0]);
               return /* () */0;
             }), concr_meths$1, concr_meth_labs);
       List.iter2((function (met, label) {

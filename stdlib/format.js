@@ -367,11 +367,11 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
           return /* () */0;
         } else {
           var exit = 0;
-          var $js = queue_elem[/* token */1];
-          if (typeof $js === "number") {
+          var tmp = queue_elem[/* token */1];
+          if (typeof tmp === "number") {
             return /* () */0;
           } else {
-            switch ($js.tag | 0) {
+            switch (tmp.tag | 0) {
               case 1 : 
               case 2 : 
                   exit = 1;

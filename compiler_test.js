@@ -52,3 +52,7 @@ if(failed){
     console.error('not all tests passed')
     process.exit(2)
 }
+
+console.log(`Testing pervasives`)
+test(`print_endline "Hello world"`)
+console.log(`Finished`)

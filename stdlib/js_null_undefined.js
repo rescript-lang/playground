@@ -1,9 +1,9 @@
 'use strict';
-define(["exports", "./js_primitive.js"],
-  function(exports, Js_primitive){
+define(["exports"],
+  function(exports){
     'use strict';
     function bind(x, f) {
-      if (Js_primitive.is_nil_undef(x)) {
+      if (x == null) {
         return x;
       } else {
         return f(x);
@@ -11,7 +11,7 @@ define(["exports", "./js_primitive.js"],
     }
     
     function iter(x, f) {
-      if (Js_primitive.is_nil_undef(x)) {
+      if (x == null) {
         return /* () */0;
       } else {
         return f(x);

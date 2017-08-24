@@ -8,6 +8,8 @@ define(["exports"],
     
     var Undefined = 0;
     
+    var Nullable = 0;
+    
     var Null_undefined = 0;
     
     var Exn = 0;
@@ -53,6 +55,7 @@ define(["exports"],
     exports.Internal       = Internal;
     exports.Null           = Null;
     exports.Undefined      = Undefined;
+    exports.Nullable       = Nullable;
     exports.Null_undefined = Null_undefined;
     exports.Exn            = Exn;
     exports.$$Array        = $$Array;

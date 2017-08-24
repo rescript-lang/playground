@@ -475,14 +475,8 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
         var match = Stream.peek(strm__);
         if (match) {
           var c = match[0];
-          if (c !== 43) {
-            if (c !== 45) {
-              return end_exponent_part(strm__);
-            } else {
-              Stream.junk(strm__);
-              store(c);
-              return end_exponent_part(strm__);
-            }
+          if (c !== 43 && c !== 45) {
+            return end_exponent_part(strm__);
           } else {
             Stream.junk(strm__);
             store(c);
@@ -515,14 +509,13 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
           var match = Stream.peek(strm__);
           if (match) {
             var c = match[0];
+            Stream.junk(strm__);
             if (c !== 34) {
               if (c !== 92) {
-                Stream.junk(strm__);
                 store(c);
                 continue ;
                 
               } else {
-                Stream.junk(strm__);
                 var c$1;
                 try {
                   c$1 = $$escape(strm__);
@@ -542,7 +535,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                 
               }
             } else {
-              Stream.junk(strm__);
               return get_string(/* () */0);
             }
           } else {
@@ -554,11 +546,10 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
         var match = Stream.peek(strm__);
         if (match) {
           var c = match[0];
+          Stream.junk(strm__);
           if (c !== 92) {
-            Stream.junk(strm__);
             return c;
           } else {
-            Stream.junk(strm__);
             try {
               return $$escape(strm__);
             }
@@ -606,46 +597,47 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                 
               }
             }
-          } else if (c1 >= 48) {
+          } else {
             Stream.junk(strm__);
-            var match$1 = Stream.peek(strm__);
-            if (match$1) {
-              var c2 = match$1[0];
-              if (c2 > 57 || c2 < 48) {
-                throw [
-                      Stream.$$Error,
-                      ""
-                    ];
-              } else {
-                Stream.junk(strm__);
-                var match$2 = Stream.peek(strm__);
-                if (match$2) {
-                  var c3 = match$2[0];
-                  if (c3 > 57 || c3 < 48) {
-                    throw [
-                          Stream.$$Error,
-                          ""
-                        ];
-                  } else {
-                    Stream.junk(strm__);
-                    return Char.chr((Caml_int32.imul(c1 - 48 | 0, 100) + Caml_int32.imul(c2 - 48 | 0, 10) | 0) + (c3 - 48 | 0) | 0);
-                  }
-                } else {
+            if (c1 >= 48) {
+              var match$1 = Stream.peek(strm__);
+              if (match$1) {
+                var c2 = match$1[0];
+                if (c2 > 57 || c2 < 48) {
                   throw [
                         Stream.$$Error,
                         ""
                       ];
+                } else {
+                  Stream.junk(strm__);
+                  var match$2 = Stream.peek(strm__);
+                  if (match$2) {
+                    var c3 = match$2[0];
+                    if (c3 > 57 || c3 < 48) {
+                      throw [
+                            Stream.$$Error,
+                            ""
+                          ];
+                    } else {
+                      Stream.junk(strm__);
+                      return Char.chr((Caml_int32.imul(c1 - 48 | 0, 100) + Caml_int32.imul(c2 - 48 | 0, 10) | 0) + (c3 - 48 | 0) | 0);
+                    }
+                  } else {
+                    throw [
+                          Stream.$$Error,
+                          ""
+                        ];
+                  }
                 }
+              } else {
+                throw [
+                      Stream.$$Error,
+                      ""
+                    ];
               }
             } else {
-              throw [
-                    Stream.$$Error,
-                    ""
-                  ];
+              return c1;
             }
-          } else {
-            Stream.junk(strm__);
-            return c1;
           }
         } else {
           throw Stream.Failure;
@@ -688,17 +680,15 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                       var match$2 = Stream.peek(strm__$2);
                       if (match$2) {
                         var c = match$2[0];
+                        Stream.junk(strm__$2);
                         if (c !== 41) {
                           if (c !== 42) {
-                            Stream.junk(strm__$2);
                             return comment(strm__$2);
                           } else {
-                            Stream.junk(strm__$2);
                             continue ;
                             
                           }
                         } else {
-                          Stream.junk(strm__$2);
                           return /* () */0;
                         }
                       } else {

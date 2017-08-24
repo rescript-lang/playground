@@ -143,6 +143,10 @@ define(["exports", "./list.js"],
       }
     }
     
+    function append(x, a) {
+      return a.concat(/* array */[x]);
+    }
+    
     exports.filterInPlace = filterInPlace;
     exports.empty         = empty;
     exports.pushBack      = pushBack;
@@ -157,6 +161,7 @@ define(["exports", "./list.js"],
     exports.foldLeft      = foldLeft;
     exports.foldRight     = foldRight;
     exports.init          = init;
+    exports.append        = append;
     
   })
 /* No side effect */

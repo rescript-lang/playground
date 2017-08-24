@@ -223,8 +223,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       var match = ib[/* input_name */8];
       if (typeof match === "number") {
         return /* () */0;
-      } else if (match.tag) {
-        return Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
       } else {
         return Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
       }
@@ -1887,9 +1885,9 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     function bscanf_format(ib, format, f) {
       scan_caml_string(Pervasives.max_int, ib);
       var str = token(ib);
-      var $js;
+      var tmp;
       try {
-        $js = CamlinternalFormat.format_of_string_format(str, format);
+        tmp = CamlinternalFormat.format_of_string_format(str, format);
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -1902,7 +1900,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           throw exn;
         }
       }
-      return Curry._1(f, $js);
+      return Curry._1(f, tmp);
     }
     
     function sscanf_format(s, format, f) {
