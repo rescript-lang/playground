@@ -56,3 +56,5 @@ if(failed){
 console.log(`Testing pervasives`)
 test(`print_endline "Hello world"`)
 console.log(`Finished`)
+
+// console.log(ocaml.compile(`Js.Promise.resolve 3 `))
