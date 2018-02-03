@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./string.js", "./caml_io.js", "./caml_obj.js", "./caml_bytes.js", "./caml_float.js", "./caml_int32.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
-  function(exports, Sys, Char, Block, Bytes, Curry, Buffer, Js_exn, $$String, Caml_io, Caml_obj, Caml_bytes, Caml_float, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_exceptions, Caml_builtin_exceptions, CamlinternalFormatBasics){
+define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./string.js", "./caml_io.js", "./caml_obj.js", "./caml_bytes.js", "./caml_float.js", "./caml_int32.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
+  function(exports, Char, Block, Bytes, Curry, Buffer, Js_exn, $$String, Caml_io, Caml_obj, Caml_bytes, Caml_float, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_exceptions, Caml_builtin_exceptions, CamlinternalFormatBasics){
     'use strict';
     function create_char_set() {
       return Bytes.make(32, /* "\000" */0);
@@ -1162,18 +1162,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
       var exit = 0;
       if (typeof ty1 === "number") {
         if (typeof ty2 === "number") {
-          if (ty2) {
-            throw [
-                  Caml_builtin_exceptions.assert_failure,
-                  [
-                    "camlinternalFormat.ml",
-                    816,
-                    23
-                  ]
-                ];
-          } else {
-            return /* End_of_fmtty */0;
-          }
+          return /* End_of_fmtty */0;
         } else {
           switch (ty2.tag | 0) {
             case 8 : 
@@ -1808,11 +1797,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
         var fmtty = _fmtty;
         var exit = 0;
         if (typeof fmtty === "number") {
-          if (fmtty) {
-            return /* Char_ty */Block.__(0, [fmtty_of_fmt(fmtty[0])]);
-          } else {
-            return /* End_of_fmtty */0;
-          }
+          return /* End_of_fmtty */0;
         } else {
           switch (fmtty.tag | 0) {
             case 2 : 
@@ -4328,7 +4313,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                     Caml_builtin_exceptions.assert_failure,
                     [
                       "camlinternalFormat.ml",
-                      2716,
+                      2719,
                       28
                     ]
                   ];
@@ -4388,39 +4373,10 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                   ];
           } else {
             var new_acc = Caml_int32.imul(acc, 10) + (c - /* "0" */48 | 0) | 0;
-            if (new_acc > Sys.max_string_length) {
-              return Curry._3(failwith_message(/* Format */[
-                              /* String_literal */Block.__(11, [
-                                  "invalid format ",
-                                  /* Caml_string */Block.__(3, [
-                                      /* No_padding */0,
-                                      /* String_literal */Block.__(11, [
-                                          ": integer ",
-                                          /* Int */Block.__(4, [
-                                              /* Int_d */0,
-                                              /* No_padding */0,
-                                              /* No_precision */0,
-                                              /* String_literal */Block.__(11, [
-                                                  " is greater than the limit ",
-                                                  /* Int */Block.__(4, [
-                                                      /* Int_d */0,
-                                                      /* No_padding */0,
-                                                      /* No_precision */0,
-                                                      /* End_of_format */0
-                                                    ])
-                                                ])
-                                            ])
-                                        ])
-                                    ])
-                                ]),
-                              "invalid format %S: integer %d is greater than the limit %d"
-                            ]), str, new_acc, Sys.max_string_length);
-            } else {
-              _acc = new_acc;
-              _str_ind = str_ind + 1 | 0;
-              continue ;
-              
-            }
+            _acc = new_acc;
+            _str_ind = str_ind + 1 | 0;
+            continue ;
+            
           }
         };
       };
@@ -4932,7 +4888,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                   Caml_builtin_exceptions.assert_failure,
                   [
                     "camlinternalFormat.ml",
-                    2621,
+                    2624,
                     11
                   ]
                 ];
@@ -4944,7 +4900,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                 Caml_builtin_exceptions.assert_failure,
                 [
                   "camlinternalFormat.ml",
-                  2621,
+                  2624,
                   11
                 ]
               ];
@@ -5067,7 +5023,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                     Caml_builtin_exceptions.assert_failure,
                     [
                       "camlinternalFormat.ml",
-                      2744,
+                      2747,
                       25
                     ]
                   ];
@@ -5097,7 +5053,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                   Caml_builtin_exceptions.assert_failure,
                   [
                     "camlinternalFormat.ml",
-                    2744,
+                    2747,
                     25
                   ]
                 ];
@@ -6174,7 +6130,7 @@ define(["exports", "./sys.js", "./char.js", "./block.js", "./bytes.js", "./curry
                 Caml_builtin_exceptions.assert_failure,
                 [
                   "camlinternalFormat.ml",
-                  2683,
+                  2686,
                   34
                 ]
               ];

@@ -25,20 +25,9 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                 var d2 = d[1];
                 var match = get_data(count, d[0]);
                 if (typeof match === "number") {
-                  if (match) {
-                    throw [
-                          Caml_builtin_exceptions.assert_failure,
-                          [
-                            "stream.ml",
-                            53,
-                            12
-                          ]
-                        ];
-                  } else {
-                    _d = d2;
-                    continue ;
-                    
-                  }
+                  _d = d2;
+                  continue ;
+                  
                 } else if (match.tag) {
                   throw [
                         Caml_builtin_exceptions.assert_failure,
@@ -126,18 +115,7 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
             case 1 : 
                 var d = get_data(s[/* count */0], s[/* data */1]);
                 if (typeof d === "number") {
-                  if (d) {
-                    throw [
-                          Caml_builtin_exceptions.assert_failure,
-                          [
-                            "stream.ml",
-                            82,
-                            12
-                          ]
-                        ];
-                  } else {
-                    return /* None */0;
-                  }
+                  return /* None */0;
                 } else if (d.tag) {
                   throw [
                         Caml_builtin_exceptions.assert_failure,

@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./array.js", "./block.js", "./bytes.js", "./curry.js", "./random.js", "./caml_obj.js", "./caml_sys.js", "./caml_hash.js", "./caml_array.js", "./pervasives.js", "./caml_string.js", "./camlinternalLazy.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js"],
-  function(exports, Sys, $$Array, Block, Bytes, Curry, Random, Caml_obj, Caml_sys, Caml_hash, Caml_array, Pervasives, Caml_string, CamlinternalLazy, Caml_missing_polyfill, Caml_builtin_exceptions){
+define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./caml_obj.js", "./caml_hash.js", "./caml_array.js", "./pervasives.js", "./camlinternalLazy.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js"],
+  function(exports, $$Array, Block, Curry, Random, Caml_obj, Caml_hash, Caml_array, Pervasives, CamlinternalLazy, Caml_missing_polyfill, Caml_builtin_exceptions){
     'use strict';
     function hash(x) {
       return Caml_hash.caml_hash(10, 100, 0, x);
@@ -14,23 +14,7 @@ define(["exports", "./sys.js", "./array.js", "./block.js", "./bytes.js", "./curr
       return Caml_hash.caml_hash(10, 100, seed, x);
     }
     
-    var params;
-    
-    try {
-      params = Caml_sys.caml_sys_getenv("OCAMLRUNPARAM");
-    }
-    catch (exn){
-      try {
-        params = Caml_sys.caml_sys_getenv("CAMLRUNPARAM");
-      }
-      catch (exn$1){
-        params = "";
-      }
-    }
-    
-    var randomized_default = Bytes.contains(Caml_string.bytes_of_string(params), /* "R" */82);
-    
-    var randomized = [randomized_default];
+    var randomized = [/* false */0];
     
     function randomize() {
       randomized[0] = /* true */1;
@@ -46,7 +30,7 @@ define(["exports", "./sys.js", "./array.js", "./block.js", "./bytes.js", "./curr
         var x = _x;
         if (x >= n) {
           return x;
-        } else if ((x << 1) > Sys.max_array_length) {
+        } else if ((x << 1) < x) {
           return x;
         } else {
           _x = (x << 1);
@@ -113,7 +97,7 @@ define(["exports", "./sys.js", "./array.js", "./block.js", "./bytes.js", "./curr
       var odata = h[/* data */1];
       var osize = odata.length;
       var nsize = (osize << 1);
-      if (nsize < Sys.max_array_length) {
+      if (nsize >= osize) {
         var ndata = Caml_array.caml_make_vect(nsize, /* Empty */0);
         h[/* data */1] = ndata;
         var insert_bucket = function (param) {
@@ -798,4 +782,4 @@ define(["exports", "./sys.js", "./array.js", "./block.js", "./bytes.js", "./curr
     exports.seeded_hash_param = seeded_hash_param;
     
   })
-/* randomized_default Not a pure module */
+/* No side effect */

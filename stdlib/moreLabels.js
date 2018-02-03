@@ -35,4 +35,4 @@ define(["exports", "./map.js", "./set.js", "./hashtbl.js"],
     exports.$$Set   = $$Set$1;
     
   })
-/* Hashtbl Not a pure module */
+/* No side effect */

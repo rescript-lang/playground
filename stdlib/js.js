@@ -2,6 +2,8 @@
 define(["exports"],
   function(exports){
     'use strict';
+    var MapperRt = 0;
+    
     var Internal = 0;
     
     var Null = 0;
@@ -52,6 +54,7 @@ define(["exports"],
     
     var Vector = 0;
     
+    exports.MapperRt       = MapperRt;
     exports.Internal       = Internal;
     exports.Null           = Null;
     exports.Undefined      = Undefined;

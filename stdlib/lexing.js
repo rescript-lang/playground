@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./bytes.js", "./curry.js", "./caml_array.js", "./caml_bytes.js", "./caml_lexer.js", "./pervasives.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
-  function(exports, Sys, Bytes, Curry, Caml_array, Caml_bytes, Caml_lexer, Pervasives, Caml_string, Caml_builtin_exceptions){
+define(["exports", "./bytes.js", "./curry.js", "./caml_array.js", "./caml_bytes.js", "./caml_lexer.js", "./pervasives.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
+  function(exports, Bytes, Curry, Caml_array, Caml_bytes, Caml_lexer, Pervasives, Caml_string, Caml_builtin_exceptions){
     'use strict';
     function engine(tbl, state, buf) {
       var result = Caml_lexer.caml_lex_engine(tbl, state, buf);
@@ -52,7 +52,7 @@ define(["exports", "./sys.js", "./bytes.js", "./curry.js", "./caml_array.js", ".
                     if (((lexbuf[/* lex_buffer_len */2] - lexbuf[/* lex_start_pos */4] | 0) + n | 0) <= lexbuf[/* lex_buffer */1].length) {
                       Bytes.blit(lexbuf[/* lex_buffer */1], lexbuf[/* lex_start_pos */4], lexbuf[/* lex_buffer */1], 0, lexbuf[/* lex_buffer_len */2] - lexbuf[/* lex_start_pos */4] | 0);
                     } else {
-                      var newlen = Pervasives.min((lexbuf[/* lex_buffer */1].length << 1), Sys.max_string_length);
+                      var newlen = (lexbuf[/* lex_buffer */1].length << 1);
                       if (((lexbuf[/* lex_buffer_len */2] - lexbuf[/* lex_start_pos */4] | 0) + n | 0) > newlen) {
                         throw [
                               Caml_builtin_exceptions.failure,

@@ -2,21 +2,6 @@
 define(["exports", "./block.js"],
   function(exports, Block){
     'use strict';
-    function reifyType(x) {
-      return /* tuple */[
-              typeof x === "string" ? /* String */0 : (
-                  typeof x === "number" ? /* Number */1 : (
-                      typeof x === "boolean" ? /* Boolean */4 : (
-                          x === null ? /* Null */5 : (
-                              Array.isArray(x) ? /* Array */3 : /* Object */2
-                            )
-                        )
-                    )
-                ),
-              x
-            ];
-    }
-    
     function classify(x) {
       var ty = typeof x;
       if (ty === "string") {
@@ -109,7 +94,6 @@ define(["exports", "./block.js"],
     }
     
     exports.classify      = classify;
-    exports.reifyType     = reifyType;
     exports.test          = test;
     exports.decodeString  = decodeString;
     exports.decodeNumber  = decodeNumber;

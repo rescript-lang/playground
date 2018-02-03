@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./block.js", "./curry.js", "./printf.js", "./caml_gc.js"],
-  function(exports, Sys, Block, Curry, Printf, Caml_gc){
+define(["exports", "./block.js", "./curry.js", "./printf.js", "./caml_gc.js"],
+  function(exports, Block, Curry, Printf, Caml_gc){
     'use strict';
     function print_stat(c) {
       var st = Caml_gc.caml_gc_stat(/* () */0);
@@ -233,7 +233,7 @@ define(["exports", "./sys.js", "./block.js", "./curry.js", "./printf.js", "./cam
     
     function allocated_bytes() {
       var match = Caml_gc.caml_gc_counters(/* () */0);
-      return (match[0] + match[2] - match[1]) * (Sys.word_size / 8 | 0);
+      return (match[0] + match[2] - match[1]) * 4;
     }
     
     function call_alarm(arec) {
