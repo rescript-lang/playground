@@ -1,15 +1,14 @@
 'use strict';
-define(["exports", "./sys.js", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
-  function(exports, Sys, Bytes, Curry, $$String, Pervasives, Caml_string, Caml_builtin_exceptions){
+define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
+  function(exports, Bytes, Curry, $$String, Pervasives, Caml_string, Caml_builtin_exceptions){
     'use strict';
     function create(n) {
       var n$1 = n < 1 ? 1 : n;
-      var n$2 = n$1 > Sys.max_string_length ? Sys.max_string_length : n$1;
-      var s = Caml_string.caml_create_string(n$2);
+      var s = Caml_string.caml_create_string(n$1);
       return /* record */[
               /* buffer */s,
               /* position */0,
-              /* length */n$2,
+              /* length */n$1,
               /* initial_buffer */s
             ];
     }
@@ -77,16 +76,6 @@ define(["exports", "./sys.js", "./bytes.js", "./curry.js", "./string.js", "./per
       while((b[/* position */1] + more | 0) > new_len) {
         new_len = (new_len << 1);
       };
-      if (new_len > Sys.max_string_length) {
-        if ((b[/* position */1] + more | 0) <= Sys.max_string_length) {
-          new_len = Sys.max_string_length;
-        } else {
-          throw [
-                Caml_builtin_exceptions.failure,
-                "Buffer.add: cannot grow buffer"
-              ];
-        }
-      }
       var new_buffer = Caml_string.caml_create_string(new_len);
       Bytes.blit(b[/* buffer */0], 0, new_buffer, 0, b[/* position */1]);
       b[/* buffer */0] = new_buffer;
@@ -144,7 +133,7 @@ define(["exports", "./sys.js", "./bytes.js", "./curry.js", "./string.js", "./per
     }
     
     function add_channel(b, ic, len) {
-      if (len < 0 || len > Sys.max_string_length) {
+      if (len < 0) {
         throw [
               Caml_builtin_exceptions.invalid_argument,
               "Buffer.add_channel"
@@ -169,7 +158,7 @@ define(["exports", "./sys.js", "./bytes.js", "./curry.js", "./string.js", "./per
                 Caml_builtin_exceptions.assert_failure,
                 [
                   "buffer.ml",
-                  115,
+                  126,
                   9
                 ]
               ];

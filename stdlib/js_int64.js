@@ -1,9 +1,1 @@
-'use strict';
-define(["exports"],
-  function(exports){
-    'use strict';
-    
-    
-    
-  })
-/* No side effect */
+/* This output is empty. Its source's type definitions, externals and/or unused code got optimized away. */

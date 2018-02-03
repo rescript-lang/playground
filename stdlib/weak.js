@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js", "./caml_array.js", "./caml_int32.js", "./pervasives.js", "./caml_builtin_exceptions.js"],
-  function(exports, Sys, $$Array, Curry, Caml_obj, Caml_weak, Caml_array, Caml_int32, Pervasives, Caml_builtin_exceptions){
+define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js", "./caml_array.js", "./caml_int32.js", "./pervasives.js", "./caml_builtin_exceptions.js"],
+  function(exports, $$Array, Curry, Caml_obj, Caml_weak, Caml_array, Caml_int32, Pervasives, Caml_builtin_exceptions){
     'use strict';
     function length(x) {
       return x.length - 1 | 0;
@@ -27,7 +27,7 @@ define(["exports", "./sys.js", "./array.js", "./curry.js", "./caml_obj.js", "./c
       };
       var create = function (sz) {
         var sz$1 = sz < 7 ? 7 : sz;
-        var sz$2 = sz$1 > Sys.max_array_length ? Sys.max_array_length : sz$1;
+        var sz$2 = sz$1 > 2147483647 ? 2147483647 : sz$1;
         return /* record */[
                 /* table */Caml_array.caml_make_vect(sz$2, emptybucket),
                 /* hashes */Caml_array.caml_make_vect(sz$2, /* int array */[]),
@@ -142,7 +142,7 @@ define(["exports", "./sys.js", "./array.js", "./curry.js", "./caml_obj.js", "./c
                     }), t[/* table */0], 0);
       };
       var next_sz = function (n) {
-        return Pervasives.min((Caml_int32.imul(3, n) / 2 | 0) + 3 | 0, Sys.max_array_length);
+        return Pervasives.min((Caml_int32.imul(3, n) / 2 | 0) + 3 | 0, 2147483647);
       };
       var prev_sz = function (n) {
         return (((n - 3 | 0) << 1) + 2 | 0) / 3 | 0;
@@ -204,7 +204,7 @@ define(["exports", "./sys.js", "./array.js", "./curry.js", "./caml_obj.js", "./c
         while(true) {
           var i = _i;
           if (i >= sz) {
-            var newsz = Pervasives.min((Caml_int32.imul(3, sz) / 2 | 0) + 3 | 0, Sys.max_array_length - 1 | 0);
+            var newsz = Pervasives.min((Caml_int32.imul(3, sz) / 2 | 0) + 3 | 0, 2147483646);
             if (newsz <= sz) {
               throw [
                     Caml_builtin_exceptions.failure,

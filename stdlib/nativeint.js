@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./caml_obj.js", "./caml_format.js"],
-  function(exports, Sys, Caml_obj, Caml_format){
+define(["exports", "./caml_obj.js", "./caml_format.js"],
+  function(exports, Caml_obj, Caml_format){
     'use strict';
     function succ(n) {
       return n + 1;
@@ -38,7 +38,7 @@ define(["exports", "./sys.js", "./caml_obj.js", "./caml_format.js"],
     
     var minus_one = -1;
     
-    var size = Sys.word_size;
+    var size = 54;
     
     exports.zero      = zero;
     exports.one       = one;

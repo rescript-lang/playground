@@ -713,4 +713,4 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
     exports.make_lexer = make_lexer;
     
   })
-/* Hashtbl Not a pure module */
+/* No side effect */

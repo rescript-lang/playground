@@ -1288,13 +1288,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       while(true) {
         var fmt = _fmt;
         if (typeof fmt === "number") {
-          if (fmt) {
-            _fmt = fmt[0];
-            continue ;
-            
-          } else {
-            return Curry._1(k, /* Nil */0);
-          }
+          return Curry._1(k, /* Nil */0);
         } else {
           switch (fmt.tag | 0) {
             case 4 : 
@@ -1373,13 +1367,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       while(true) {
         var fmtty = _fmtty;
         if (typeof fmtty === "number") {
-          if (fmtty) {
-            _fmtty = fmtty[0];
-            continue ;
-            
-          } else {
-            return take_format_readers(k, fmt);
-          }
+          return take_format_readers(k, fmt);
         } else {
           switch (fmtty.tag | 0) {
             case 8 : 

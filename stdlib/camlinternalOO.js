@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./obj.js", "./sys.js", "./list.js", "./array.js", "./curry.js", "./caml_oo.js", "./caml_obj.js", "./caml_array.js", "./caml_int32.js", "./caml_string.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js"],
-  function(exports, Obj, Sys, List, $$Array, Curry, Caml_oo, Caml_obj, Caml_array, Caml_int32, Caml_string, Caml_exceptions, Caml_builtin_exceptions){
+define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_oo.js", "./caml_obj.js", "./caml_array.js", "./caml_int32.js", "./caml_string.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js"],
+  function(exports, Obj, List, $$Array, Curry, Caml_oo, Caml_obj, Caml_array, Caml_int32, Caml_string, Caml_exceptions, Caml_builtin_exceptions){
     'use strict';
     function copy(o) {
       return Caml_exceptions.caml_set_oo_id(Caml_obj.caml_obj_dup(o));
@@ -439,7 +439,7 @@ define(["exports", "./obj.js", "./sys.js", "./list.js", "./array.js", "./curry.j
       var len = pub_labels.length;
       var methods = Caml_array.caml_make_vect((len << 1) + 2 | 0, dummy_met);
       Caml_array.caml_array_set(methods, 0, len);
-      Caml_array.caml_array_set(methods, 1, (Caml_int32.imul(fit_size(len), Sys.word_size) / 8 | 0) - 1 | 0);
+      Caml_array.caml_array_set(methods, 1, ((fit_size(len) << 5) / 8 | 0) - 1 | 0);
       for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
         Caml_array.caml_array_set(methods, (i << 1) + 3 | 0, Caml_array.caml_array_get(pub_labels, i));
       }
@@ -699,7 +699,7 @@ define(["exports", "./obj.js", "./sys.js", "./list.js", "./array.js", "./curry.j
                 Caml_builtin_exceptions.assert_failure,
                 [
                   "camlinternalOO.ml",
-                  280,
+                  285,
                   50
                 ]
               ];
@@ -742,7 +742,7 @@ define(["exports", "./obj.js", "./sys.js", "./list.js", "./array.js", "./curry.j
     function init_class(table) {
       inst_var_count[0] = (inst_var_count[0] + table[/* size */0] | 0) - 1 | 0;
       table[/* initializers */7] = List.rev(table[/* initializers */7]);
-      return resize(table, 3 + ((Caml_array.caml_array_get(table[/* methods */1], 1) << 4) / Sys.word_size | 0) | 0);
+      return resize(table, 3 + ((Caml_array.caml_array_get(table[/* methods */1], 1) << 4) / 32 | 0) | 0);
     }
     
     function inherits(cla, vals, virt_meths, concr_meths, param, top) {
@@ -924,7 +924,7 @@ define(["exports", "./obj.js", "./sys.js", "./list.js", "./array.js", "./curry.j
     
     function new_cache(table) {
       var n = new_method(table);
-      var n$1 = n % 2 === 0 || n > (2 + ((Caml_array.caml_array_get(table[/* methods */1], 1) << 4) / Sys.word_size | 0) | 0) ? n : new_method(table);
+      var n$1 = n % 2 === 0 || n > (2 + ((Caml_array.caml_array_get(table[/* methods */1], 1) << 4) / 32 | 0) | 0) ? n : new_method(table);
       Caml_array.caml_array_set(table[/* methods */1], n$1, 0);
       return n$1;
     }
