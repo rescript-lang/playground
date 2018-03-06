@@ -72,7 +72,7 @@
       "eval" : false
     },
     "Belt_set" : {
-      "file" : "Set.ml",
+      "file" : "set.ml",
       "eval" : true
     }
 }
