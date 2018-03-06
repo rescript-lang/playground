@@ -3,21 +3,19 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
   function(exports, Curry, Js_exn, Caml_array, Caml_exceptions, Caml_builtin_exceptions){
     'use strict';
     function init(l, f) {
-      if (l) {
-        if (l < 0) {
-          throw [
-                Caml_builtin_exceptions.invalid_argument,
-                "Array.init"
-              ];
-        } else {
-          var res = Caml_array.caml_make_vect(l, Curry._1(f, 0));
-          for(var i = 1 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
-            res[i] = Curry._1(f, i);
-          }
-          return res;
-        }
-      } else {
+      if (l === 0) {
         return /* array */[];
+      } else if (l < 0) {
+        throw [
+              Caml_builtin_exceptions.invalid_argument,
+              "Array.init"
+            ];
+      } else {
+        var res = Caml_array.caml_make_vect(l, Curry._1(f, 0));
+        for(var i = 1 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
+          res[i] = Curry._1(f, i);
+        }
+        return res;
       }
     }
     
@@ -31,23 +29,21 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
     
     function copy(a) {
       var l = a.length;
-      if (l) {
-        return Caml_array.caml_array_sub(a, 0, l);
-      } else {
+      if (l === 0) {
         return /* array */[];
+      } else {
+        return Caml_array.caml_array_sub(a, 0, l);
       }
     }
     
     function append(a1, a2) {
       var l1 = a1.length;
-      if (l1) {
-        if (a2.length) {
-          return a1.concat(a2);
-        } else {
-          return Caml_array.caml_array_sub(a1, 0, l1);
-        }
-      } else {
+      if (l1 === 0) {
         return copy(a2);
+      } else if (a2.length === 0) {
+        return Caml_array.caml_array_sub(a1, 0, l1);
+      } else {
+        return a1.concat(a2);
       }
     }
     
@@ -96,14 +92,14 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
     
     function map(f, a) {
       var l = a.length;
-      if (l) {
+      if (l === 0) {
+        return /* array */[];
+      } else {
         var r = Caml_array.caml_make_vect(l, Curry._1(f, a[0]));
         for(var i = 1 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
           r[i] = Curry._1(f, a[i]);
         }
         return r;
-      } else {
-        return /* array */[];
       }
     }
     
@@ -116,14 +112,14 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
     
     function mapi(f, a) {
       var l = a.length;
-      if (l) {
+      if (l === 0) {
+        return /* array */[];
+      } else {
         var r = Caml_array.caml_make_vect(l, Curry._2(f, 0, a[0]));
         for(var i = 1 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
           r[i] = Curry._2(f, i, a[i]);
         }
         return r;
-      } else {
-        return /* array */[];
       }
     }
     
@@ -405,26 +401,26 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
     
     var fast_sort = stable_sort;
     
-    exports.init          = init;
-    exports.make_matrix   = make_matrix;
+    exports.init = init;
+    exports.make_matrix = make_matrix;
     exports.create_matrix = create_matrix;
-    exports.append        = append;
-    exports.concat        = concat;
-    exports.sub           = sub;
-    exports.copy          = copy;
-    exports.fill          = fill;
-    exports.blit          = blit;
-    exports.to_list       = to_list;
-    exports.of_list       = of_list;
-    exports.iter          = iter;
-    exports.map           = map;
-    exports.iteri         = iteri;
-    exports.mapi          = mapi;
-    exports.fold_left     = fold_left;
-    exports.fold_right    = fold_right;
-    exports.sort          = sort;
-    exports.stable_sort   = stable_sort;
-    exports.fast_sort     = fast_sort;
+    exports.append = append;
+    exports.concat = concat;
+    exports.sub = sub;
+    exports.copy = copy;
+    exports.fill = fill;
+    exports.blit = blit;
+    exports.to_list = to_list;
+    exports.of_list = of_list;
+    exports.iter = iter;
+    exports.map = map;
+    exports.iteri = iteri;
+    exports.mapi = mapi;
+    exports.fold_left = fold_left;
+    exports.fold_right = fold_right;
+    exports.sort = sort;
+    exports.stable_sort = stable_sort;
+    exports.fast_sort = fast_sort;
     
   })
 /* No side effect */

@@ -34,12 +34,12 @@ define(["exports", "./caml_obj.js", "./caml_array.js", "./js_primitive.js"],
     
     var caml_weak_blit = Caml_array.caml_array_blit;
     
-    exports.caml_weak_create   = caml_weak_create;
-    exports.caml_weak_set      = caml_weak_set;
-    exports.caml_weak_get      = caml_weak_get;
+    exports.caml_weak_create = caml_weak_create;
+    exports.caml_weak_set = caml_weak_set;
+    exports.caml_weak_get = caml_weak_get;
     exports.caml_weak_get_copy = caml_weak_get_copy;
-    exports.caml_weak_check    = caml_weak_check;
-    exports.caml_weak_blit     = caml_weak_blit;
+    exports.caml_weak_check = caml_weak_check;
+    exports.caml_weak_blit = caml_weak_blit;
     
   })
 /* No side effect */

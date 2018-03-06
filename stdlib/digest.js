@@ -57,7 +57,7 @@ define(["exports", "./char.js", "./string.js", "./caml_md5.js", "./pervasives.js
     }
     
     function to_hex(d) {
-      var result = new Array(32);
+      var result = Caml_string.caml_create_string(32);
       for(var i = 0; i <= 15; ++i){
         var x = Caml_string.get(d, i);
         result[(i << 1)] = char_hex((x >>> 4));
@@ -104,7 +104,7 @@ define(["exports", "./char.js", "./string.js", "./caml_md5.js", "./pervasives.js
       var $$byte = function (i) {
         return (digit(Caml_string.get(s, i)) << 4) + digit(Caml_string.get(s, i + 1 | 0)) | 0;
       };
-      var result = new Array(16);
+      var result = Caml_string.caml_create_string(16);
       for(var i = 0; i <= 15; ++i){
         result[i] = Char.chr($$byte((i << 1)));
       }
@@ -113,16 +113,16 @@ define(["exports", "./char.js", "./string.js", "./caml_md5.js", "./pervasives.js
     
     var compare = $$String.compare;
     
-    exports.compare   = compare;
-    exports.string    = string;
-    exports.bytes     = bytes;
+    exports.compare = compare;
+    exports.string = string;
+    exports.bytes = bytes;
     exports.substring = substring;
-    exports.subbytes  = subbytes;
-    exports.file      = file;
-    exports.output    = output;
-    exports.input     = input;
-    exports.to_hex    = to_hex;
-    exports.from_hex  = from_hex;
+    exports.subbytes = subbytes;
+    exports.file = file;
+    exports.output = output;
+    exports.input = input;
+    exports.to_hex = to_hex;
+    exports.from_hex = from_hex;
     
   })
 /* No side effect */

@@ -244,15 +244,15 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
     function format_backtrace_slot(pos, slot) {
       var info = function (is_raise) {
         if (is_raise) {
-          if (pos) {
-            return "Re-raised at";
-          } else {
+          if (pos === 0) {
             return "Raised at";
+          } else {
+            return "Re-raised at";
           }
-        } else if (pos) {
-          return "Called from";
-        } else {
+        } else if (pos === 0) {
           return "Raised by primitive operation at";
+        } else {
+          return "Called from";
         }
       };
       if (slot.tag) {
@@ -499,26 +499,26 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
     
     var convert_raw_backtrace_slot = Caml_backtrace.caml_convert_raw_backtrace_slot;
     
-    exports.to_string                      = to_string;
-    exports.print                          = print;
-    exports.$$catch                        = $$catch;
-    exports.print_backtrace                = print_backtrace;
-    exports.get_backtrace                  = get_backtrace;
-    exports.record_backtrace               = record_backtrace;
-    exports.backtrace_status               = backtrace_status;
-    exports.register_printer               = register_printer;
-    exports.get_raw_backtrace              = get_raw_backtrace;
-    exports.print_raw_backtrace            = print_raw_backtrace;
-    exports.raw_backtrace_to_string        = raw_backtrace_to_string;
-    exports.get_callstack                  = get_callstack;
+    exports.to_string = to_string;
+    exports.print = print;
+    exports.$$catch = $$catch;
+    exports.print_backtrace = print_backtrace;
+    exports.get_backtrace = get_backtrace;
+    exports.record_backtrace = record_backtrace;
+    exports.backtrace_status = backtrace_status;
+    exports.register_printer = register_printer;
+    exports.get_raw_backtrace = get_raw_backtrace;
+    exports.print_raw_backtrace = print_raw_backtrace;
+    exports.raw_backtrace_to_string = raw_backtrace_to_string;
+    exports.get_callstack = get_callstack;
     exports.set_uncaught_exception_handler = set_uncaught_exception_handler;
-    exports.backtrace_slots                = backtrace_slots;
-    exports.Slot                           = Slot;
-    exports.raw_backtrace_length           = raw_backtrace_length;
-    exports.get_raw_backtrace_slot         = get_raw_backtrace_slot;
-    exports.convert_raw_backtrace_slot     = convert_raw_backtrace_slot;
-    exports.exn_slot_id                    = exn_slot_id;
-    exports.exn_slot_name                  = exn_slot_name;
+    exports.backtrace_slots = backtrace_slots;
+    exports.Slot = Slot;
+    exports.raw_backtrace_length = raw_backtrace_length;
+    exports.get_raw_backtrace_slot = get_raw_backtrace_slot;
+    exports.convert_raw_backtrace_slot = convert_raw_backtrace_slot;
+    exports.exn_slot_id = exn_slot_id;
+    exports.exn_slot_name = exn_slot_name;
     
   })
 /* No side effect */

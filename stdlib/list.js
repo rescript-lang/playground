@@ -54,13 +54,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
           var n$1 = _n;
           var l$1 = _l;
           if (l$1) {
-            if (n$1) {
+            if (n$1 === 0) {
+              return l$1[0];
+            } else {
               _n = n$1 - 1 | 0;
               _l = l$1[1];
               continue ;
               
-            } else {
-              return l$1[0];
             }
           } else {
             throw [
@@ -442,12 +442,12 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
       while(true) {
         var param = _param;
         if (param) {
-          if (Caml_obj.caml_compare(param[0], x)) {
+          if (Caml_obj.caml_equal(param[0], x)) {
+            return /* true */1;
+          } else {
             _param = param[1];
             continue ;
             
-          } else {
-            return /* true */1;
           }
         } else {
           return /* false */0;
@@ -477,12 +477,12 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         var param = _param;
         if (param) {
           var match = param[0];
-          if (Caml_obj.caml_compare(match[0], x)) {
+          if (Caml_obj.caml_equal(match[0], x)) {
+            return match[1];
+          } else {
             _param = param[1];
             continue ;
             
-          } else {
-            return match[1];
           }
         } else {
           throw Caml_builtin_exceptions.not_found;
@@ -512,12 +512,12 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
       while(true) {
         var param = _param;
         if (param) {
-          if (Caml_obj.caml_compare(param[0][0], x)) {
+          if (Caml_obj.caml_equal(param[0][0], x)) {
+            return /* true */1;
+          } else {
             _param = param[1];
             continue ;
             
-          } else {
-            return /* true */1;
           }
         } else {
           return /* false */0;
@@ -546,13 +546,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
       if (param) {
         var l = param[1];
         var pair = param[0];
-        if (Caml_obj.caml_compare(pair[0], x)) {
+        if (Caml_obj.caml_equal(pair[0], x)) {
+          return l;
+        } else {
           return /* :: */[
                   pair,
                   remove_assoc(x, l)
                 ];
-        } else {
-          return l;
         }
       } else {
         return /* [] */0;
@@ -737,24 +737,22 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
       while(true) {
         var l = _l;
         var k = _k;
-        if (k) {
-          if (l) {
-            _l = l[1];
-            _k = k - 1 | 0;
-            continue ;
-            
-          } else {
-            throw [
-                  Caml_builtin_exceptions.assert_failure,
-                  [
-                    "list.ml",
-                    223,
-                    11
-                  ]
-                ];
-          }
-        } else {
+        if (k === 0) {
           return l;
+        } else if (l) {
+          _l = l[1];
+          _k = k - 1 | 0;
+          continue ;
+          
+        } else {
+          throw [
+                Caml_builtin_exceptions.assert_failure,
+                [
+                  "list.ml",
+                  223,
+                  11
+                ]
+              ];
         }
       };
     }
@@ -1109,58 +1107,54 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                 var x2 = match[0];
                 var x1 = l[0];
                 var c = Curry._2(cmp, x1, x2);
-                if (c) {
-                  if (c < 0) {
-                    var c$1 = Curry._2(cmp, x2, x3);
-                    if (c$1) {
-                      if (c$1 < 0) {
-                        return /* :: */[
-                                x1,
-                                /* :: */[
-                                  x2,
-                                  /* :: */[
-                                    x3,
-                                    /* [] */0
-                                  ]
-                                ]
-                              ];
-                      } else {
-                        var c$2 = Curry._2(cmp, x1, x3);
-                        if (c$2) {
-                          if (c$2 < 0) {
-                            return /* :: */[
-                                    x1,
-                                    /* :: */[
-                                      x3,
-                                      /* :: */[
-                                        x2,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          } else {
-                            return /* :: */[
-                                    x3,
-                                    /* :: */[
-                                      x1,
-                                      /* :: */[
-                                        x2,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          }
-                        } else {
-                          return /* :: */[
-                                  x1,
-                                  /* :: */[
-                                    x2,
-                                    /* [] */0
-                                  ]
-                                ];
-                        }
-                      }
-                    } else {
+                if (c === 0) {
+                  var c$1 = Curry._2(cmp, x2, x3);
+                  if (c$1 === 0) {
+                    return /* :: */[
+                            x2,
+                            /* [] */0
+                          ];
+                  } else if (c$1 < 0) {
+                    return /* :: */[
+                            x2,
+                            /* :: */[
+                              x3,
+                              /* [] */0
+                            ]
+                          ];
+                  } else {
+                    return /* :: */[
+                            x3,
+                            /* :: */[
+                              x2,
+                              /* [] */0
+                            ]
+                          ];
+                  }
+                } else if (c < 0) {
+                  var c$2 = Curry._2(cmp, x2, x3);
+                  if (c$2 === 0) {
+                    return /* :: */[
+                            x1,
+                            /* :: */[
+                              x2,
+                              /* [] */0
+                            ]
+                          ];
+                  } else if (c$2 < 0) {
+                    return /* :: */[
+                            x1,
+                            /* :: */[
+                              x2,
+                              /* :: */[
+                                x3,
+                                /* [] */0
+                              ]
+                            ]
+                          ];
+                  } else {
+                    var c$3 = Curry._2(cmp, x1, x3);
+                    if (c$3 === 0) {
                       return /* :: */[
                               x1,
                               /* :: */[
@@ -1168,58 +1162,54 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                                 /* [] */0
                               ]
                             ];
-                    }
-                  } else {
-                    var c$3 = Curry._2(cmp, x1, x3);
-                    if (c$3) {
-                      if (c$3 < 0) {
-                        return /* :: */[
-                                x2,
+                    } else if (c$3 < 0) {
+                      return /* :: */[
+                              x1,
+                              /* :: */[
+                                x3,
                                 /* :: */[
-                                  x1,
-                                  /* :: */[
-                                    x3,
-                                    /* [] */0
-                                  ]
-                                ]
-                              ];
-                      } else {
-                        var c$4 = Curry._2(cmp, x2, x3);
-                        if (c$4) {
-                          if (c$4 < 0) {
-                            return /* :: */[
-                                    x2,
-                                    /* :: */[
-                                      x3,
-                                      /* :: */[
-                                        x1,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          } else {
-                            return /* :: */[
-                                    x3,
-                                    /* :: */[
-                                      x2,
-                                      /* :: */[
-                                        x1,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          }
-                        } else {
-                          return /* :: */[
                                   x2,
-                                  /* :: */[
-                                    x1,
-                                    /* [] */0
-                                  ]
-                                ];
-                        }
-                      }
+                                  /* [] */0
+                                ]
+                              ]
+                            ];
                     } else {
+                      return /* :: */[
+                              x3,
+                              /* :: */[
+                                x1,
+                                /* :: */[
+                                  x2,
+                                  /* [] */0
+                                ]
+                              ]
+                            ];
+                    }
+                  }
+                } else {
+                  var c$4 = Curry._2(cmp, x1, x3);
+                  if (c$4 === 0) {
+                    return /* :: */[
+                            x2,
+                            /* :: */[
+                              x1,
+                              /* [] */0
+                            ]
+                          ];
+                  } else if (c$4 < 0) {
+                    return /* :: */[
+                            x2,
+                            /* :: */[
+                              x1,
+                              /* :: */[
+                                x3,
+                                /* [] */0
+                              ]
+                            ]
+                          ];
+                  } else {
+                    var c$5 = Curry._2(cmp, x2, x3);
+                    if (c$5 === 0) {
                       return /* :: */[
                               x2,
                               /* :: */[
@@ -1227,17 +1217,15 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                                 /* [] */0
                               ]
                             ];
-                    }
-                  }
-                } else {
-                  var c$5 = Curry._2(cmp, x2, x3);
-                  if (c$5) {
-                    if (c$5 < 0) {
+                    } else if (c$5 < 0) {
                       return /* :: */[
                               x2,
                               /* :: */[
                                 x3,
-                                /* [] */0
+                                /* :: */[
+                                  x1,
+                                  /* [] */0
+                                ]
                               ]
                             ];
                     } else {
@@ -1245,15 +1233,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                               x3,
                               /* :: */[
                                 x2,
-                                /* [] */0
+                                /* :: */[
+                                  x1,
+                                  /* [] */0
+                                ]
                               ]
                             ];
                     }
-                  } else {
-                    return /* :: */[
-                            x2,
-                            /* [] */0
-                          ];
                   }
                 }
               } else {
@@ -1271,28 +1257,26 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
             var x2$1 = match$2[0];
             var x1$1 = l[0];
             var c$6 = Curry._2(cmp, x1$1, x2$1);
-            if (c$6) {
-              if (c$6 < 0) {
-                return /* :: */[
-                        x1$1,
-                        /* :: */[
-                          x2$1,
-                          /* [] */0
-                        ]
-                      ];
-              } else {
-                return /* :: */[
-                        x2$1,
-                        /* :: */[
-                          x1$1,
-                          /* [] */0
-                        ]
-                      ];
-              }
-            } else {
+            if (c$6 === 0) {
               return /* :: */[
                       x1$1,
                       /* [] */0
+                    ];
+            } else if (c$6 < 0) {
+              return /* :: */[
+                      x1$1,
+                      /* :: */[
+                        x2$1,
+                        /* [] */0
+                      ]
+                    ];
+            } else {
+              return /* :: */[
+                      x2$1,
+                      /* :: */[
+                        x1$1,
+                        /* [] */0
+                      ]
                     ];
             }
           } else {
@@ -1321,31 +1305,29 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                 var t1 = l1[1];
                 var h1 = l1[0];
                 var c$7 = Curry._2(cmp, h1, h2);
-                if (c$7) {
-                  if (c$7 > 0) {
-                    _accu = /* :: */[
-                      h1,
-                      accu
-                    ];
-                    _l1 = t1;
-                    continue ;
-                    
-                  } else {
-                    _accu = /* :: */[
-                      h2,
-                      accu
-                    ];
-                    _l2 = t2;
-                    continue ;
-                    
-                  }
-                } else {
+                if (c$7 === 0) {
                   _accu = /* :: */[
                     h1,
                     accu
                   ];
                   _l2 = t2;
                   _l1 = t1;
+                  continue ;
+                  
+                } else if (c$7 > 0) {
+                  _accu = /* :: */[
+                    h1,
+                    accu
+                  ];
+                  _l1 = t1;
+                  continue ;
+                  
+                } else {
+                  _accu = /* :: */[
+                    h2,
+                    accu
+                  ];
+                  _l2 = t2;
                   continue ;
                   
                 }
@@ -1373,58 +1355,54 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                 var x2 = match[0];
                 var x1 = l[0];
                 var c = Curry._2(cmp, x1, x2);
-                if (c) {
-                  if (c > 0) {
-                    var c$1 = Curry._2(cmp, x2, x3);
-                    if (c$1) {
-                      if (c$1 > 0) {
-                        return /* :: */[
-                                x1,
-                                /* :: */[
-                                  x2,
-                                  /* :: */[
-                                    x3,
-                                    /* [] */0
-                                  ]
-                                ]
-                              ];
-                      } else {
-                        var c$2 = Curry._2(cmp, x1, x3);
-                        if (c$2) {
-                          if (c$2 > 0) {
-                            return /* :: */[
-                                    x1,
-                                    /* :: */[
-                                      x3,
-                                      /* :: */[
-                                        x2,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          } else {
-                            return /* :: */[
-                                    x3,
-                                    /* :: */[
-                                      x1,
-                                      /* :: */[
-                                        x2,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          }
-                        } else {
-                          return /* :: */[
-                                  x1,
-                                  /* :: */[
-                                    x2,
-                                    /* [] */0
-                                  ]
-                                ];
-                        }
-                      }
-                    } else {
+                if (c === 0) {
+                  var c$1 = Curry._2(cmp, x2, x3);
+                  if (c$1 === 0) {
+                    return /* :: */[
+                            x2,
+                            /* [] */0
+                          ];
+                  } else if (c$1 > 0) {
+                    return /* :: */[
+                            x2,
+                            /* :: */[
+                              x3,
+                              /* [] */0
+                            ]
+                          ];
+                  } else {
+                    return /* :: */[
+                            x3,
+                            /* :: */[
+                              x2,
+                              /* [] */0
+                            ]
+                          ];
+                  }
+                } else if (c > 0) {
+                  var c$2 = Curry._2(cmp, x2, x3);
+                  if (c$2 === 0) {
+                    return /* :: */[
+                            x1,
+                            /* :: */[
+                              x2,
+                              /* [] */0
+                            ]
+                          ];
+                  } else if (c$2 > 0) {
+                    return /* :: */[
+                            x1,
+                            /* :: */[
+                              x2,
+                              /* :: */[
+                                x3,
+                                /* [] */0
+                              ]
+                            ]
+                          ];
+                  } else {
+                    var c$3 = Curry._2(cmp, x1, x3);
+                    if (c$3 === 0) {
                       return /* :: */[
                               x1,
                               /* :: */[
@@ -1432,58 +1410,54 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                                 /* [] */0
                               ]
                             ];
-                    }
-                  } else {
-                    var c$3 = Curry._2(cmp, x1, x3);
-                    if (c$3) {
-                      if (c$3 > 0) {
-                        return /* :: */[
-                                x2,
+                    } else if (c$3 > 0) {
+                      return /* :: */[
+                              x1,
+                              /* :: */[
+                                x3,
                                 /* :: */[
-                                  x1,
-                                  /* :: */[
-                                    x3,
-                                    /* [] */0
-                                  ]
-                                ]
-                              ];
-                      } else {
-                        var c$4 = Curry._2(cmp, x2, x3);
-                        if (c$4) {
-                          if (c$4 > 0) {
-                            return /* :: */[
-                                    x2,
-                                    /* :: */[
-                                      x3,
-                                      /* :: */[
-                                        x1,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          } else {
-                            return /* :: */[
-                                    x3,
-                                    /* :: */[
-                                      x2,
-                                      /* :: */[
-                                        x1,
-                                        /* [] */0
-                                      ]
-                                    ]
-                                  ];
-                          }
-                        } else {
-                          return /* :: */[
                                   x2,
-                                  /* :: */[
-                                    x1,
-                                    /* [] */0
-                                  ]
-                                ];
-                        }
-                      }
+                                  /* [] */0
+                                ]
+                              ]
+                            ];
                     } else {
+                      return /* :: */[
+                              x3,
+                              /* :: */[
+                                x1,
+                                /* :: */[
+                                  x2,
+                                  /* [] */0
+                                ]
+                              ]
+                            ];
+                    }
+                  }
+                } else {
+                  var c$4 = Curry._2(cmp, x1, x3);
+                  if (c$4 === 0) {
+                    return /* :: */[
+                            x2,
+                            /* :: */[
+                              x1,
+                              /* [] */0
+                            ]
+                          ];
+                  } else if (c$4 > 0) {
+                    return /* :: */[
+                            x2,
+                            /* :: */[
+                              x1,
+                              /* :: */[
+                                x3,
+                                /* [] */0
+                              ]
+                            ]
+                          ];
+                  } else {
+                    var c$5 = Curry._2(cmp, x2, x3);
+                    if (c$5 === 0) {
                       return /* :: */[
                               x2,
                               /* :: */[
@@ -1491,17 +1465,15 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                                 /* [] */0
                               ]
                             ];
-                    }
-                  }
-                } else {
-                  var c$5 = Curry._2(cmp, x2, x3);
-                  if (c$5) {
-                    if (c$5 > 0) {
+                    } else if (c$5 > 0) {
                       return /* :: */[
                               x2,
                               /* :: */[
                                 x3,
-                                /* [] */0
+                                /* :: */[
+                                  x1,
+                                  /* [] */0
+                                ]
                               ]
                             ];
                     } else {
@@ -1509,15 +1481,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                               x3,
                               /* :: */[
                                 x2,
-                                /* [] */0
+                                /* :: */[
+                                  x1,
+                                  /* [] */0
+                                ]
                               ]
                             ];
                     }
-                  } else {
-                    return /* :: */[
-                            x2,
-                            /* [] */0
-                          ];
                   }
                 }
               } else {
@@ -1535,28 +1505,26 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
             var x2$1 = match$2[0];
             var x1$1 = l[0];
             var c$6 = Curry._2(cmp, x1$1, x2$1);
-            if (c$6) {
-              if (c$6 > 0) {
-                return /* :: */[
-                        x1$1,
-                        /* :: */[
-                          x2$1,
-                          /* [] */0
-                        ]
-                      ];
-              } else {
-                return /* :: */[
-                        x2$1,
-                        /* :: */[
-                          x1$1,
-                          /* [] */0
-                        ]
-                      ];
-              }
-            } else {
+            if (c$6 === 0) {
               return /* :: */[
                       x1$1,
                       /* [] */0
+                    ];
+            } else if (c$6 > 0) {
+              return /* :: */[
+                      x1$1,
+                      /* :: */[
+                        x2$1,
+                        /* [] */0
+                      ]
+                    ];
+            } else {
+              return /* :: */[
+                      x2$1,
+                      /* :: */[
+                        x1$1,
+                        /* [] */0
+                      ]
                     ];
             }
           } else {
@@ -1585,31 +1553,29 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                 var t1 = l1[1];
                 var h1 = l1[0];
                 var c$7 = Curry._2(cmp, h1, h2);
-                if (c$7) {
-                  if (c$7 < 0) {
-                    _accu = /* :: */[
-                      h1,
-                      accu
-                    ];
-                    _l1 = t1;
-                    continue ;
-                    
-                  } else {
-                    _accu = /* :: */[
-                      h2,
-                      accu
-                    ];
-                    _l2 = t2;
-                    continue ;
-                    
-                  }
-                } else {
+                if (c$7 === 0) {
                   _accu = /* :: */[
                     h1,
                     accu
                   ];
                   _l2 = t2;
                   _l1 = t1;
+                  continue ;
+                  
+                } else if (c$7 < 0) {
+                  _accu = /* :: */[
+                    h1,
+                    accu
+                  ];
+                  _l1 = t1;
+                  continue ;
+                  
+                } else {
+                  _accu = /* :: */[
+                    h2,
+                    accu
+                  ];
+                  _l2 = t2;
                   continue ;
                   
                 }
@@ -1641,50 +1607,50 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
     
     var fast_sort = stable_sort;
     
-    exports.length       = length;
-    exports.hd           = hd;
-    exports.tl           = tl;
-    exports.nth          = nth;
-    exports.rev          = rev;
-    exports.append       = append;
-    exports.rev_append   = rev_append;
-    exports.concat       = concat;
-    exports.flatten      = flatten;
-    exports.iter         = iter;
-    exports.iteri        = iteri;
-    exports.map          = map;
-    exports.mapi         = mapi$1;
-    exports.rev_map      = rev_map;
-    exports.fold_left    = fold_left;
-    exports.fold_right   = fold_right;
-    exports.iter2        = iter2;
-    exports.map2         = map2;
-    exports.rev_map2     = rev_map2;
-    exports.fold_left2   = fold_left2;
-    exports.fold_right2  = fold_right2;
-    exports.for_all      = for_all;
-    exports.exists       = exists;
-    exports.for_all2     = for_all2;
-    exports.exists2      = exists2;
-    exports.mem          = mem;
-    exports.memq         = memq;
-    exports.find         = find;
-    exports.filter       = filter;
-    exports.find_all     = find_all;
-    exports.partition    = partition;
-    exports.assoc        = assoc;
-    exports.assq         = assq;
-    exports.mem_assoc    = mem_assoc;
-    exports.mem_assq     = mem_assq;
+    exports.length = length;
+    exports.hd = hd;
+    exports.tl = tl;
+    exports.nth = nth;
+    exports.rev = rev;
+    exports.append = append;
+    exports.rev_append = rev_append;
+    exports.concat = concat;
+    exports.flatten = flatten;
+    exports.iter = iter;
+    exports.iteri = iteri;
+    exports.map = map;
+    exports.mapi = mapi$1;
+    exports.rev_map = rev_map;
+    exports.fold_left = fold_left;
+    exports.fold_right = fold_right;
+    exports.iter2 = iter2;
+    exports.map2 = map2;
+    exports.rev_map2 = rev_map2;
+    exports.fold_left2 = fold_left2;
+    exports.fold_right2 = fold_right2;
+    exports.for_all = for_all;
+    exports.exists = exists;
+    exports.for_all2 = for_all2;
+    exports.exists2 = exists2;
+    exports.mem = mem;
+    exports.memq = memq;
+    exports.find = find;
+    exports.filter = filter;
+    exports.find_all = find_all;
+    exports.partition = partition;
+    exports.assoc = assoc;
+    exports.assq = assq;
+    exports.mem_assoc = mem_assoc;
+    exports.mem_assq = mem_assq;
     exports.remove_assoc = remove_assoc;
-    exports.remove_assq  = remove_assq;
-    exports.split        = split;
-    exports.combine      = combine;
-    exports.sort         = sort;
-    exports.stable_sort  = stable_sort;
-    exports.fast_sort    = fast_sort;
-    exports.sort_uniq    = sort_uniq;
-    exports.merge        = merge;
+    exports.remove_assq = remove_assq;
+    exports.split = split;
+    exports.combine = combine;
+    exports.sort = sort;
+    exports.stable_sort = stable_sort;
+    exports.fast_sort = fast_sort;
+    exports.sort_uniq = sort_uniq;
+    exports.merge = merge;
     
   })
 /* No side effect */

@@ -72,11 +72,11 @@ define(["exports"],
     }
     
     exports.unsafeDeleteKey = unsafeDeleteKey;
-    exports.entries         = entries;
-    exports.values          = values;
-    exports.fromList        = fromList;
-    exports.fromArray       = fromArray;
-    exports.map             = map;
+    exports.entries = entries;
+    exports.values = values;
+    exports.fromList = fromList;
+    exports.fromArray = fromArray;
+    exports.map = map;
     
   })
 /* unsafeDeleteKey Not a pure module */

@@ -70,5 +70,9 @@
     "Balanced_tree" : {
       "file" : "balanced_tree.ml",
       "eval" : false
+    },
+    "Belt_set" : {
+      "file" : "Set.ml",
+      "eval" : true
     }
 }

@@ -209,22 +209,22 @@ define(["exports", "./array.js", "./curry.js", "./js_exn.js", "./lexing.js", "./
     
     var set_trace = Caml_parser.caml_set_parser_trace;
     
-    exports.symbol_start         = symbol_start;
-    exports.symbol_end           = symbol_end;
-    exports.rhs_start            = rhs_start;
-    exports.rhs_end              = rhs_end;
-    exports.symbol_start_pos     = symbol_start_pos;
-    exports.symbol_end_pos       = symbol_end_pos;
-    exports.rhs_start_pos        = rhs_start_pos;
-    exports.rhs_end_pos          = rhs_end_pos;
-    exports.clear_parser         = clear_parser;
-    exports.Parse_error          = Parse_error;
-    exports.set_trace            = set_trace;
-    exports.YYexit               = YYexit;
-    exports.yyparse              = yyparse;
-    exports.peek_val             = peek_val;
+    exports.symbol_start = symbol_start;
+    exports.symbol_end = symbol_end;
+    exports.rhs_start = rhs_start;
+    exports.rhs_end = rhs_end;
+    exports.symbol_start_pos = symbol_start_pos;
+    exports.symbol_end_pos = symbol_end_pos;
+    exports.rhs_start_pos = rhs_start_pos;
+    exports.rhs_end_pos = rhs_end_pos;
+    exports.clear_parser = clear_parser;
+    exports.Parse_error = Parse_error;
+    exports.set_trace = set_trace;
+    exports.YYexit = YYexit;
+    exports.yyparse = yyparse;
+    exports.peek_val = peek_val;
     exports.is_current_lookahead = is_current_lookahead;
-    exports.parse_error          = parse_error;
+    exports.parse_error = parse_error;
     
   })
 /* No side effect */

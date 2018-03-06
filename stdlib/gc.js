@@ -264,12 +264,12 @@ define(["exports", "./block.js", "./curry.js", "./printf.js", "./caml_gc.js"],
     
     var finalise_release = Caml_gc.caml_final_release;
     
-    exports.print_stat       = print_stat;
-    exports.allocated_bytes  = allocated_bytes;
-    exports.finalise         = finalise;
+    exports.print_stat = print_stat;
+    exports.allocated_bytes = allocated_bytes;
+    exports.finalise = finalise;
     exports.finalise_release = finalise_release;
-    exports.create_alarm     = create_alarm;
-    exports.delete_alarm     = delete_alarm;
+    exports.create_alarm = create_alarm;
+    exports.delete_alarm = delete_alarm;
     
   })
 /* No side effect */

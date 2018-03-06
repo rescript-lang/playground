@@ -1,7 +1,13 @@
 'use strict';
-define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
-  function(exports, Block, Caml_builtin_exceptions){
+define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptions.js"],
+  function(exports, Block, Caml_primitive, Caml_builtin_exceptions){
     'use strict';
+    function caml_obj_block(tag, size) {
+      var v = new Array(size);
+      v.tag = tag;
+      return v;
+    }
+    
     function caml_obj_dup(x) {
       var len = x.length | 0;
       var v = new Array(len);
@@ -48,16 +54,6 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
       }
     }
     
-    function caml_int_compare(x, y) {
-      if (x < y) {
-        return -1;
-      } else if (x === y) {
-        return 0;
-      } else {
-        return 1;
-      }
-    }
-    
     function caml_compare(_a, _b) {
       while(true) {
         var b = _b;
@@ -68,32 +64,24 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
           var a_type = typeof a;
           var b_type = typeof b;
           if (a_type === "string") {
-            var x = a;
-            var y = b;
-            if (x < y) {
-              return -1;
-            } else if (x === y) {
-              return 0;
-            } else {
-              return 1;
-            }
+            return Caml_primitive.caml_string_compare(a, b);
           } else {
             var is_a_number = +(a_type === "number");
             var is_b_number = +(b_type === "number");
             if (is_a_number !== 0) {
               if (is_b_number !== 0) {
-                return caml_int_compare(a, b);
+                return Caml_primitive.caml_int_compare(a, b);
               } else {
                 return -1;
               }
             } else if (is_b_number !== 0) {
               return 1;
             } else if (a_type === "boolean" || a_type === "undefined" || a === null) {
-              var x$1 = a;
-              var y$1 = b;
-              if (x$1 === y$1) {
+              var x = a;
+              var y = b;
+              if (x === y) {
                 return 0;
-              } else if (x$1 < y$1) {
+              } else if (x < y) {
                 return -1;
               } else {
                 return 1;
@@ -115,7 +103,7 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
                 continue ;
                 
               } else if (tag_a === 248) {
-                return caml_int_compare(a[1], b[1]);
+                return Caml_primitive.caml_int_compare(a[1], b[1]);
               } else if (tag_a === 251) {
                 throw [
                       Caml_builtin_exceptions.invalid_argument,
@@ -267,6 +255,30 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
       };
     }
     
+    function caml_equal_null(x, y) {
+      if (y !== null) {
+        return caml_equal(x, y);
+      } else {
+        return +(x === y);
+      }
+    }
+    
+    function caml_equal_undefined(x, y) {
+      if (y !== undefined) {
+        return caml_equal(x, y);
+      } else {
+        return +(x === y);
+      }
+    }
+    
+    function caml_equal_nullable(x, y) {
+      if (y == null) {
+        return +(x === y);
+      } else {
+        return caml_equal(x, y);
+      }
+    }
+    
     function caml_notequal(a, b) {
       return 1 - caml_equal(a, b);
     }
@@ -287,24 +299,39 @@ define(["exports", "./block.js", "./caml_builtin_exceptions.js"],
       return +(caml_compare(a, b) < 0);
     }
     
-    var caml_int32_compare = caml_int_compare;
+    function caml_min(x, y) {
+      if (caml_compare(x, y) <= 0) {
+        return x;
+      } else {
+        return y;
+      }
+    }
     
-    var caml_nativeint_compare = caml_int_compare;
+    function caml_max(x, y) {
+      if (caml_compare(x, y) >= 0) {
+        return x;
+      } else {
+        return y;
+      }
+    }
     
-    exports.caml_obj_dup           = caml_obj_dup;
-    exports.caml_obj_truncate      = caml_obj_truncate;
+    exports.caml_obj_block = caml_obj_block;
+    exports.caml_obj_dup = caml_obj_dup;
+    exports.caml_obj_truncate = caml_obj_truncate;
     exports.caml_lazy_make_forward = caml_lazy_make_forward;
-    exports.caml_update_dummy      = caml_update_dummy;
-    exports.caml_int_compare       = caml_int_compare;
-    exports.caml_int32_compare     = caml_int32_compare;
-    exports.caml_nativeint_compare = caml_nativeint_compare;
-    exports.caml_compare           = caml_compare;
-    exports.caml_equal             = caml_equal;
-    exports.caml_notequal          = caml_notequal;
-    exports.caml_greaterequal      = caml_greaterequal;
-    exports.caml_greaterthan       = caml_greaterthan;
-    exports.caml_lessthan          = caml_lessthan;
-    exports.caml_lessequal         = caml_lessequal;
+    exports.caml_update_dummy = caml_update_dummy;
+    exports.caml_compare = caml_compare;
+    exports.caml_equal = caml_equal;
+    exports.caml_equal_null = caml_equal_null;
+    exports.caml_equal_undefined = caml_equal_undefined;
+    exports.caml_equal_nullable = caml_equal_nullable;
+    exports.caml_notequal = caml_notequal;
+    exports.caml_greaterequal = caml_greaterequal;
+    exports.caml_greaterthan = caml_greaterthan;
+    exports.caml_lessthan = caml_lessthan;
+    exports.caml_lessequal = caml_lessequal;
+    exports.caml_min = caml_min;
+    exports.caml_max = caml_max;
     
   })
 /* No side effect */

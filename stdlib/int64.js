@@ -65,17 +65,17 @@ define(["exports", "./caml_int64.js", "./caml_format.js"],
       /* lo */0
     ];
     
-    exports.zero      = zero;
-    exports.one       = one;
+    exports.zero = zero;
+    exports.one = one;
     exports.minus_one = minus_one;
-    exports.succ      = succ;
-    exports.pred      = pred;
-    exports.abs       = abs;
-    exports.max_int   = max_int;
-    exports.min_int   = min_int;
-    exports.lognot    = lognot;
+    exports.succ = succ;
+    exports.pred = pred;
+    exports.abs = abs;
+    exports.max_int = max_int;
+    exports.min_int = min_int;
+    exports.lognot = lognot;
     exports.to_string = to_string;
-    exports.compare   = compare;
+    exports.compare = compare;
     
   })
 /* No side effect */

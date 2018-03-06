@@ -56,11 +56,11 @@ define(["exports", "./obj.js", "./curry.js", "./caml_exceptions.js"],
       }
     }
     
-    exports.Undefined            = Undefined;
-    exports.force_lazy_block     = force_lazy_block;
+    exports.Undefined = Undefined;
+    exports.force_lazy_block = force_lazy_block;
     exports.force_val_lazy_block = force_val_lazy_block;
-    exports.force                = force;
-    exports.force_val            = force_val;
+    exports.force = force;
+    exports.force_val = force_val;
     
   })
 /* No side effect */

@@ -116,30 +116,30 @@ define(["exports", "./marshal.js", "./caml_array.js", "./caml_missing_polyfill.j
     
     var unaligned_tag = 1002;
     
-    exports.double_field                       = double_field;
-    exports.set_double_field                   = set_double_field;
+    exports.double_field = double_field;
+    exports.set_double_field = set_double_field;
     exports.first_non_constant_constructor_tag = first_non_constant_constructor_tag;
-    exports.last_non_constant_constructor_tag  = last_non_constant_constructor_tag;
-    exports.lazy_tag                           = lazy_tag;
-    exports.closure_tag                        = closure_tag;
-    exports.object_tag                         = object_tag;
-    exports.infix_tag                          = infix_tag;
-    exports.forward_tag                        = forward_tag;
-    exports.no_scan_tag                        = no_scan_tag;
-    exports.abstract_tag                       = abstract_tag;
-    exports.string_tag                         = string_tag;
-    exports.double_tag                         = double_tag;
-    exports.double_array_tag                   = double_array_tag;
-    exports.custom_tag                         = custom_tag;
-    exports.final_tag                          = final_tag;
-    exports.int_tag                            = int_tag;
-    exports.out_of_heap_tag                    = out_of_heap_tag;
-    exports.unaligned_tag                      = unaligned_tag;
-    exports.extension_name                     = extension_name;
-    exports.extension_id                       = extension_id;
-    exports.extension_slot                     = extension_slot$1;
-    exports.marshal                            = marshal;
-    exports.unmarshal                          = unmarshal;
+    exports.last_non_constant_constructor_tag = last_non_constant_constructor_tag;
+    exports.lazy_tag = lazy_tag;
+    exports.closure_tag = closure_tag;
+    exports.object_tag = object_tag;
+    exports.infix_tag = infix_tag;
+    exports.forward_tag = forward_tag;
+    exports.no_scan_tag = no_scan_tag;
+    exports.abstract_tag = abstract_tag;
+    exports.string_tag = string_tag;
+    exports.double_tag = double_tag;
+    exports.double_array_tag = double_array_tag;
+    exports.custom_tag = custom_tag;
+    exports.final_tag = final_tag;
+    exports.int_tag = int_tag;
+    exports.out_of_heap_tag = out_of_heap_tag;
+    exports.unaligned_tag = unaligned_tag;
+    exports.extension_name = extension_name;
+    exports.extension_id = extension_id;
+    exports.extension_slot = extension_slot$1;
+    exports.marshal = marshal;
+    exports.unmarshal = unmarshal;
     
   })
 /* No side effect */

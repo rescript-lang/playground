@@ -40,9 +40,9 @@ define(["exports"],
       }
     }
     
-    exports.caml_set_oo_id               = caml_set_oo_id;
-    exports.get_id                       = get_id;
-    exports.create                       = create;
+    exports.caml_set_oo_id = caml_set_oo_id;
+    exports.get_id = get_id;
+    exports.create = create;
     exports.isCamlExceptionOrOpenVariant = isCamlExceptionOrOpenVariant;
     
   })

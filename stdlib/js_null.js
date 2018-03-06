@@ -2,6 +2,18 @@
 define(["exports"],
   function(exports){
     'use strict';
+    function test(x) {
+      return +(x === null);
+    }
+    
+    function getExn(f) {
+      if (f !== null) {
+        return f;
+      } else {
+        throw new Error("Js.Null.getExn");
+      }
+    }
+    
     function bind(x, f) {
       if (x !== null) {
         return f(x);
@@ -18,7 +30,7 @@ define(["exports"],
       }
     }
     
-    function from_opt(x) {
+    function fromOption(x) {
       if (x) {
         return x[0];
       } else {
@@ -26,8 +38,13 @@ define(["exports"],
       }
     }
     
-    exports.bind     = bind;
-    exports.iter     = iter;
+    var from_opt = fromOption;
+    
+    exports.test = test;
+    exports.getExn = getExn;
+    exports.bind = bind;
+    exports.iter = iter;
+    exports.fromOption = fromOption;
     exports.from_opt = from_opt;
     
   })

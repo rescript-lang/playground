@@ -11,7 +11,7 @@ define(["exports", "./js_dict.js", "process"],
       return Js_dict.unsafeDeleteKey(Process.env, s);
     }
     
-    exports.putEnvVar    = putEnvVar;
+    exports.putEnvVar = putEnvVar;
     exports.deleteEnvVar = deleteEnvVar;
     
   })

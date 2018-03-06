@@ -61,14 +61,14 @@ define(["exports", "./caml_string.js", "./caml_missing_polyfill.js", "./caml_bui
     
     var header_size = 20;
     
-    exports.to_channel   = to_channel;
-    exports.to_buffer    = to_buffer;
+    exports.to_channel = to_channel;
+    exports.to_buffer = to_buffer;
     exports.from_channel = from_channel;
-    exports.from_bytes   = from_bytes;
-    exports.from_string  = from_string;
-    exports.header_size  = header_size;
-    exports.data_size    = data_size;
-    exports.total_size   = total_size;
+    exports.from_bytes = from_bytes;
+    exports.from_string = from_string;
+    exports.header_size = header_size;
+    exports.data_size = data_size;
+    exports.total_size = total_size;
     
   })
 /* No side effect */

@@ -488,14 +488,12 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
         len = len + 1 | 0;
       }
       if (alternate) {
-        if (base) {
-          if (base === /* Hex */1) {
-            len = len + 2 | 0;
-          }
-          
-        } else {
+        if (base === /* Oct */0) {
           len = len + 1 | 0;
+        } else if (base === /* Hex */1) {
+          len = len + 2 | 0;
         }
+        
       }
       var buffer = "";
       if (justify === "+" && filter === " ") {
@@ -784,15 +782,15 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
     
     var caml_nativeint_of_string = caml_int_of_string;
     
-    exports.caml_format_float        = caml_format_float;
-    exports.caml_format_int          = caml_format_int;
-    exports.caml_nativeint_format    = caml_nativeint_format;
-    exports.caml_int32_format        = caml_int32_format;
-    exports.caml_float_of_string     = caml_float_of_string;
-    exports.caml_int64_format        = caml_int64_format;
-    exports.caml_int_of_string       = caml_int_of_string;
-    exports.caml_int32_of_string     = caml_int32_of_string;
-    exports.caml_int64_of_string     = caml_int64_of_string;
+    exports.caml_format_float = caml_format_float;
+    exports.caml_format_int = caml_format_int;
+    exports.caml_nativeint_format = caml_nativeint_format;
+    exports.caml_int32_format = caml_int32_format;
+    exports.caml_float_of_string = caml_float_of_string;
+    exports.caml_int64_format = caml_int64_format;
+    exports.caml_int_of_string = caml_int_of_string;
+    exports.caml_int32_of_string = caml_int32_of_string;
+    exports.caml_int64_of_string = caml_int64_of_string;
     exports.caml_nativeint_of_string = caml_nativeint_of_string;
     
   })

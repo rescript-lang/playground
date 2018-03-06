@@ -31,14 +31,14 @@ define(["exports", "./obj.js", "./block.js", "./caml_obj.js", "./camlinternalLaz
     
     var lazy_is_val = is_val;
     
-    exports.Undefined     = Undefined;
-    exports.force_val     = force_val;
-    exports.from_fun      = from_fun;
-    exports.from_val      = from_val;
-    exports.is_val        = is_val;
+    exports.Undefined = Undefined;
+    exports.force_val = force_val;
+    exports.from_fun = from_fun;
+    exports.from_val = from_val;
+    exports.is_val = is_val;
     exports.lazy_from_fun = lazy_from_fun;
     exports.lazy_from_val = lazy_from_val;
-    exports.lazy_is_val   = lazy_is_val;
+    exports.lazy_is_val = lazy_is_val;
     
   })
 /* No side effect */

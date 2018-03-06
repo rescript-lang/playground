@@ -8,8 +8,8 @@ define(["exports", "./camlinternalOO.js"],
     
     var public_method_label = CamlinternalOO.public_method_label;
     
-    exports.copy                = copy;
-    exports.new_method          = new_method;
+    exports.copy = copy;
+    exports.new_method = new_method;
     exports.public_method_label = public_method_label;
     
   })

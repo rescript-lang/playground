@@ -94,7 +94,7 @@ define(["exports", "./caml_obj.js", "./caml_builtin_exceptions.js"],
       }
     }
     
-    exports.init_mod   = init_mod;
+    exports.init_mod = init_mod;
     exports.update_mod = update_mod;
     
   })

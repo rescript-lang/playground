@@ -56,16 +56,16 @@ define(["exports", "./list.js", "./caml_exceptions.js"],
       return List.iter(f, s[/* c */0]);
     }
     
-    exports.Empty    = Empty;
-    exports.create   = create;
-    exports.push     = push;
-    exports.pop      = pop;
-    exports.top      = top;
-    exports.clear    = clear;
-    exports.copy     = copy;
+    exports.Empty = Empty;
+    exports.create = create;
+    exports.push = push;
+    exports.pop = pop;
+    exports.top = top;
+    exports.clear = clear;
+    exports.copy = copy;
     exports.is_empty = is_empty;
-    exports.length   = length;
-    exports.iter     = iter;
+    exports.length = length;
+    exports.iter = iter;
     
   })
 /* No side effect */

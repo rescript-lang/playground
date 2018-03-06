@@ -43,15 +43,15 @@ define(["exports", "./caml_exceptions.js"],
       throw new URIError(str);
     }
     
-    exports.$$Error                  = $$Error;
+    exports.$$Error = $$Error;
     exports.internalToOCamlException = internalToOCamlException;
-    exports.raiseError               = raiseError;
-    exports.raiseEvalError           = raiseEvalError;
-    exports.raiseRangeError          = raiseRangeError;
-    exports.raiseReferenceError      = raiseReferenceError;
-    exports.raiseSyntaxError         = raiseSyntaxError;
-    exports.raiseTypeError           = raiseTypeError;
-    exports.raiseUriError            = raiseUriError;
+    exports.raiseError = raiseError;
+    exports.raiseEvalError = raiseEvalError;
+    exports.raiseRangeError = raiseRangeError;
+    exports.raiseReferenceError = raiseReferenceError;
+    exports.raiseSyntaxError = raiseSyntaxError;
+    exports.raiseTypeError = raiseTypeError;
+    exports.raiseUriError = raiseUriError;
     
   })
 /* No side effect */

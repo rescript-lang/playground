@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js", "./caml_array.js", "./caml_int32.js", "./pervasives.js", "./caml_builtin_exceptions.js"],
-  function(exports, $$Array, Curry, Caml_obj, Caml_weak, Caml_array, Caml_int32, Pervasives, Caml_builtin_exceptions){
+define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js", "./caml_array.js", "./caml_int32.js", "./pervasives.js", "./caml_primitive.js", "./caml_builtin_exceptions.js"],
+  function(exports, $$Array, Curry, Caml_obj, Caml_weak, Caml_array, Caml_int32, Pervasives, Caml_primitive, Caml_builtin_exceptions){
     'use strict';
     function length(x) {
       return x.length - 1 | 0;
@@ -142,7 +142,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                     }), t[/* table */0], 0);
       };
       var next_sz = function (n) {
-        return Pervasives.min((Caml_int32.imul(3, n) / 2 | 0) + 3 | 0, 2147483647);
+        return Caml_primitive.caml_int_min((Caml_int32.imul(3, n) / 2 | 0) + 3 | 0, 2147483647);
       };
       var prev_sz = function (n) {
         return (((n - 3 | 0) << 1) + 2 | 0) / 3 | 0;
@@ -181,12 +181,12 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
             };
           };
           loop(0, (bucket.length - 1 | 0) - 1 | 0);
-          if (prev_len) {
-            Caml_obj.caml_obj_truncate(bucket, prev_len + 1 | 0);
-            Caml_obj.caml_obj_truncate(hbucket, prev_len);
-          } else {
+          if (prev_len === 0) {
             Caml_array.caml_array_set(t[/* table */0], t[/* rover */4], emptybucket);
             Caml_array.caml_array_set(t[/* hashes */1], t[/* rover */4], /* int array */[]);
+          } else {
+            Caml_obj.caml_obj_truncate(bucket, prev_len + 1 | 0);
+            Caml_obj.caml_obj_truncate(hbucket, prev_len);
           }
           if (len > t[/* limit */2] && prev_len <= t[/* limit */2]) {
             t[/* oversize */3] = t[/* oversize */3] - 1 | 0;
@@ -204,7 +204,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
         while(true) {
           var i = _i;
           if (i >= sz) {
-            var newsz = Pervasives.min((Caml_int32.imul(3, sz) / 2 | 0) + 3 | 0, 2147483646);
+            var newsz = Caml_primitive.caml_int_min((Caml_int32.imul(3, sz) / 2 | 0) + 3 | 0, 2147483646);
             if (newsz <= sz) {
               throw [
                     Caml_builtin_exceptions.failure,
@@ -455,15 +455,15 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
     
     var blit = Caml_weak.caml_weak_blit;
     
-    exports.create   = create;
-    exports.length   = length;
-    exports.set      = set;
-    exports.get      = get;
+    exports.create = create;
+    exports.length = length;
+    exports.set = set;
+    exports.get = get;
     exports.get_copy = get_copy;
-    exports.check    = check;
-    exports.fill     = fill;
-    exports.blit     = blit;
-    exports.Make     = Make;
+    exports.check = check;
+    exports.fill = fill;
+    exports.blit = blit;
+    exports.Make = Make;
     
   })
 /* No side effect */

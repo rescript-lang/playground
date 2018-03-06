@@ -18,37 +18,37 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
     }
     
     function add(x, q) {
-      if (q[/* length */0]) {
+      if (q[/* length */0] === 0) {
+        var cell = [];
+        cell[0] = x;
+        cell[1] = cell;
+        q[/* length */0] = 1;
+        q[/* tail */1] = cell;
+        return /* () */0;
+      } else {
         var tail = q[/* tail */1];
         var head = tail[/* next */1];
-        var cell = /* record */[
+        var cell$1 = /* record */[
           /* content */x,
           /* next */head
         ];
         q[/* length */0] = q[/* length */0] + 1 | 0;
-        tail[/* next */1] = cell;
-        q[/* tail */1] = cell;
-        return /* () */0;
-      } else {
-        var cell$1 = [];
-        cell$1[0] = x;
-        cell$1[1] = cell$1;
-        q[/* length */0] = 1;
+        tail[/* next */1] = cell$1;
         q[/* tail */1] = cell$1;
         return /* () */0;
       }
     }
     
     function peek(q) {
-      if (q[/* length */0]) {
-        return q[/* tail */1][/* next */1][/* content */0];
-      } else {
+      if (q[/* length */0] === 0) {
         throw Empty;
+      } else {
+        return q[/* tail */1][/* next */1][/* content */0];
       }
     }
     
     function take(q) {
-      if (!q[/* length */0]) {
+      if (q[/* length */0] === 0) {
         throw Empty;
       }
       q[/* length */0] = q[/* length */0] - 1 | 0;
@@ -63,7 +63,12 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
     }
     
     function copy(q) {
-      if (q[/* length */0]) {
+      if (q[/* length */0] === 0) {
+        return /* record */[
+                /* length */0,
+                /* tail : None */0
+              ];
+      } else {
         var tail = q[/* tail */1];
         var tail$prime = [];
         Caml_obj.caml_update_dummy(tail$prime, /* record */[
@@ -93,11 +98,6 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
         return /* record */[
                 /* length */q[/* length */0],
                 /* tail */tail$prime
-              ];
-      } else {
-        return /* record */[
-                /* length */0,
-                /* tail : None */0
               ];
       }
     }
@@ -131,7 +131,9 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
     }
     
     function fold(f, accu, q) {
-      if (q[/* length */0]) {
+      if (q[/* length */0] === 0) {
+        return accu;
+      } else {
         var tail = q[/* tail */1];
         var _accu = accu;
         var _cell = tail[/* next */1];
@@ -148,8 +150,6 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
             
           }
         };
-      } else {
-        return accu;
       }
     }
     
@@ -179,20 +179,20 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
     
     var top = peek;
     
-    exports.Empty    = Empty;
-    exports.create   = create;
-    exports.add      = add;
-    exports.push     = push;
-    exports.take     = take;
-    exports.pop      = pop;
-    exports.peek     = peek;
-    exports.top      = top;
-    exports.clear    = clear;
-    exports.copy     = copy;
+    exports.Empty = Empty;
+    exports.create = create;
+    exports.add = add;
+    exports.push = push;
+    exports.take = take;
+    exports.pop = pop;
+    exports.peek = peek;
+    exports.top = top;
+    exports.clear = clear;
+    exports.copy = copy;
     exports.is_empty = is_empty;
-    exports.length   = length;
-    exports.iter     = iter;
-    exports.fold     = fold;
+    exports.length = length;
+    exports.iter = iter;
+    exports.fold = fold;
     exports.transfer = transfer;
     
   })

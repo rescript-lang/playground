@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./caml_builtin_exceptions.js"],
-  function(exports, Caml_obj, Caml_int32, Caml_utils, Caml_builtin_exceptions){
+define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", "./caml_builtin_exceptions.js"],
+  function(exports, Caml_int32, Caml_utils, Caml_primitive, Caml_builtin_exceptions){
     'use strict';
     var min_int = /* record */[
       /* hi */-2147483648,
@@ -8,7 +8,7 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
     ];
     
     var max_int = /* record */[
-      /* hi */134217727,
+      /* hi */2147483647,
       /* lo */1
     ];
     
@@ -60,6 +60,30 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
       }
     }
     
+    function equal_null(x, y) {
+      if (y !== null) {
+        return eq(x, y);
+      } else {
+        return /* false */0;
+      }
+    }
+    
+    function equal_undefined(x, y) {
+      if (y !== undefined) {
+        return eq(x, y);
+      } else {
+        return /* false */0;
+      }
+    }
+    
+    function equal_nullable(x, y) {
+      if (y == null) {
+        return /* false */0;
+      } else {
+        return eq(x, y);
+      }
+    }
+    
     function neg(x) {
       if (eq(x, min_int)) {
         return min_int;
@@ -73,7 +97,9 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
     }
     
     function lsl_(x, numBits) {
-      if (numBits) {
+      if (numBits === 0) {
+        return x;
+      } else {
         var lo = x[/* lo */1];
         if (numBits >= 32) {
           return /* record */[
@@ -87,43 +113,41 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
                   /* lo */((lo << numBits) >>> 0)
                 ];
         }
-      } else {
-        return x;
       }
     }
     
     function lsr_(x, numBits) {
-      if (numBits) {
+      if (numBits === 0) {
+        return x;
+      } else {
         var hi = x[/* hi */0];
         var offset = numBits - 32 | 0;
-        if (offset) {
-          if (offset > 0) {
-            var lo = (hi >>> offset);
-            return /* record */[
-                    /* hi */0,
-                    /* lo */(lo >>> 0)
-                  ];
-          } else {
-            var hi$1 = (hi >>> numBits);
-            var lo$1 = (hi << (-offset | 0)) | (x[/* lo */1] >>> numBits);
-            return /* record */[
-                    /* hi */hi$1,
-                    /* lo */(lo$1 >>> 0)
-                  ];
-          }
-        } else {
+        if (offset === 0) {
           return /* record */[
                   /* hi */0,
                   /* lo */(hi >>> 0)
                 ];
+        } else if (offset > 0) {
+          var lo = (hi >>> offset);
+          return /* record */[
+                  /* hi */0,
+                  /* lo */(lo >>> 0)
+                ];
+        } else {
+          var hi$1 = (hi >>> numBits);
+          var lo$1 = (hi << (-offset | 0)) | (x[/* lo */1] >>> numBits);
+          return /* record */[
+                  /* hi */hi$1,
+                  /* lo */(lo$1 >>> 0)
+                ];
         }
-      } else {
-        return x;
       }
     }
     
     function asr_(x, numBits) {
-      if (numBits) {
+      if (numBits === 0) {
+        return x;
+      } else {
         var hi = x[/* hi */0];
         if (numBits < 32) {
           var hi$1 = (hi >> numBits);
@@ -139,8 +163,6 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
                   /* lo */(lo$1 >>> 0)
                 ];
         }
-      } else {
-        return x;
       }
     }
     
@@ -322,6 +344,22 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
       return 1 - gt(x, y);
     }
     
+    function min(x, y) {
+      if (ge(x, y)) {
+        return y;
+      } else {
+        return x;
+      }
+    }
+    
+    function max(x, y) {
+      if (gt(x, y)) {
+        return x;
+      } else {
+        return y;
+      }
+    }
+    
     function to_float(param) {
       return param[/* hi */0] * (0x100000000) + param[/* lo */1];
     }
@@ -428,7 +466,7 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
               var res = zero;
               var rem$1 = self;
               while(ge(rem$1, other)) {
-                var approx$1 = Math.max(1, Math.floor(to_float(rem$1) / to_float(other)));
+                var approx$1 = Caml_primitive.caml_float_max(1, Math.floor(to_float(rem$1) / to_float(other)));
                 var log2 = Math.ceil(Math.log(approx$1) / Math.LN2);
                 var delta = log2 <= 48 ? 1 : Math.pow(2, log2 - 48);
                 var approxRes = of_float(approx$1);
@@ -468,11 +506,11 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
     }
     
     function compare(self, other) {
-      var v = Caml_obj.caml_nativeint_compare(self[/* hi */0], other[/* hi */0]);
-      if (v) {
-        return v;
+      var v = Caml_primitive.caml_nativeint_compare(self[/* hi */0], other[/* hi */0]);
+      if (v === 0) {
+        return Caml_primitive.caml_nativeint_compare(self[/* lo */1], other[/* lo */1]);
       } else {
-        return Caml_obj.caml_nativeint_compare(self[/* lo */1], other[/* lo */1]);
+        return v;
       }
     }
     
@@ -558,42 +596,47 @@ define(["exports", "./caml_obj.js", "./caml_int32.js", "./caml_utils.js", "./cam
             ];
     }
     
-    exports.min_int       = min_int;
-    exports.max_int       = max_int;
-    exports.one           = one;
-    exports.zero          = zero;
-    exports.not           = not;
-    exports.of_int32      = of_int32;
-    exports.to_int32      = to_int32;
-    exports.add           = add;
-    exports.neg           = neg;
-    exports.sub           = sub;
-    exports.lsl_          = lsl_;
-    exports.lsr_          = lsr_;
-    exports.asr_          = asr_;
-    exports.is_zero       = is_zero;
-    exports.mul           = mul;
-    exports.xor           = xor;
-    exports.or_           = or_;
-    exports.and_          = and_;
-    exports.swap          = swap;
-    exports.ge            = ge;
-    exports.eq            = eq;
-    exports.neq           = neq;
-    exports.lt            = lt;
-    exports.gt            = gt;
-    exports.le            = le;
-    exports.to_float      = to_float;
-    exports.of_float      = of_float;
-    exports.div           = div;
-    exports.mod_          = mod_;
-    exports.div_mod       = div_mod;
-    exports.compare       = compare;
-    exports.to_hex        = to_hex;
-    exports.discard_sign  = discard_sign;
+    exports.min_int = min_int;
+    exports.max_int = max_int;
+    exports.one = one;
+    exports.zero = zero;
+    exports.not = not;
+    exports.of_int32 = of_int32;
+    exports.to_int32 = to_int32;
+    exports.add = add;
+    exports.neg = neg;
+    exports.sub = sub;
+    exports.lsl_ = lsl_;
+    exports.lsr_ = lsr_;
+    exports.asr_ = asr_;
+    exports.is_zero = is_zero;
+    exports.mul = mul;
+    exports.xor = xor;
+    exports.or_ = or_;
+    exports.and_ = and_;
+    exports.swap = swap;
+    exports.ge = ge;
+    exports.eq = eq;
+    exports.neq = neq;
+    exports.lt = lt;
+    exports.gt = gt;
+    exports.le = le;
+    exports.equal_null = equal_null;
+    exports.equal_undefined = equal_undefined;
+    exports.equal_nullable = equal_nullable;
+    exports.min = min;
+    exports.max = max;
+    exports.to_float = to_float;
+    exports.of_float = of_float;
+    exports.div = div;
+    exports.mod_ = mod_;
+    exports.div_mod = div_mod;
+    exports.compare = compare;
+    exports.to_hex = to_hex;
+    exports.discard_sign = discard_sign;
     exports.float_of_bits = float_of_bits;
     exports.bits_of_float = bits_of_float;
-    exports.get64         = get64;
+    exports.get64 = get64;
     
   })
 /* two_ptr_32_dbl Not a pure module */

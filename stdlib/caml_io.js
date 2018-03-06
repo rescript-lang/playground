@@ -6,8 +6,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
       return prim + prim$1;
     }
     
-    var stdin = undefined;
-    
     var stdout = /* record */[
       /* buffer */"",
       /* output */(function (_, s) {
@@ -113,19 +111,21 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             ];
     }
     
-    exports.$caret                      = $caret;
-    exports.stdin                       = stdin;
-    exports.stdout                      = stdout;
-    exports.stderr                      = stderr;
-    exports.caml_ml_open_descriptor_in  = caml_ml_open_descriptor_in;
+    var stdin = undefined;
+    
+    exports.$caret = $caret;
+    exports.stdin = stdin;
+    exports.stdout = stdout;
+    exports.stderr = stderr;
+    exports.caml_ml_open_descriptor_in = caml_ml_open_descriptor_in;
     exports.caml_ml_open_descriptor_out = caml_ml_open_descriptor_out;
-    exports.caml_ml_flush               = caml_ml_flush;
-    exports.node_std_output             = node_std_output;
-    exports.caml_ml_output              = caml_ml_output;
-    exports.caml_ml_output_char         = caml_ml_output_char;
-    exports.caml_ml_input               = caml_ml_input;
-    exports.caml_ml_input_char          = caml_ml_input_char;
-    exports.caml_ml_out_channels_list   = caml_ml_out_channels_list;
+    exports.caml_ml_flush = caml_ml_flush;
+    exports.node_std_output = node_std_output;
+    exports.caml_ml_output = caml_ml_output;
+    exports.caml_ml_output_char = caml_ml_output_char;
+    exports.caml_ml_input = caml_ml_input;
+    exports.caml_ml_input_char = caml_ml_input_char;
+    exports.caml_ml_out_channels_list = caml_ml_out_channels_list;
     
   })
-/* stdin Not a pure module */
+/* node_std_output Not a pure module */

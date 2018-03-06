@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
-  function(exports, Curry, Caml_io, Caml_obj, Caml_sys, Caml_format, Caml_string, Caml_exceptions, Caml_missing_polyfill, Caml_builtin_exceptions, CamlinternalFormatBasics){
+define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
+  function(exports, Curry, Caml_io, Caml_sys, Caml_format, Caml_string, Caml_exceptions, Caml_missing_polyfill, Caml_builtin_exceptions, CamlinternalFormatBasics){
     'use strict';
     function failwith(s) {
       throw [
@@ -18,22 +18,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
     
     var Exit = Caml_exceptions.create("Pervasives.Exit");
     
-    function min(x, y) {
-      if (Caml_obj.caml_lessequal(x, y)) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    
-    function max(x, y) {
-      if (Caml_obj.caml_greaterequal(x, y)) {
-        return x;
-      } else {
-        return y;
-      }
-    }
-    
     function abs(x) {
       if (x >= 0) {
         return x;
@@ -47,10 +31,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
     }
     
     var min_int = -2147483648;
-    
-    function $caret(a, b) {
-      return a + b;
-    }
     
     function char_of_int(n) {
       if (n < 0 || n > 255) {
@@ -95,7 +75,7 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
       while(true) {
         var i = _i;
         if (i >= l) {
-          return $caret(s, ".");
+          return s + ".";
         } else {
           var match = Caml_string.get(s, i);
           if (match >= 48) {
@@ -291,13 +271,13 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
           return /* () */0;
         } else {
           var r = Caml_missing_polyfill.not_implemented("caml_ml_input not implemented by bucklescript yet\n");
-          if (r) {
+          if (r === 0) {
+            throw Caml_builtin_exceptions.end_of_file;
+          } else {
             _len = len - r | 0;
             _ofs = ofs + r | 0;
             continue ;
             
-          } else {
-            throw Caml_builtin_exceptions.end_of_file;
           }
         }
       };
@@ -343,35 +323,35 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
           var len = _len;
           var accu = _accu;
           var n = Caml_missing_polyfill.not_implemented("caml_ml_input_scan_line not implemented by bucklescript yet\n");
-          if (n) {
-            if (n > 0) {
-              var res = Caml_string.caml_create_string(n - 1 | 0);
-              Caml_missing_polyfill.not_implemented("caml_ml_input not implemented by bucklescript yet\n");
-              Caml_io.caml_ml_input_char(chan);
-              if (accu) {
-                var len$1 = (len + n | 0) - 1 | 0;
-                return build_result(Caml_string.caml_create_string(len$1), len$1, /* :: */[
-                            res,
-                            accu
-                          ]);
-              } else {
-                return res;
-              }
+          if (n === 0) {
+            if (accu) {
+              return build_result(Caml_string.caml_create_string(len), len, accu);
             } else {
-              var beg = Caml_string.caml_create_string(-n | 0);
-              Caml_missing_polyfill.not_implemented("caml_ml_input not implemented by bucklescript yet\n");
-              _len = len - n | 0;
-              _accu = /* :: */[
-                beg,
-                accu
-              ];
-              continue ;
-              
+              throw Caml_builtin_exceptions.end_of_file;
             }
-          } else if (accu) {
-            return build_result(Caml_string.caml_create_string(len), len, accu);
+          } else if (n > 0) {
+            var res = Caml_string.caml_create_string(n - 1 | 0);
+            Caml_missing_polyfill.not_implemented("caml_ml_input not implemented by bucklescript yet\n");
+            Caml_io.caml_ml_input_char(chan);
+            if (accu) {
+              var len$1 = (len + n | 0) - 1 | 0;
+              return build_result(Caml_string.caml_create_string(len$1), len$1, /* :: */[
+                          res,
+                          accu
+                        ]);
+            } else {
+              return res;
+            }
           } else {
-            throw Caml_builtin_exceptions.end_of_file;
+            var beg = Caml_string.caml_create_string(-n | 0);
+            Caml_missing_polyfill.not_implemented("caml_ml_input not implemented by bucklescript yet\n");
+            _len = len - n | 0;
+            _accu = /* :: */[
+              beg,
+              accu
+            ];
+            continue ;
+            
           }
         };
       };
@@ -467,7 +447,7 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
     function $caret$caret(param, param$1) {
       return /* Format */[
               CamlinternalFormatBasics.concat_fmt(param[0], param$1[0]),
-              $caret(param[1], $caret("%,", param$1[1]))
+              param[1] + ("%," + param$1[1])
             ];
     }
     
@@ -596,92 +576,89 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_obj.js", "./caml_sys.js
       LargeFile_005
     ];
     
-    exports.invalid_arg         = invalid_arg;
-    exports.failwith            = failwith;
-    exports.Exit                = Exit;
-    exports.min                 = min;
-    exports.max                 = max;
-    exports.abs                 = abs;
-    exports.max_int             = max_int;
-    exports.min_int             = min_int;
-    exports.lnot                = lnot;
-    exports.infinity            = infinity;
-    exports.neg_infinity        = neg_infinity;
-    exports.nan                 = nan;
-    exports.max_float           = max_float;
-    exports.min_float           = min_float;
-    exports.epsilon_float       = epsilon_float;
-    exports.$caret              = $caret;
-    exports.char_of_int         = char_of_int;
-    exports.string_of_bool      = string_of_bool;
-    exports.bool_of_string      = bool_of_string;
-    exports.string_of_int       = string_of_int;
-    exports.string_of_float     = string_of_float;
-    exports.$at                 = $at;
-    exports.stdin               = stdin;
-    exports.stdout              = stdout;
-    exports.stderr              = stderr;
-    exports.print_char          = print_char;
-    exports.print_string        = print_string;
-    exports.print_bytes         = print_bytes;
-    exports.print_int           = print_int;
-    exports.print_float         = print_float;
-    exports.print_endline       = print_endline;
-    exports.print_newline       = print_newline;
-    exports.prerr_char          = prerr_char;
-    exports.prerr_string        = prerr_string;
-    exports.prerr_bytes         = prerr_bytes;
-    exports.prerr_int           = prerr_int;
-    exports.prerr_float         = prerr_float;
-    exports.prerr_endline       = prerr_endline;
-    exports.prerr_newline       = prerr_newline;
-    exports.read_line           = read_line;
-    exports.read_int            = read_int;
-    exports.read_float          = read_float;
-    exports.open_out            = open_out;
-    exports.open_out_bin        = open_out_bin;
-    exports.open_out_gen        = open_out_gen;
-    exports.flush               = flush;
-    exports.flush_all           = flush_all;
-    exports.output_char         = output_char;
-    exports.output_string       = output_string;
-    exports.output_bytes        = output_bytes;
-    exports.output              = output;
-    exports.output_substring    = output_substring;
-    exports.output_byte         = output_byte;
-    exports.output_binary_int   = output_binary_int;
-    exports.output_value        = output_value;
-    exports.seek_out            = seek_out;
-    exports.pos_out             = pos_out;
-    exports.out_channel_length  = out_channel_length;
-    exports.close_out           = close_out;
-    exports.close_out_noerr     = close_out_noerr;
+    exports.invalid_arg = invalid_arg;
+    exports.failwith = failwith;
+    exports.Exit = Exit;
+    exports.abs = abs;
+    exports.max_int = max_int;
+    exports.min_int = min_int;
+    exports.lnot = lnot;
+    exports.infinity = infinity;
+    exports.neg_infinity = neg_infinity;
+    exports.nan = nan;
+    exports.max_float = max_float;
+    exports.min_float = min_float;
+    exports.epsilon_float = epsilon_float;
+    exports.char_of_int = char_of_int;
+    exports.string_of_bool = string_of_bool;
+    exports.bool_of_string = bool_of_string;
+    exports.string_of_int = string_of_int;
+    exports.string_of_float = string_of_float;
+    exports.$at = $at;
+    exports.stdin = stdin;
+    exports.stdout = stdout;
+    exports.stderr = stderr;
+    exports.print_char = print_char;
+    exports.print_string = print_string;
+    exports.print_bytes = print_bytes;
+    exports.print_int = print_int;
+    exports.print_float = print_float;
+    exports.print_endline = print_endline;
+    exports.print_newline = print_newline;
+    exports.prerr_char = prerr_char;
+    exports.prerr_string = prerr_string;
+    exports.prerr_bytes = prerr_bytes;
+    exports.prerr_int = prerr_int;
+    exports.prerr_float = prerr_float;
+    exports.prerr_endline = prerr_endline;
+    exports.prerr_newline = prerr_newline;
+    exports.read_line = read_line;
+    exports.read_int = read_int;
+    exports.read_float = read_float;
+    exports.open_out = open_out;
+    exports.open_out_bin = open_out_bin;
+    exports.open_out_gen = open_out_gen;
+    exports.flush = flush;
+    exports.flush_all = flush_all;
+    exports.output_char = output_char;
+    exports.output_string = output_string;
+    exports.output_bytes = output_bytes;
+    exports.output = output;
+    exports.output_substring = output_substring;
+    exports.output_byte = output_byte;
+    exports.output_binary_int = output_binary_int;
+    exports.output_value = output_value;
+    exports.seek_out = seek_out;
+    exports.pos_out = pos_out;
+    exports.out_channel_length = out_channel_length;
+    exports.close_out = close_out;
+    exports.close_out_noerr = close_out_noerr;
     exports.set_binary_mode_out = set_binary_mode_out;
-    exports.open_in             = open_in;
-    exports.open_in_bin         = open_in_bin;
-    exports.open_in_gen         = open_in_gen;
-    exports.input_char          = input_char;
-    exports.input_line          = input_line;
-    exports.input               = input;
-    exports.really_input        = really_input;
+    exports.open_in = open_in;
+    exports.open_in_bin = open_in_bin;
+    exports.open_in_gen = open_in_gen;
+    exports.input_char = input_char;
+    exports.input_line = input_line;
+    exports.input = input;
+    exports.really_input = really_input;
     exports.really_input_string = really_input_string;
-    exports.input_byte          = input_byte;
-    exports.input_binary_int    = input_binary_int;
-    exports.input_value         = input_value;
-    exports.seek_in             = seek_in;
-    exports.pos_in              = pos_in;
-    exports.in_channel_length   = in_channel_length;
-    exports.close_in            = close_in;
-    exports.close_in_noerr      = close_in_noerr;
-    exports.set_binary_mode_in  = set_binary_mode_in;
-    exports.LargeFile           = LargeFile;
-    exports.string_of_format    = string_of_format;
-    exports.$caret$caret        = $caret$caret;
-    exports.exit                = exit;
-    exports.at_exit             = at_exit;
-    exports.valid_float_lexem   = valid_float_lexem;
+    exports.input_byte = input_byte;
+    exports.input_binary_int = input_binary_int;
+    exports.input_value = input_value;
+    exports.seek_in = seek_in;
+    exports.pos_in = pos_in;
+    exports.in_channel_length = in_channel_length;
+    exports.close_in = close_in;
+    exports.close_in_noerr = close_in_noerr;
+    exports.set_binary_mode_in = set_binary_mode_in;
+    exports.LargeFile = LargeFile;
+    exports.string_of_format = string_of_format;
+    exports.$caret$caret = $caret$caret;
+    exports.exit = exit;
+    exports.at_exit = at_exit;
+    exports.valid_float_lexem = valid_float_lexem;
     exports.unsafe_really_input = unsafe_really_input;
-    exports.do_at_exit          = do_at_exit;
+    exports.do_at_exit = do_at_exit;
     
   })
 /* No side effect */

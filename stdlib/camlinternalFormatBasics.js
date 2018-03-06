@@ -223,8 +223,8 @@ define(["exports", "./block.js"],
     }
     
     exports.concat_fmtty = concat_fmtty;
-    exports.erase_rel    = erase_rel;
-    exports.concat_fmt   = concat_fmt;
+    exports.erase_rel = erase_rel;
+    exports.concat_fmt = concat_fmt;
     
   })
 /* No side effect */

@@ -331,8 +331,8 @@ function $$caml_new_lex_engine(tbl, start_state, lexbuf) {
       return $$caml_new_lex_engine(prim, prim$1, prim$2);
     }
     
-    exports.fail                = fail;
-    exports.caml_lex_engine     = caml_lex_engine;
+    exports.fail = fail;
+    exports.caml_lex_engine = caml_lex_engine;
     exports.caml_new_lex_engine = caml_new_lex_engine;
     
   })

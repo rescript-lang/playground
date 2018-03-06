@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./list.js"],
-  function(exports, List){
+define(["exports"],
+  function(exports){
     'use strict';
     function filterInPlace(p, a) {
       var i = 0;
@@ -43,29 +43,6 @@ define(["exports", "./list.js"],
         f(i, a[i]);
       }
       return /* () */0;
-    }
-    
-    function ofList(xs) {
-      if (xs) {
-        var a = new Array(List.length(xs));
-        var _i = 0;
-        var _param = xs;
-        while(true) {
-          var param = _param;
-          var i = _i;
-          if (param) {
-            a[i] = param[0];
-            _param = param[1];
-            _i = i + 1 | 0;
-            continue ;
-            
-          } else {
-            return a;
-          }
-        };
-      } else {
-        return /* array */[];
-      }
     }
     
     function toList(a) {
@@ -132,14 +109,14 @@ define(["exports", "./list.js"],
     
     function mapi(f, a) {
       var l = a.length;
-      if (l) {
+      if (l === 0) {
+        return /* array */[];
+      } else {
         var r = new Array(l);
         for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
           r[i] = f(i, a[i]);
         }
         return r;
-      } else {
-        return /* array */[];
       }
     }
     
@@ -148,20 +125,19 @@ define(["exports", "./list.js"],
     }
     
     exports.filterInPlace = filterInPlace;
-    exports.empty         = empty;
-    exports.pushBack      = pushBack;
-    exports.copy          = copy;
-    exports.memByRef      = memByRef;
-    exports.iter          = iter;
-    exports.iteri         = iteri;
-    exports.ofList        = ofList;
-    exports.toList        = toList;
-    exports.map           = map;
-    exports.mapi          = mapi;
-    exports.foldLeft      = foldLeft;
-    exports.foldRight     = foldRight;
-    exports.init          = init;
-    exports.append        = append;
+    exports.empty = empty;
+    exports.pushBack = pushBack;
+    exports.copy = copy;
+    exports.memByRef = memByRef;
+    exports.iter = iter;
+    exports.iteri = iteri;
+    exports.toList = toList;
+    exports.map = map;
+    exports.mapi = mapi;
+    exports.foldLeft = foldLeft;
+    exports.foldRight = foldRight;
+    exports.init = init;
+    exports.append = append;
     
   })
 /* No side effect */

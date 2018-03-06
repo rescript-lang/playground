@@ -369,7 +369,7 @@ function $$caml_set_parser_trace(v) {
       return +$$caml_set_parser_trace(prim);
     }
     
-    exports.caml_parse_engine     = caml_parse_engine;
+    exports.caml_parse_engine = caml_parse_engine;
     exports.caml_set_parser_trace = caml_set_parser_trace;
     
   })

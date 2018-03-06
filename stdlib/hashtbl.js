@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./caml_obj.js", "./caml_hash.js", "./caml_array.js", "./pervasives.js", "./camlinternalLazy.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js"],
-  function(exports, $$Array, Block, Curry, Random, Caml_obj, Caml_hash, Caml_array, Pervasives, CamlinternalLazy, Caml_missing_polyfill, Caml_builtin_exceptions){
+define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./caml_obj.js", "./caml_hash.js", "./caml_array.js", "./caml_primitive.js", "./camlinternalLazy.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js"],
+  function(exports, $$Array, Block, Curry, Random, Caml_obj, Caml_hash, Caml_array, Caml_primitive, CamlinternalLazy, Caml_missing_polyfill, Caml_builtin_exceptions){
     'use strict';
     function hash(x) {
       return Caml_hash.caml_hash(10, 100, 0, x);
@@ -153,15 +153,15 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
         if (param) {
           var next = param[2];
           var k = param[0];
-          if (Caml_obj.caml_compare(k, key)) {
+          if (Caml_obj.caml_equal(k, key)) {
+            h[/* size */0] = h[/* size */0] - 1 | 0;
+            return next;
+          } else {
             return /* Cons */[
                     k,
                     param[1],
                     remove_bucket(next)
                   ];
-          } else {
-            h[/* size */0] = h[/* size */0] - 1 | 0;
-            return next;
           }
         } else {
           return /* Empty */0;
@@ -174,43 +174,43 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
     function find(h, key) {
       var match = Caml_array.caml_array_get(h[/* data */1], key_index(h, key));
       if (match) {
-        if (Caml_obj.caml_compare(key, match[0])) {
+        if (Caml_obj.caml_equal(key, match[0])) {
+          return match[1];
+        } else {
           var rest1 = match[2];
           if (rest1) {
-            if (Caml_obj.caml_compare(key, rest1[0])) {
+            if (Caml_obj.caml_equal(key, rest1[0])) {
+              return rest1[1];
+            } else {
               var rest2 = rest1[2];
               if (rest2) {
-                if (Caml_obj.caml_compare(key, rest2[0])) {
+                if (Caml_obj.caml_equal(key, rest2[0])) {
+                  return rest2[1];
+                } else {
                   var key$1 = key;
                   var _param = rest2[2];
                   while(true) {
                     var param = _param;
                     if (param) {
-                      if (Caml_obj.caml_compare(key$1, param[0])) {
+                      if (Caml_obj.caml_equal(key$1, param[0])) {
+                        return param[1];
+                      } else {
                         _param = param[2];
                         continue ;
                         
-                      } else {
-                        return param[1];
                       }
                     } else {
                       throw Caml_builtin_exceptions.not_found;
                     }
                   };
-                } else {
-                  return rest2[1];
                 }
               } else {
                 throw Caml_builtin_exceptions.not_found;
               }
-            } else {
-              return rest1[1];
             }
           } else {
             throw Caml_builtin_exceptions.not_found;
           }
-        } else {
-          return match[1];
         }
       } else {
         throw Caml_builtin_exceptions.not_found;
@@ -223,15 +223,15 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
           var param = _param;
           if (param) {
             var rest = param[2];
-            if (Caml_obj.caml_compare(param[0], key)) {
-              _param = rest;
-              continue ;
-              
-            } else {
+            if (Caml_obj.caml_equal(param[0], key)) {
               return /* :: */[
                       param[1],
                       find_in_bucket(rest)
                     ];
+            } else {
+              _param = rest;
+              continue ;
+              
             }
           } else {
             return /* [] */0;
@@ -246,17 +246,17 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
         if (param) {
           var next = param[2];
           var k = param[0];
-          if (Caml_obj.caml_compare(k, key)) {
-            return /* Cons */[
-                    k,
-                    param[1],
-                    replace_bucket(next)
-                  ];
-          } else {
+          if (Caml_obj.caml_equal(k, key)) {
             return /* Cons */[
                     key,
                     info,
                     next
+                  ];
+          } else {
+            return /* Cons */[
+                    k,
+                    param[1],
+                    replace_bucket(next)
                   ];
           }
         } else {
@@ -292,12 +292,12 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
       while(true) {
         var param = _param;
         if (param) {
-          if (Caml_obj.caml_compare(param[0], key)) {
+          if (Caml_obj.caml_equal(param[0], key)) {
+            return /* true */1;
+          } else {
             _param = param[2];
             continue ;
             
-          } else {
-            return /* true */1;
           }
         } else {
           return /* false */0;
@@ -366,7 +366,7 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
     
     function stats(h) {
       var mbl = $$Array.fold_left((function (m, b) {
-              return Pervasives.max(m, bucket_length(0, b));
+              return Caml_primitive.caml_int_max(m, bucket_length(0, b));
             }), 0, h[/* data */1]);
       var histo = Caml_array.caml_make_vect(mbl + 1 | 0, 0);
       $$Array.iter((function (b) {
@@ -759,26 +759,26 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
     
     var seeded_hash_param = Caml_hash.caml_hash;
     
-    exports.create            = create;
-    exports.clear             = clear;
-    exports.reset             = reset;
-    exports.copy              = copy;
-    exports.add               = add;
-    exports.find              = find;
-    exports.find_all          = find_all;
-    exports.mem               = mem;
-    exports.remove            = remove;
-    exports.replace           = replace;
-    exports.iter              = iter;
-    exports.fold              = fold;
-    exports.length            = length;
-    exports.randomize         = randomize;
-    exports.stats             = stats;
-    exports.Make              = Make;
-    exports.MakeSeeded        = MakeSeeded;
-    exports.hash              = hash;
-    exports.seeded_hash       = seeded_hash;
-    exports.hash_param        = hash_param;
+    exports.create = create;
+    exports.clear = clear;
+    exports.reset = reset;
+    exports.copy = copy;
+    exports.add = add;
+    exports.find = find;
+    exports.find_all = find_all;
+    exports.mem = mem;
+    exports.remove = remove;
+    exports.replace = replace;
+    exports.iter = iter;
+    exports.fold = fold;
+    exports.length = length;
+    exports.randomize = randomize;
+    exports.stats = stats;
+    exports.Make = Make;
+    exports.MakeSeeded = MakeSeeded;
+    exports.hash = hash;
+    exports.seeded_hash = seeded_hash;
+    exports.hash_param = hash_param;
     exports.seeded_hash_param = seeded_hash_param;
     
   })

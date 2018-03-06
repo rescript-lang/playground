@@ -91,6 +91,14 @@ define(["exports", "./caml_builtin_exceptions.js"],
       return b;
     }
     
+    function caml_make_float_vect(len) {
+      var b = new Array(len);
+      for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
+        b[i] = 0;
+      }
+      return b;
+    }
+    
     function caml_array_blit(a1, i1, a2, i2, len) {
       if (i2 <= i1) {
         for(var j = 0 ,j_finish = len - 1 | 0; j <= j_finish; ++j){
@@ -105,12 +113,13 @@ define(["exports", "./caml_builtin_exceptions.js"],
       }
     }
     
-    exports.caml_array_sub    = caml_array_sub;
+    exports.caml_array_sub = caml_array_sub;
     exports.caml_array_concat = caml_array_concat;
-    exports.caml_make_vect    = caml_make_vect;
-    exports.caml_array_blit   = caml_array_blit;
-    exports.caml_array_get    = caml_array_get;
-    exports.caml_array_set    = caml_array_set;
+    exports.caml_make_vect = caml_make_vect;
+    exports.caml_make_float_vect = caml_make_float_vect;
+    exports.caml_array_blit = caml_array_blit;
+    exports.caml_array_get = caml_array_get;
+    exports.caml_array_set = caml_array_set;
     
   })
 /* No side effect */

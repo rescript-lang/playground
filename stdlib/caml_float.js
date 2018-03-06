@@ -60,23 +60,21 @@ define(["exports"],
     }
     
     function caml_ldexp_float(x, exp) {
-      var match_000 = [x];
-      var match_001 = [exp];
-      var exp$prime = match_001;
-      var x$prime = match_000;
-      if (exp$prime[0] > 1023) {
-        exp$prime[0] -= 1023;
-        x$prime[0] = x$prime[0] * Math.pow(2, 1023);
-        if (exp$prime[0] > 1023) {
-          exp$prime[0] -= 1023;
-          x$prime[0] = x$prime[0] * Math.pow(2, 1023);
+      var x$prime = x;
+      var exp$prime = exp;
+      if (exp$prime > 1023) {
+        exp$prime -= 1023;
+        x$prime = x$prime * Math.pow(2, 1023);
+        if (exp$prime > 1023) {
+          exp$prime -= 1023;
+          x$prime = x$prime * Math.pow(2, 1023);
         }
         
-      } else if (exp$prime[0] < -1023) {
-        exp$prime[0] += 1023;
-        x$prime[0] = x$prime[0] * Math.pow(2, -1023);
+      } else if (exp$prime < -1023) {
+        exp$prime += 1023;
+        x$prime = x$prime * Math.pow(2, -1023);
       }
-      return x$prime[0] * Math.pow(2, exp$prime[0]);
+      return x$prime * Math.pow(2, exp$prime);
     }
     
     function caml_frexp_float(x) {
@@ -104,20 +102,6 @@ define(["exports"],
       }
     }
     
-    function caml_float_compare(x, y) {
-      if (x === y) {
-        return 0;
-      } else if (x < y) {
-        return -1;
-      } else if (x > y || x === x) {
-        return 1;
-      } else if (y === y) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    
     function caml_copysign_float(x, y) {
       var x$1 = Math.abs(x);
       var y$1 = y === 0 ? 1 / y : y;
@@ -141,10 +125,8 @@ define(["exports"],
     }
     
     function caml_hypot_float(x, y) {
-      var match_000 = Math.abs(x);
-      var match_001 = Math.abs(y);
-      var y0 = match_001;
-      var x0 = match_000;
+      var x0 = Math.abs(x);
+      var y0 = Math.abs(y);
       var a = Math.max(x0, y0);
       var b = Math.min(x0, y0) / (
         a !== 0 ? a : 1
@@ -158,15 +140,14 @@ define(["exports"],
     
     exports.caml_int32_float_of_bits = caml_int32_float_of_bits;
     exports.caml_int32_bits_of_float = caml_int32_bits_of_float;
-    exports.caml_classify_float      = caml_classify_float;
-    exports.caml_modf_float          = caml_modf_float;
-    exports.caml_ldexp_float         = caml_ldexp_float;
-    exports.caml_frexp_float         = caml_frexp_float;
-    exports.caml_float_compare       = caml_float_compare;
-    exports.caml_copysign_float      = caml_copysign_float;
-    exports.caml_expm1_float         = caml_expm1_float;
-    exports.caml_hypot_float         = caml_hypot_float;
-    exports.caml_log10_float         = caml_log10_float;
+    exports.caml_classify_float = caml_classify_float;
+    exports.caml_modf_float = caml_modf_float;
+    exports.caml_ldexp_float = caml_ldexp_float;
+    exports.caml_frexp_float = caml_frexp_float;
+    exports.caml_copysign_float = caml_copysign_float;
+    exports.caml_expm1_float = caml_expm1_float;
+    exports.caml_hypot_float = caml_hypot_float;
+    exports.caml_log10_float = caml_log10_float;
     
   })
 /* No side effect */

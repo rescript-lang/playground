@@ -53,10 +53,10 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     function name_of_input(ib) {
       var match = ib[/* input_name */8];
       if (typeof match === "number") {
-        if (match) {
-          return "unnamed function";
-        } else {
+        if (match === 0) {
           return "unnamed character string";
+        } else {
+          return "unnamed function";
         }
       } else if (match.tag) {
         return "unnamed pervasives input channel";
@@ -151,12 +151,12 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           throw Caml_builtin_exceptions.end_of_file;
         } else {
           lim[0] = Pervasives.input(ic, buf, 0, len);
-          if (lim[0]) {
-            i[0] = 1;
-            return Caml_bytes.get(buf, 0);
-          } else {
+          if (lim[0] === 0) {
             eof[0] = /* true */1;
             return Curry._1(scan_close_ic, ic);
+          } else {
+            i[0] = 1;
+            return Caml_bytes.get(buf, 0);
           }
         }
       };
@@ -440,7 +440,9 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     function scan_decimal_digits(_width, ib) {
       while(true) {
         var width = _width;
-        if (width) {
+        if (width === 0) {
+          return width;
+        } else {
           var c = peek_char(ib);
           if (ib[/* eof */0]) {
             return width;
@@ -461,14 +463,14 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           } else {
             return width;
           }
-        } else {
-          return width;
         }
       };
     }
     
     function scan_decimal_digits_plus(width, ib) {
-      if (width) {
+      if (width === 0) {
+        return bad_token_length("decimal digits");
+      } else {
         var c = checked_peek_char(ib);
         if (c > 57 || c < 48) {
           var s = Curry._1(Printf.sprintf(/* Format */[
@@ -489,19 +491,21 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           var width$1 = store_char(width, ib, c);
           return scan_decimal_digits(width$1, ib);
         }
-      } else {
-        return bad_token_length("decimal digits");
       }
     }
     
     function scan_digits_plus(basis, digitp, width, ib) {
-      if (width) {
+      if (width === 0) {
+        return bad_token_length("digits");
+      } else {
         var c = checked_peek_char(ib);
         if (Curry._1(digitp, c)) {
           var _width = store_char(width, ib, c);
           while(true) {
             var width$1 = _width;
-            if (width$1) {
+            if (width$1 === 0) {
+              return width$1;
+            } else {
               var c$1 = peek_char(ib);
               if (ib[/* eof */0]) {
                 return width$1;
@@ -516,8 +520,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 continue ;
                 
               }
-            } else {
-              return width$1;
             }
           };
         } else {
@@ -542,8 +544,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 s
               ];
         }
-      } else {
-        return bad_token_length("digits");
       }
     }
     
@@ -626,7 +626,9 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 return scan_decimal_digits_plus(width$3, ib$2);
               } else {
                 var width$4 = store_char(width$3, ib$2, c);
-                if (width$4) {
+                if (width$4 === 0) {
+                  return width$4;
+                } else {
                   var c$1 = peek_char(ib$2);
                   if (ib$2[/* eof */0]) {
                     return width$4;
@@ -649,8 +651,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   } else {
                     return scan_hexadecimal_int(store_char(width$4, ib$2, c$1), ib$2);
                   }
-                } else {
-                  return width$4;
                 }
               }
           case 23 : 
@@ -705,28 +705,28 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     }
     
     function scan_frac_part(width, ib) {
-      if (width) {
+      if (width === 0) {
+        return width;
+      } else {
         var c = peek_char(ib);
         if (ib[/* eof */0] || c > 57 || c < 48) {
           return width;
         } else {
           return scan_decimal_digits(store_char(width, ib, c), ib);
         }
-      } else {
-        return width;
       }
     }
     
     function scan_exp_part(width, ib) {
-      if (width) {
+      if (width === 0) {
+        return width;
+      } else {
         var c = peek_char(ib);
         if (ib[/* eof */0] || c !== 69 && c !== 101) {
           return width;
         } else {
           return scan_optionally_signed_decimal_int(store_char(width, ib, c), ib);
         }
-      } else {
-        return width;
       }
     }
     
@@ -737,7 +737,12 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     
     function scan_float(width, precision, ib) {
       var width$1 = scan_int_part(width, ib);
-      if (width$1) {
+      if (width$1 === 0) {
+        return /* tuple */[
+                width$1,
+                precision
+              ];
+      } else {
         var c = peek_char(ib);
         if (ib[/* eof */0]) {
           return /* tuple */[
@@ -751,24 +756,24 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 ];
         } else {
           var width$2 = store_char(width$1, ib, c);
-          var precision$1 = Pervasives.min(width$2, precision);
+          var precision$1 = width$2 < precision ? width$2 : precision;
           var width$3 = width$2 - (precision$1 - scan_frac_part(precision$1, ib) | 0) | 0;
           return /* tuple */[
                   scan_exp_part(width$3, ib),
                   precision$1
                 ];
         }
-      } else {
-        return /* tuple */[
-                width$1,
-                precision
-              ];
       }
     }
     
     function scan_caml_float(width, precision, ib) {
       var width$1 = scan_optionally_signed_decimal_int(width, ib);
-      if (width$1) {
+      if (width$1 === 0) {
+        throw [
+              Scan_failure,
+              "no dot or exponent part found in float token"
+            ];
+      } else {
         var c = peek_char(ib);
         if (ib[/* eof */0]) {
           throw [
@@ -785,7 +790,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   ];
             } else {
               var width$2 = store_char(width$1, ib, c);
-              var precision$1 = Pervasives.min(width$2, precision);
+              var precision$1 = width$2 < precision ? width$2 : precision;
               var width$3 = width$2 - (precision$1 - scan_frac_part(precision$1, ib) | 0) | 0;
               return scan_exp_part(width$3, ib);
             }
@@ -798,11 +803,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 ];
           }
         }
-      } else {
-        throw [
-              Scan_failure,
-              "no dot or exponent part found in float token"
-            ];
       }
     }
     
@@ -810,7 +810,9 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       var _width = width;
       while(true) {
         var width$1 = _width;
-        if (width$1) {
+        if (width$1 === 0) {
+          return width$1;
+        } else {
           var c = peek_char(ib);
           if (ib[/* eof */0]) {
             return width$1;
@@ -841,8 +843,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               return width$1;
             }
           }
-        } else {
-          return width$1;
         }
       };
     }
@@ -927,7 +927,9 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     }
     
     function check_next_char(message, width, ib) {
-      if (width) {
+      if (width === 0) {
+        return bad_token_length(message);
+      } else {
         var c = peek_char(ib);
         if (ib[/* eof */0]) {
           var message$1 = message;
@@ -951,8 +953,6 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         } else {
           return c;
         }
-      } else {
-        return bad_token_length(message);
       }
     }
     
@@ -1944,19 +1944,19 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       stdin
     ];
     
-    exports.Scanning           = Scanning;
-    exports.Scan_failure       = Scan_failure;
-    exports.bscanf             = bscanf;
-    exports.fscanf             = fscanf;
-    exports.sscanf             = sscanf;
-    exports.scanf              = scanf;
-    exports.kscanf             = kscanf;
-    exports.ksscanf            = ksscanf;
-    exports.kfscanf            = kfscanf;
-    exports.bscanf_format      = bscanf_format;
-    exports.sscanf_format      = sscanf_format;
+    exports.Scanning = Scanning;
+    exports.Scan_failure = Scan_failure;
+    exports.bscanf = bscanf;
+    exports.fscanf = fscanf;
+    exports.sscanf = sscanf;
+    exports.scanf = scanf;
+    exports.kscanf = kscanf;
+    exports.ksscanf = ksscanf;
+    exports.kfscanf = kfscanf;
+    exports.bscanf_format = bscanf_format;
+    exports.sscanf_format = sscanf_format;
     exports.format_from_string = format_from_string;
-    exports.unescaped          = unescaped;
+    exports.unescaped = unescaped;
     
   })
 /* stdin Not a pure module */

@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./string.js", "./caml_io.js", "./caml_obj.js", "./caml_bytes.js", "./caml_float.js", "./caml_int32.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
-  function(exports, Char, Block, Bytes, Curry, Buffer, Js_exn, $$String, Caml_io, Caml_obj, Caml_bytes, Caml_float, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_exceptions, Caml_builtin_exceptions, CamlinternalFormatBasics){
+define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./string.js", "./caml_io.js", "./caml_obj.js", "./caml_bytes.js", "./caml_float.js", "./caml_int32.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_primitive.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
+  function(exports, Char, Block, Bytes, Curry, Buffer, Js_exn, $$String, Caml_io, Caml_obj, Caml_bytes, Caml_float, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_primitive, Caml_exceptions, Caml_builtin_exceptions, CamlinternalFormatBasics){
     'use strict';
     function create_char_set() {
       return Bytes.make(32, /* "\000" */0);
@@ -142,7 +142,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       var len = buf[/* bytes */1].length;
       var min_len = buf[/* ind */0] + overhead | 0;
       if (min_len > len) {
-        var new_len = Pervasives.max((len << 1), min_len);
+        var new_len = Caml_primitive.caml_int_max((len << 1), min_len);
         var new_str = Caml_string.caml_create_string(new_len);
         Bytes.blit(buf[/* bytes */1], 0, new_str, 0, len);
         buf[/* bytes */1] = new_str;
@@ -339,10 +339,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       };
       var print_start = function (set) {
         var is_alone = function (c) {
-          var match_000 = Char.chr(c - 1 | 0);
-          var match_001 = Char.chr(c + 1 | 0);
+          var before = Char.chr(c - 1 | 0);
+          var after = Char.chr(c + 1 | 0);
           if (is_in_char_set(set, c)) {
-            return 1 - (is_in_char_set(set, match_000) && is_in_char_set(set, match_001));
+            return 1 - (is_in_char_set(set, before) && is_in_char_set(set, after));
           } else {
             return /* false */0;
           }
@@ -808,7 +808,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     function string_of_fmt(fmt) {
       var buf = /* record */[
         /* ind */0,
-        /* bytes */new Array(16)
+        /* bytes */Caml_string.caml_create_string(16)
       ];
       bprint_fmt(buf, fmt);
       return buffer_contents(buf);
@@ -1845,12 +1845,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 return /* Alpha_ty */Block.__(10, [fmtty_of_fmt(fmtty[0])]);
             case 16 : 
                 return /* Theta_ty */Block.__(11, [fmtty_of_fmt(fmtty[0])]);
-            case 11 : 
-            case 12 : 
-            case 17 : 
-                _fmtty = fmtty[1];
-                continue ;
-                case 18 : 
+            case 18 : 
                 return CamlinternalFormatBasics.concat_fmtty(fmtty_of_formatting_gen(fmtty[0]), fmtty_of_fmt(fmtty[1]));
             case 19 : 
                 return /* Reader_ty */Block.__(13, [fmtty_of_fmt(fmtty[0])]);
@@ -1858,6 +1853,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 return /* String_ty */Block.__(1, [fmtty_of_fmt(fmtty[2])]);
             case 21 : 
                 return /* Int_ty */Block.__(2, [fmtty_of_fmt(fmtty[1])]);
+            case 0 : 
+            case 1 : 
+            case 22 : 
+                return /* Char_ty */Block.__(0, [fmtty_of_fmt(fmtty[0])]);
             case 23 : 
                 var ign = fmtty[0];
                 var fmt = fmtty[1];
@@ -1875,7 +1874,9 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 24 : 
                 return fmtty_of_custom(fmtty[0], fmtty_of_fmt(fmtty[2]));
             default:
-              return /* Char_ty */Block.__(0, [fmtty_of_fmt(fmtty[0])]);
+              _fmtty = fmtty[1];
+              continue ;
+              
           }
         }
         if (exit === 1) {
@@ -2635,13 +2636,11 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     
     function fix_padding(padty, width, str) {
       var len = str.length;
-      var match_000 = Pervasives.abs(width);
-      var match_001 = width < 0 ? /* Left */0 : padty;
-      var width$1 = match_000;
+      var width$1 = Pervasives.abs(width);
+      var padty$1 = width < 0 ? /* Left */0 : padty;
       if (width$1 <= len) {
         return str;
       } else {
-        var padty$1 = match_001;
         var res = Bytes.make(width$1, padty$1 === /* Zeros */2 ? /* "0" */48 : /* " " */32);
         switch (padty$1) {
           case 0 : 
@@ -2923,7 +2922,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         var symb = char_of_fconv(fconv);
         var buf = /* record */[
           /* ind */0,
-          /* bytes */new Array(16)
+          /* bytes */Caml_string.caml_create_string(16)
         ];
         buffer_add_char(buf, /* "%" */37);
         bprint_fconv_flag(buf, fconv);
@@ -3013,7 +3012,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     function string_of_fmtty(fmtty) {
       var buf = /* record */[
         /* ind */0,
-        /* bytes */new Array(16)
+        /* bytes */Caml_string.caml_create_string(16)
       ];
       bprint_fmtty(buf, fmtty);
       return buffer_contents(buf);
@@ -6456,29 +6455,29 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       }
     }
     
-    exports.is_in_char_set                 = is_in_char_set;
-    exports.rev_char_set                   = rev_char_set;
-    exports.create_char_set                = create_char_set;
-    exports.add_in_char_set                = add_in_char_set;
-    exports.freeze_char_set                = freeze_char_set;
+    exports.is_in_char_set = is_in_char_set;
+    exports.rev_char_set = rev_char_set;
+    exports.create_char_set = create_char_set;
+    exports.add_in_char_set = add_in_char_set;
+    exports.freeze_char_set = freeze_char_set;
     exports.param_format_of_ignored_format = param_format_of_ignored_format;
-    exports.make_printf                    = make_printf;
-    exports.output_acc                     = output_acc;
-    exports.bufput_acc                     = bufput_acc;
-    exports.strput_acc                     = strput_acc;
-    exports.type_format                    = type_format;
-    exports.fmt_ebb_of_string              = fmt_ebb_of_string;
-    exports.format_of_string_fmtty         = format_of_string_fmtty;
-    exports.format_of_string_format        = format_of_string_format;
-    exports.char_of_iconv                  = char_of_iconv;
-    exports.string_of_formatting_lit       = string_of_formatting_lit;
-    exports.string_of_formatting_gen       = string_of_formatting_gen;
-    exports.string_of_fmtty                = string_of_fmtty;
-    exports.string_of_fmt                  = string_of_fmt;
-    exports.open_box_of_string             = open_box_of_string;
-    exports.symm                           = symm;
-    exports.trans                          = trans;
-    exports.recast                         = recast;
+    exports.make_printf = make_printf;
+    exports.output_acc = output_acc;
+    exports.bufput_acc = bufput_acc;
+    exports.strput_acc = strput_acc;
+    exports.type_format = type_format;
+    exports.fmt_ebb_of_string = fmt_ebb_of_string;
+    exports.format_of_string_fmtty = format_of_string_fmtty;
+    exports.format_of_string_format = format_of_string_format;
+    exports.char_of_iconv = char_of_iconv;
+    exports.string_of_formatting_lit = string_of_formatting_lit;
+    exports.string_of_formatting_gen = string_of_formatting_gen;
+    exports.string_of_fmtty = string_of_fmtty;
+    exports.string_of_fmt = string_of_fmt;
+    exports.open_box_of_string = open_box_of_string;
+    exports.symm = symm;
+    exports.trans = trans;
+    exports.recast = recast;
     
   })
 /* No side effect */

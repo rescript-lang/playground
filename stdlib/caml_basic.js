@@ -39,11 +39,11 @@ define(["exports"],
     
     var none = /* None */0;
     
-    exports.none          = none;
-    exports.some          = some;
-    exports.is_none       = is_none;
-    exports.to_def        = to_def;
-    exports.cons          = cons;
+    exports.none = none;
+    exports.some = some;
+    exports.is_none = is_none;
+    exports.to_def = to_def;
+    exports.cons = cons;
     exports.is_list_empty = is_list_empty;
     
   })

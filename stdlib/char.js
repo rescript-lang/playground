@@ -56,14 +56,14 @@ define(["exports", "./caml_string.js", "./caml_builtin_exceptions.js"],
       }
       switch (exit) {
         case 1 : 
-            var s = new Array(4);
+            var s = Caml_string.caml_create_string(4);
             s[0] = /* "\\" */92;
             s[1] = 48 + (c / 100 | 0) | 0;
             s[2] = 48 + (c / 10 | 0) % 10 | 0;
             s[3] = 48 + c % 10 | 0;
             return Caml_string.bytes_to_string(s);
         case 2 : 
-            var s$1 = new Array(1);
+            var s$1 = Caml_string.caml_create_string(1);
             s$1[0] = c;
             return Caml_string.bytes_to_string(s$1);
         
@@ -90,11 +90,11 @@ define(["exports", "./caml_string.js", "./caml_builtin_exceptions.js"],
       return c1 - c2 | 0;
     }
     
-    exports.chr       = chr;
-    exports.escaped   = escaped;
+    exports.chr = chr;
+    exports.escaped = escaped;
     exports.lowercase = lowercase;
     exports.uppercase = uppercase;
-    exports.compare   = compare;
+    exports.compare = compare;
     
   })
 /* No side effect */

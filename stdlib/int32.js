@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./caml_obj.js", "./caml_format.js"],
-  function(exports, Caml_obj, Caml_format){
+define(["exports", "./caml_format.js", "./caml_primitive.js"],
+  function(exports, Caml_format, Caml_primitive){
     'use strict';
     function succ(n) {
       return n + 1 | 0;
@@ -26,7 +26,7 @@ define(["exports", "./caml_obj.js", "./caml_format.js"],
       return Caml_format.caml_int32_format("%d", n);
     }
     
-    var compare = Caml_obj.caml_int32_compare;
+    var compare = Caml_primitive.caml_int32_compare;
     
     var zero = 0;
     
@@ -38,17 +38,17 @@ define(["exports", "./caml_obj.js", "./caml_format.js"],
     
     var min_int = -2147483648;
     
-    exports.zero      = zero;
-    exports.one       = one;
+    exports.zero = zero;
+    exports.one = one;
     exports.minus_one = minus_one;
-    exports.succ      = succ;
-    exports.pred      = pred;
-    exports.abs       = abs;
-    exports.max_int   = max_int;
-    exports.min_int   = min_int;
-    exports.lognot    = lognot;
+    exports.succ = succ;
+    exports.pred = pred;
+    exports.abs = abs;
+    exports.max_int = max_int;
+    exports.min_int = min_int;
+    exports.lognot = lognot;
     exports.to_string = to_string;
-    exports.compare   = compare;
+    exports.compare = compare;
     
   })
 /* No side effect */

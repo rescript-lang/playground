@@ -94,8 +94,8 @@ define(["exports", "./block.js"],
     }
     
     exports.reify_type = reify_type;
-    exports.test       = test;
-    exports.classify   = classify;
+    exports.test = test;
+    exports.classify = classify;
     
   })
 /* No side effect */

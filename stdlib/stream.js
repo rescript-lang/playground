@@ -86,15 +86,15 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                 if (b[/* ind */3] >= b[/* len */2]) {
                   fill_buff(b);
                 }
-                if (b[/* len */2]) {
+                if (b[/* len */2] === 0) {
+                  return /* Sempty */0;
+                } else {
                   var r = b[/* buff */1][b[/* ind */3]];
                   b[/* ind */3] = b[/* ind */3] + 1 | 0;
                   return /* Scons */Block.__(0, [
                             r,
                             d
                           ]);
-                } else {
-                  return /* Sempty */0;
                 }
                 break;
             
@@ -153,11 +153,11 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                 if (b[/* ind */3] >= b[/* len */2]) {
                   fill_buff(b);
                 }
-                if (b[/* len */2]) {
-                  return /* Some */[b[/* buff */1][b[/* ind */3]]];
-                } else {
+                if (b[/* len */2] === 0) {
                   s[1] = /* Sempty */0;
                   return /* None */0;
+                } else {
+                  return /* Some */[b[/* buff */1][b[/* ind */3]]];
                 }
             
           }
@@ -339,7 +339,7 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
               /* count */0,
               /* data : Sbuffio */Block.__(4, [/* record */[
                     /* ic */ic,
-                    /* buff */new Array(4096),
+                    /* buff */Caml_string.caml_create_string(4096),
                     /* len */0,
                     /* ind */0
                   ]])
@@ -467,29 +467,29 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
       /* data : Sempty */0
     ];
     
-    exports.Failure    = Failure;
-    exports.$$Error    = $$Error;
-    exports.from       = from;
-    exports.of_list    = of_list;
-    exports.of_string  = of_string;
-    exports.of_bytes   = of_bytes;
+    exports.Failure = Failure;
+    exports.$$Error = $$Error;
+    exports.from = from;
+    exports.of_list = of_list;
+    exports.of_string = of_string;
+    exports.of_bytes = of_bytes;
     exports.of_channel = of_channel;
-    exports.iter       = iter;
-    exports.next       = next;
-    exports.empty      = empty;
-    exports.peek       = peek;
-    exports.junk       = junk;
-    exports.count      = count;
-    exports.npeek      = npeek;
-    exports.iapp       = iapp;
-    exports.icons      = icons;
-    exports.ising      = ising;
-    exports.lapp       = lapp;
-    exports.lcons      = lcons;
-    exports.lsing      = lsing;
-    exports.sempty     = sempty;
-    exports.slazy      = slazy;
-    exports.dump       = dump;
+    exports.iter = iter;
+    exports.next = next;
+    exports.empty = empty;
+    exports.peek = peek;
+    exports.junk = junk;
+    exports.count = count;
+    exports.npeek = npeek;
+    exports.iapp = iapp;
+    exports.icons = icons;
+    exports.ising = ising;
+    exports.lapp = lapp;
+    exports.lcons = lcons;
+    exports.lsing = lsing;
+    exports.sempty = sempty;
+    exports.slazy = slazy;
+    exports.dump = dump;
     
   })
 /* No side effect */

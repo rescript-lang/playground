@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./caml_int32.js", "./pervasives.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
-  function(exports, Char, List, Curry, Caml_obj, Caml_int32, Pervasives, Caml_string, Caml_builtin_exceptions){
+define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./caml_int32.js", "./caml_string.js", "./caml_primitive.js", "./caml_builtin_exceptions.js"],
+  function(exports, Char, List, Curry, Caml_obj, Caml_int32, Caml_string, Caml_primitive, Caml_builtin_exceptions){
     'use strict';
     function make(n, c) {
       var s = Caml_string.caml_create_string(n);
@@ -62,7 +62,7 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
         ];
       var dstoff = match[1];
       var srcoff = match[0];
-      var cpylen = Pervasives.min(s.length - srcoff | 0, len - dstoff | 0);
+      var cpylen = Caml_primitive.caml_int_min(s.length - srcoff | 0, len - dstoff | 0);
       if (cpylen > 0) {
         Caml_string.caml_blit_bytes(s, srcoff, r, dstoff, cpylen);
       }
@@ -287,27 +287,27 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
     
     function map(f, s) {
       var l = s.length;
-      if (l) {
+      if (l === 0) {
+        return s;
+      } else {
         var r = Caml_string.caml_create_string(l);
         for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
           r[i] = Curry._1(f, s[i]);
         }
         return r;
-      } else {
-        return s;
       }
     }
     
     function mapi(f, s) {
       var l = s.length;
-      if (l) {
+      if (l === 0) {
+        return s;
+      } else {
         var r = Caml_string.caml_create_string(l);
         for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
           r[i] = Curry._2(f, i, s[i]);
         }
         return r;
-      } else {
-        return s;
       }
     }
     
@@ -320,12 +320,12 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
     }
     
     function apply1(f, s) {
-      if (s.length) {
+      if (s.length === 0) {
+        return s;
+      } else {
         var r = copy(s);
         r[0] = Curry._1(f, s[0]);
         return r;
-      } else {
-        return s;
       }
     }
     
@@ -451,38 +451,38 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
     
     var unsafe_of_string = Caml_string.bytes_of_string;
     
-    exports.make             = make;
-    exports.init             = init;
-    exports.empty            = empty;
-    exports.copy             = copy;
-    exports.of_string        = of_string;
-    exports.to_string        = to_string;
-    exports.sub              = sub;
-    exports.sub_string       = sub_string;
-    exports.extend           = extend;
-    exports.fill             = fill;
-    exports.blit             = blit;
-    exports.blit_string      = blit_string;
-    exports.concat           = concat;
-    exports.cat              = cat;
-    exports.iter             = iter;
-    exports.iteri            = iteri;
-    exports.map              = map;
-    exports.mapi             = mapi;
-    exports.trim             = trim;
-    exports.escaped          = escaped;
-    exports.index            = index;
-    exports.rindex           = rindex;
-    exports.index_from       = index_from;
-    exports.rindex_from      = rindex_from;
-    exports.contains         = contains;
-    exports.contains_from    = contains_from;
-    exports.rcontains_from   = rcontains_from;
-    exports.uppercase        = uppercase;
-    exports.lowercase        = lowercase;
-    exports.capitalize       = capitalize;
-    exports.uncapitalize     = uncapitalize;
-    exports.compare          = compare;
+    exports.make = make;
+    exports.init = init;
+    exports.empty = empty;
+    exports.copy = copy;
+    exports.of_string = of_string;
+    exports.to_string = to_string;
+    exports.sub = sub;
+    exports.sub_string = sub_string;
+    exports.extend = extend;
+    exports.fill = fill;
+    exports.blit = blit;
+    exports.blit_string = blit_string;
+    exports.concat = concat;
+    exports.cat = cat;
+    exports.iter = iter;
+    exports.iteri = iteri;
+    exports.map = map;
+    exports.mapi = mapi;
+    exports.trim = trim;
+    exports.escaped = escaped;
+    exports.index = index;
+    exports.rindex = rindex;
+    exports.index_from = index_from;
+    exports.rindex_from = rindex_from;
+    exports.contains = contains;
+    exports.contains_from = contains_from;
+    exports.rcontains_from = rcontains_from;
+    exports.uppercase = uppercase;
+    exports.lowercase = lowercase;
+    exports.capitalize = capitalize;
+    exports.uncapitalize = uncapitalize;
+    exports.compare = compare;
     exports.unsafe_to_string = unsafe_to_string;
     exports.unsafe_of_string = unsafe_of_string;
     

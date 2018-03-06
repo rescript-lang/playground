@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./list.js", "./bytes.js", "./caml_int32.js", "./caml_string.js"],
-  function(exports, List, Bytes, Caml_int32, Caml_string){
+define(["exports", "./list.js", "./bytes.js", "./caml_int32.js", "./caml_string.js", "./caml_primitive.js"],
+  function(exports, List, Bytes, Caml_int32, Caml_string, Caml_primitive){
     'use strict';
     function make(n, c) {
       return Caml_string.bytes_to_string(Bytes.make(n, c));
@@ -165,37 +165,37 @@ define(["exports", "./list.js", "./bytes.js", "./caml_int32.js", "./caml_string.
       return Caml_string.bytes_to_string(Bytes.uncapitalize(Caml_string.bytes_of_string(s)));
     }
     
-    var compare = Caml_string.caml_string_compare;
+    var compare = Caml_primitive.caml_string_compare;
     
     var fill = Bytes.fill;
     
     var blit = Bytes.blit_string;
     
-    exports.make           = make;
-    exports.init           = init;
-    exports.copy           = copy;
-    exports.sub            = sub;
-    exports.fill           = fill;
-    exports.blit           = blit;
-    exports.concat         = concat;
-    exports.iter           = iter;
-    exports.iteri          = iteri;
-    exports.map            = map;
-    exports.mapi           = mapi;
-    exports.trim           = trim;
-    exports.escaped        = escaped;
-    exports.index          = index;
-    exports.rindex         = rindex;
-    exports.index_from     = index_from;
-    exports.rindex_from    = rindex_from;
-    exports.contains       = contains;
-    exports.contains_from  = contains_from;
+    exports.make = make;
+    exports.init = init;
+    exports.copy = copy;
+    exports.sub = sub;
+    exports.fill = fill;
+    exports.blit = blit;
+    exports.concat = concat;
+    exports.iter = iter;
+    exports.iteri = iteri;
+    exports.map = map;
+    exports.mapi = mapi;
+    exports.trim = trim;
+    exports.escaped = escaped;
+    exports.index = index;
+    exports.rindex = rindex;
+    exports.index_from = index_from;
+    exports.rindex_from = rindex_from;
+    exports.contains = contains;
+    exports.contains_from = contains_from;
     exports.rcontains_from = rcontains_from;
-    exports.uppercase      = uppercase;
-    exports.lowercase      = lowercase;
-    exports.capitalize     = capitalize;
-    exports.uncapitalize   = uncapitalize;
-    exports.compare        = compare;
+    exports.uppercase = uppercase;
+    exports.lowercase = lowercase;
+    exports.capitalize = capitalize;
+    exports.uncapitalize = uncapitalize;
+    exports.compare = compare;
     
   })
 /* No side effect */

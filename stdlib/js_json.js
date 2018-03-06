@@ -93,14 +93,14 @@ define(["exports", "./block.js"],
       }
     }
     
-    exports.classify      = classify;
-    exports.test          = test;
-    exports.decodeString  = decodeString;
-    exports.decodeNumber  = decodeNumber;
-    exports.decodeObject  = decodeObject;
-    exports.decodeArray   = decodeArray;
+    exports.classify = classify;
+    exports.test = test;
+    exports.decodeString = decodeString;
+    exports.decodeNumber = decodeNumber;
+    exports.decodeObject = decodeObject;
+    exports.decodeArray = decodeArray;
     exports.decodeBoolean = decodeBoolean;
-    exports.decodeNull    = decodeNull;
+    exports.decodeNull = decodeNull;
     
   })
 /* No side effect */

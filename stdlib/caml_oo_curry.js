@@ -39,7 +39,7 @@ define(["exports", "./curry.js", "./caml_oo.js"],
       return Curry._8(Caml_oo.caml_get_public_method(a0, label, cacheid), a0, a1, a2, a3, a4, a5, a6, a7);
     }
     
-    exports.js  = js;
+    exports.js = js;
     exports.js1 = js1;
     exports.js2 = js2;
     exports.js3 = js3;

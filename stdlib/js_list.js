@@ -56,13 +56,13 @@ define(["exports", "./js_vector.js"],
           var n$1 = _n;
           var l$1 = _l;
           if (l$1) {
-            if (n$1) {
+            if (n$1 === 0) {
+              return /* Some */[l$1[0]];
+            } else {
               _n = n$1 - 1 | 0;
               _l = l$1[1];
               continue ;
               
-            } else {
-              return /* Some */[l$1[0]];
             }
           } else {
             return /* None */0;
@@ -345,27 +345,27 @@ define(["exports", "./js_vector.js"],
       };
     }
     
-    exports.length    = length;
-    exports.cons      = cons;
-    exports.isEmpty   = isEmpty;
-    exports.hd        = hd;
-    exports.tl        = tl;
-    exports.nth       = nth;
+    exports.length = length;
+    exports.cons = cons;
+    exports.isEmpty = isEmpty;
+    exports.hd = hd;
+    exports.tl = tl;
+    exports.nth = nth;
     exports.revAppend = revAppend;
-    exports.rev       = rev;
-    exports.mapRev    = mapRev;
-    exports.map       = map;
-    exports.iter      = iter;
-    exports.iteri     = iteri;
-    exports.foldLeft  = foldLeft;
+    exports.rev = rev;
+    exports.mapRev = mapRev;
+    exports.map = map;
+    exports.iter = iter;
+    exports.iteri = iteri;
+    exports.foldLeft = foldLeft;
     exports.foldRight = foldRight;
-    exports.flatten   = flatten;
-    exports.filter    = filter;
+    exports.flatten = flatten;
+    exports.filter = filter;
     exports.filterMap = filterMap;
-    exports.countBy   = countBy;
-    exports.init      = init;
-    exports.toVector  = toVector;
-    exports.equal     = equal;
+    exports.countBy = countBy;
+    exports.init = init;
+    exports.toVector = toVector;
+    exports.equal = equal;
     
   })
 /* No side effect */

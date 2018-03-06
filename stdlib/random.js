@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./digest.js", "./caml_sys.js", "./nativeint.js", "./caml_array.js", "./caml_int64.js", "./pervasives.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
-  function(exports, $$Array, Curry, Int32, Int64, Digest, Caml_sys, Nativeint, Caml_array, Caml_int64, Pervasives, Caml_string, Caml_builtin_exceptions){
+define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./digest.js", "./caml_sys.js", "./nativeint.js", "./caml_array.js", "./caml_int64.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
+  function(exports, $$Array, Curry, Int32, Int64, Digest, Caml_sys, Nativeint, Caml_array, Caml_int64, Caml_string, Caml_builtin_exceptions){
     'use strict';
     function assign(st1, st2) {
       $$Array.blit(st2[/* st */0], 0, st1[/* st */0], 0, 55);
@@ -15,13 +15,15 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
       var extract = function (d) {
         return ((Caml_string.get(d, 0) + (Caml_string.get(d, 1) << 8) | 0) + (Caml_string.get(d, 2) << 16) | 0) + (Caml_string.get(d, 3) << 24) | 0;
       };
-      var seed$1 = seed.length ? seed : /* int array */[0];
+      var seed$1 = seed.length === 0 ? /* int array */[0] : seed;
       var l = seed$1.length;
       for(var i = 0; i <= 54; ++i){
         Caml_array.caml_array_set(s[/* st */0], i, i);
       }
       var accu = "x";
-      for(var i$1 = 0 ,i_finish = 54 + Pervasives.max(55, l) | 0; i$1 <= i_finish; ++i$1){
+      for(var i$1 = 0 ,i_finish = 54 + (
+          55 > l ? 55 : l
+        ) | 0; i$1 <= i_finish; ++i$1){
         var j = i$1 % 55;
         var k = i$1 % l;
         accu = combine(accu, Caml_array.caml_array_get(seed$1, k));
@@ -282,17 +284,17 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
       bool
     ];
     
-    exports.init      = init;
+    exports.init = init;
     exports.full_init = full_init$1;
     exports.self_init = self_init;
-    exports.bits      = bits$1;
-    exports.$$int     = $$int$1;
-    exports.int32     = int32$1;
+    exports.bits = bits$1;
+    exports.$$int = $$int$1;
+    exports.int32 = int32$1;
     exports.nativeint = nativeint$1;
-    exports.int64     = int64$1;
-    exports.$$float   = $$float$1;
-    exports.bool      = bool$1;
-    exports.State     = State;
+    exports.int64 = int64$1;
+    exports.$$float = $$float$1;
+    exports.bool = bool$1;
+    exports.State = State;
     exports.get_state = get_state;
     exports.set_state = set_state;
     

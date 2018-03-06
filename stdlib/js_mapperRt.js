@@ -2,7 +2,7 @@
 define(["exports"],
   function(exports){
     'use strict';
-    function binSearch(upper, id, array) {
+    function binarySearch(upper, id, array) {
       var _lower = 0;
       var _upper = upper;
       var xs = array;
@@ -120,12 +120,12 @@ define(["exports"],
       };
     }
     
-    exports.binSearch       = binSearch;
-    exports.revSearch       = revSearch;
+    exports.binarySearch = binarySearch;
+    exports.revSearch = revSearch;
     exports.revSearchAssert = revSearchAssert;
-    exports.toInt           = toInt;
-    exports.fromInt         = fromInt;
-    exports.fromIntAssert   = fromIntAssert;
+    exports.toInt = toInt;
+    exports.fromInt = fromInt;
+    exports.fromIntAssert = fromIntAssert;
     
   })
 /* No side effect */

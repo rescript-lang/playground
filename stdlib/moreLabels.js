@@ -31,8 +31,8 @@ define(["exports", "./map.js", "./set.js", "./hashtbl.js"],
     var $$Set$1 = /* Set */[$$Set.Make];
     
     exports.Hashtbl = Hashtbl$1;
-    exports.$$Map   = $$Map$1;
-    exports.$$Set   = $$Set$1;
+    exports.$$Map = $$Map$1;
+    exports.$$Set = $$Set$1;
     
   })
 /* No side effect */

@@ -173,7 +173,7 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
       return /* () */0;
     }
     
-    exports.list  = list;
+    exports.list = list;
     exports.array = array;
     exports.merge = merge;
     

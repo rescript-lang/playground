@@ -28,13 +28,13 @@ define(["exports"],
     
     var Child_process = 0;
     
-    exports.Path          = Path;
-    exports.Fs            = Fs;
-    exports.Process       = Process;
-    exports.Module        = Module;
-    exports.Buffer        = Buffer;
+    exports.Path = Path;
+    exports.Fs = Fs;
+    exports.Process = Process;
+    exports.Module = Module;
+    exports.Buffer = Buffer;
     exports.Child_process = Child_process;
-    exports.test          = test;
+    exports.test = test;
     
   })
 /* No side effect */

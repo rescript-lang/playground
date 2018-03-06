@@ -18,7 +18,7 @@ define(["exports"],
       }
     }
     
-    function from_opt(x) {
+    function fromOption(x) {
       if (x) {
         return x[0];
       } else {
@@ -26,8 +26,11 @@ define(["exports"],
       }
     }
     
-    exports.bind     = bind;
-    exports.iter     = iter;
+    var from_opt = fromOption;
+    
+    exports.bind = bind;
+    exports.iter = iter;
+    exports.fromOption = fromOption;
     exports.from_opt = from_opt;
     
   })

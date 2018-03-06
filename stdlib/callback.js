@@ -11,7 +11,7 @@ define(["exports", "./obj.js"],
       return /* () */0;
     }
     
-    exports.register           = register;
+    exports.register = register;
     exports.register_exception = register_exception;
     
   })

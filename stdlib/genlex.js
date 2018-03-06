@@ -2,7 +2,7 @@
 define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stream.js", "./hashtbl.js", "./caml_int32.js", "./caml_format.js", "./caml_string.js", "./caml_builtin_exceptions.js"],
   function(exports, Char, List, Block, Bytes, Stream, Hashtbl, Caml_int32, Caml_format, Caml_string, Caml_builtin_exceptions){
     'use strict';
-    var initial_buffer = new Array(32);
+    var initial_buffer = Caml_string.caml_create_string(32);
     
     var buffer = [initial_buffer];
     

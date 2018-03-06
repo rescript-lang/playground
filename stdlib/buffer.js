@@ -185,13 +185,13 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
           continue ;
           
         } else if (Caml_string.get(s, i) === closing) {
-          if (k$1) {
+          if (k$1 === 0) {
+            return i;
+          } else {
             _i = i + 1 | 0;
             _k = k$1 - 1 | 0;
             continue ;
             
-          } else {
-            return i;
           }
         } else {
           _i = i + 1 | 0;
@@ -327,24 +327,24 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
       };
     }
     
-    exports.create         = create;
-    exports.contents       = contents;
-    exports.to_bytes       = to_bytes;
-    exports.sub            = sub;
-    exports.blit           = blit;
-    exports.nth            = nth;
-    exports.length         = length;
-    exports.clear          = clear;
-    exports.reset          = reset;
-    exports.add_char       = add_char;
-    exports.add_string     = add_string;
-    exports.add_bytes      = add_bytes;
-    exports.add_substring  = add_substring;
-    exports.add_subbytes   = add_subbytes;
+    exports.create = create;
+    exports.contents = contents;
+    exports.to_bytes = to_bytes;
+    exports.sub = sub;
+    exports.blit = blit;
+    exports.nth = nth;
+    exports.length = length;
+    exports.clear = clear;
+    exports.reset = reset;
+    exports.add_char = add_char;
+    exports.add_string = add_string;
+    exports.add_bytes = add_bytes;
+    exports.add_substring = add_substring;
+    exports.add_subbytes = add_subbytes;
     exports.add_substitute = add_substitute;
-    exports.add_buffer     = add_buffer;
-    exports.add_channel    = add_channel;
-    exports.output_buffer  = output_buffer;
+    exports.add_buffer = add_buffer;
+    exports.add_channel = add_channel;
+    exports.output_buffer = output_buffer;
     
   })
 /* No side effect */

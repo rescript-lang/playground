@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./printf.js", "./string.js", "./caml_obj.js", "./caml_array.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js"],
-  function(exports, Sys, List, Block, Bytes, Curry, Buffer, Js_exn, Printf, $$String, Caml_obj, Caml_array, Pervasives, Caml_format, Caml_string, Caml_exceptions, Caml_builtin_exceptions){
+define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./printf.js", "./string.js", "./caml_obj.js", "./caml_array.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_primitive.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js"],
+  function(exports, Sys, List, Block, Bytes, Curry, Buffer, Js_exn, Printf, $$String, Caml_obj, Caml_array, Pervasives, Caml_format, Caml_string, Caml_primitive, Caml_exceptions, Caml_builtin_exceptions){
     'use strict';
     var Bad = Caml_exceptions.create("Arg.Bad");
     
@@ -669,9 +669,9 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
     function max_arg_len(cur, param) {
       var kwd = param[0];
       if (param[1].tag === 11) {
-        return Pervasives.max(cur, kwd.length);
+        return Caml_primitive.caml_int_max(cur, kwd.length);
       } else {
-        return Pervasives.max(cur, kwd.length + second_word(param[2]) | 0);
+        return Caml_primitive.caml_int_max(cur, kwd.length + second_word(param[2]) | 0);
       }
     }
     
@@ -679,7 +679,7 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
       var limit = $staropt$star ? $staropt$star[0] : Pervasives.max_int;
       var completed = add_help(speclist);
       var len = List.fold_left(max_arg_len, 0, completed);
-      var len$1 = Pervasives.min(len, limit);
+      var len$1 = len < limit ? len : limit;
       return List.map((function (param) {
                     var len$2 = len$1;
                     var ksd = param;
@@ -690,7 +690,7 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                     } else if (spec.tag === 11) {
                       var msg = ksd[2];
                       var cutcol = second_word(msg);
-                      var n = Pervasives.max(0, len$2 - cutcol | 0) + 3 | 0;
+                      var n = Caml_primitive.caml_int_max(0, len$2 - cutcol | 0) + 3 | 0;
                       var spaces = Caml_string.bytes_to_string(Bytes.make(n, /* " " */32));
                       return /* tuple */[
                               kwd,
@@ -722,16 +722,16 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                   }), completed);
     }
     
-    exports.parse              = parse;
-    exports.parse_dynamic      = parse_dynamic;
-    exports.parse_argv         = parse_argv;
+    exports.parse = parse;
+    exports.parse_dynamic = parse_dynamic;
+    exports.parse_argv = parse_argv;
     exports.parse_argv_dynamic = parse_argv_dynamic;
-    exports.Help               = Help;
-    exports.Bad                = Bad;
-    exports.usage              = usage;
-    exports.usage_string       = usage_string;
-    exports.align              = align;
-    exports.current            = current;
+    exports.Help = Help;
+    exports.Bad = Bad;
+    exports.usage = usage;
+    exports.usage_string = usage_string;
+    exports.align = align;
+    exports.current = current;
     
   })
 /* No side effect */

@@ -1,16 +1,16 @@
 'use strict';
-define(["exports", "./pervasives.js"],
-  function(exports, Pervasives){
+define(["exports", "./js_int.js"],
+  function(exports, Js_int){
     'use strict';
     function unsafe_ceil(prim) {
       return Math.ceil(prim);
     }
     
     function ceil_int(f) {
-      if (f > Pervasives.max_int) {
-        return Pervasives.max_int;
-      } else if (f < Pervasives.min_int) {
-        return Pervasives.min_int;
+      if (f > Js_int.max) {
+        return Js_int.max;
+      } else if (f < Js_int.min) {
+        return Js_int.min;
       } else {
         return Math.ceil(f);
       }
@@ -21,10 +21,10 @@ define(["exports", "./pervasives.js"],
     }
     
     function floor_int(f) {
-      if (f > Pervasives.max_int) {
-        return Pervasives.max_int;
-      } else if (f < Pervasives.min_int) {
-        return Pervasives.min_int;
+      if (f > Js_int.max) {
+        return Js_int.max;
+      } else if (f < Js_int.min) {
+        return Js_int.min;
       } else {
         return Math.floor(f);
       }
@@ -38,13 +38,13 @@ define(["exports", "./pervasives.js"],
     
     var floor = floor_int;
     
-    exports.unsafe_ceil  = unsafe_ceil;
-    exports.ceil_int     = ceil_int;
-    exports.ceil         = ceil;
+    exports.unsafe_ceil = unsafe_ceil;
+    exports.ceil_int = ceil_int;
+    exports.ceil = ceil;
     exports.unsafe_floor = unsafe_floor;
-    exports.floor_int    = floor_int;
-    exports.floor        = floor;
-    exports.random_int   = random_int;
+    exports.floor_int = floor_int;
+    exports.floor = floor;
+    exports.random_int = random_int;
     
   })
 /* No side effect */
