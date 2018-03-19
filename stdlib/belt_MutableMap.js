@@ -65,7 +65,6 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
             _i = i + 1 | 0;
             _t = u;
             continue ;
-            
           } else {
             return Belt_internalAVLtree.empty;
           }
@@ -314,11 +313,11 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
       return Belt_internalAVLtree.has(m.data, x, m.cmp);
     }
     
-    function ofArray(data, id) {
+    function fromArray(data, id) {
       var cmp = id[/* cmp */0];
       return {
               cmp: cmp,
-              data: Belt_internalAVLtree.ofArray(data, cmp)
+              data: Belt_internalAVLtree.fromArray(data, cmp)
             };
     }
     
@@ -357,6 +356,8 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
     
     var $$String = 0;
     
+    var ofArray = fromArray;
+    
     exports.Int = Int;
     exports.$$String = $$String;
     exports.make = make;
@@ -378,7 +379,7 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
     exports.size = size;
     exports.toList = toList;
     exports.toArray = toArray;
-    exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
     exports.minKey = minKey;
@@ -394,6 +395,7 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
     exports.getWithDefault = getWithDefault;
     exports.getExn = getExn;
     exports.checkInvariantInternal = checkInvariantInternal;
+    exports.ofArray = ofArray;
     exports.remove = remove;
     exports.removeMany = removeMany;
     exports.set = set;

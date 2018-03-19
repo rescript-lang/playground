@@ -16,7 +16,6 @@ define(["exports", "./caml_array.js"],
           _args = Caml_array.caml_array_sub(args, arity$1, -d | 0);
           _f = f.apply(null, Caml_array.caml_array_sub(args, 0, arity$1));
           continue ;
-          
         } else {
           return (function(f,args){
           return function (x) {

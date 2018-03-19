@@ -14,7 +14,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
           } else if (Curry._2(is_dir_sep, name, n)) {
             _n = n - 1 | 0;
             continue ;
-            
           } else {
             var _n$1 = n;
             var p = n + 1 | 0;
@@ -27,7 +26,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
               } else {
                 _n$1 = n$1 - 1 | 0;
                 continue ;
-                
               }
             };
           }
@@ -47,7 +45,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
           } else if (Curry._2(is_dir_sep, name, n)) {
             _n = n - 1 | 0;
             continue ;
-            
           } else {
             var _n$1 = n;
             while(true) {
@@ -63,7 +60,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
                   } else if (Curry._2(is_dir_sep, name, n$2)) {
                     _n$2 = n$2 - 1 | 0;
                     continue ;
-                    
                   } else {
                     return $$String.sub(name, 0, n$2 + 1 | 0);
                   }
@@ -71,7 +67,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
               } else {
                 _n$1 = n$1 - 1 | 0;
                 continue ;
-                
               }
             };
           }
@@ -119,7 +114,11 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
       temp_dir_name = Caml_sys.caml_sys_getenv("TMPDIR");
     }
     catch (exn){
-      temp_dir_name = "/tmp";
+      if (exn === Caml_builtin_exceptions.not_found) {
+        temp_dir_name = "/tmp";
+      } else {
+        throw exn;
+      }
     }
     
     function quote(param) {
@@ -153,7 +152,11 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
       temp_dir_name$1 = Caml_sys.caml_sys_getenv("TEMP");
     }
     catch (exn$1){
-      temp_dir_name$1 = ".";
+      if (exn$1 === Caml_builtin_exceptions.not_found) {
+        temp_dir_name$1 = ".";
+      } else {
+        throw exn$1;
+      }
     }
     
     var temp_dir_name$2 = temp_dir_name;
@@ -197,7 +200,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
         } else {
           _i = i - 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -260,7 +262,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
             } else {
               _counter = counter + 1 | 0;
               continue ;
-              
             }
           } else {
             throw e;
@@ -302,7 +303,6 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
             } else {
               _counter = counter + 1 | 0;
               continue ;
-              
             }
           } else {
             throw e;

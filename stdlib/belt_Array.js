@@ -422,7 +422,6 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
         } else if (b$1(arr$1[i])) {
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return /* false */0;
         }
@@ -448,7 +447,6 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
         } else {
           _i = i + 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -465,7 +463,6 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
         } else if (b(arr1[i], arr2[i])) {
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return /* false */0;
         }
@@ -495,7 +492,6 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
         } else {
           _i = i + 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -540,7 +536,6 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
             if (c === 0) {
               _i = i + 1 | 0;
               continue ;
-              
             } else {
               return c;
             }

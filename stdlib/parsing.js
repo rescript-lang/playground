@@ -80,19 +80,19 @@ define(["exports", "./array.js", "./curry.js", "./js_exn.js", "./lexing.js", "./
                 _arg = t;
                 _cmd = /* Token_read */1;
                 continue ;
-                case 1 : 
+            case 1 : 
                 throw Parse_error;
             case 2 : 
                 grow_stacks(/* () */0);
                 _arg = /* () */0;
                 _cmd = /* Stacks_grown_1 */2;
                 continue ;
-                case 3 : 
+            case 3 : 
                 grow_stacks(/* () */0);
                 _arg = /* () */0;
                 _cmd = /* Stacks_grown_2 */3;
                 continue ;
-                case 4 : 
+            case 4 : 
                 var match$1;
                 try {
                   match$1 = /* tuple */[
@@ -113,12 +113,12 @@ define(["exports", "./array.js", "./curry.js", "./js_exn.js", "./lexing.js", "./
                 _arg = match$1[1];
                 _cmd = match$1[0];
                 continue ;
-                case 5 : 
+            case 5 : 
                 Curry._1(tables[/* error_function */13], "syntax error");
                 _arg = /* () */0;
                 _cmd = /* Error_detected */5;
                 continue ;
-                
+            
           }
         };
       }
@@ -165,7 +165,6 @@ define(["exports", "./array.js", "./curry.js", "./js_exn.js", "./lexing.js", "./
           } else {
             _i = i - 1 | 0;
             continue ;
-            
           }
         }
       };

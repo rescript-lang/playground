@@ -18,7 +18,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
           } else {
             _l = l[1];
             continue ;
-            
           }
         } else {
           throw Caml_builtin_exceptions.not_found;
@@ -339,7 +338,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 2 : 
                     param[0][0] = /* true */1;
                     return /* () */0;
@@ -357,7 +355,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 5 : 
                     if ((current$1[0] + 1 | 0) < l) {
                       param[0][0] = Caml_array.caml_array_get(argv, current$1[0] + 1 | 0);
@@ -369,7 +366,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 6 : 
                     if ((current$1[0] + 1 | 0) < l) {
                       var arg$1 = Caml_array.caml_array_get(argv, current$1[0] + 1 | 0);
@@ -403,7 +399,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 7 : 
                     if ((current$1[0] + 1 | 0) < l) {
                       var arg$2 = Caml_array.caml_array_get(argv, current$1[0] + 1 | 0);
@@ -437,7 +432,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 8 : 
                     if ((current$1[0] + 1 | 0) < l) {
                       var arg$3 = Caml_array.caml_array_get(argv, current$1[0] + 1 | 0);
@@ -471,7 +465,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 9 : 
                     if ((current$1[0] + 1 | 0) < l) {
                       var arg$4 = Caml_array.caml_array_get(argv, current$1[0] + 1 | 0);
@@ -505,7 +498,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 10 : 
                     return List.iter(treat_action, param[0]);
                 case 11 : 
@@ -532,7 +524,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                             /* Missing */Block.__(2, [s])
                           ];
                     }
-                    break;
                 case 12 : 
                     var f = param[0];
                     while(current$1[0] < (l - 1 | 0)) {
@@ -651,7 +642,6 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
           } else if (Caml_string.get(s, n) === /* " " */32) {
             _n = n + 1 | 0;
             continue ;
-            
           } else {
             return n;
           }

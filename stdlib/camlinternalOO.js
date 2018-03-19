@@ -375,7 +375,6 @@ define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_
           Curry._1(param[0], obj);
           _param = param[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -444,7 +443,6 @@ define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_
           } else if (tables$1[/* next */2] !== /* Empty */0) {
             _tables = tables$1[/* next */2];
             continue ;
-            
           } else {
             var next = /* Cons */[
               key,

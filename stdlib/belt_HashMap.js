@@ -20,7 +20,6 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
           ndata_tail[nidx] = old_bucket;
           _old_bucket = old_bucket.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -38,7 +37,6 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
           if (match !== undefined) {
             _cell = match;
             continue ;
-            
           } else {
             return /* true */1;
           }
@@ -131,7 +129,6 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
                 _bucket = cell_next;
                 _prec = bucket$1;
                 continue ;
-                
               }
             } else {
               return /* () */0;
@@ -173,7 +170,6 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
                       } else {
                         _buckets = buckets.next;
                         continue ;
-                        
                       }
                     } else {
                       return /* None */0;
@@ -210,7 +206,6 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
             if (match !== undefined) {
               _cell = match;
               continue ;
-              
             } else {
               return /* false */0;
             }
@@ -225,7 +220,7 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
       return Belt_internalBucketsType.make(id[/* hash */0], id[/* eq */1], hintSize);
     }
     
-    function ofArray(arr, id) {
+    function fromArray(arr, id) {
       var hash = id[/* hash */0];
       var eq = id[/* eq */1];
       var len = arr.length;
@@ -280,6 +275,8 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
     
     var logStats = Belt_internalBuckets.logStats;
     
+    var ofArray = fromArray;
+    
     exports.Int = Int;
     exports.$$String = $$String;
     exports.make = make;
@@ -300,10 +297,11 @@ define(["exports", "./belt_internalBuckets.js", "./belt_internalBucketsType.js"]
     exports.toArray = toArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
-    exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.mergeMany = mergeMany;
     exports.getBucketHistogram = getBucketHistogram;
     exports.logStats = logStats;
+    exports.ofArray = ofArray;
     
   })
 /* No side effect */

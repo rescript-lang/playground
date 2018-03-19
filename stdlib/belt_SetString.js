@@ -213,22 +213,18 @@ define(["exports", "./belt_internalAVLset.js", "./belt_internalSetString.js"],
     }
     
     function intersect(s1, s2) {
-      if (s1 !== null) {
-        if (s2 !== null) {
-          var l1 = s1.left;
-          var v1 = s1.value;
-          var r1 = s1.right;
-          var pres = [/* false */0];
-          var match = splitAuxPivot(s2, v1, pres);
-          var ll = intersect(l1, match[0]);
-          var rr = intersect(r1, match[1]);
-          if (pres[0]) {
-            return Belt_internalAVLset.joinShared(ll, v1, rr);
-          } else {
-            return Belt_internalAVLset.concatShared(ll, rr);
-          }
+      if (s1 !== null && s2 !== null) {
+        var l1 = s1.left;
+        var v1 = s1.value;
+        var r1 = s1.right;
+        var pres = [/* false */0];
+        var match = splitAuxPivot(s2, v1, pres);
+        var ll = intersect(l1, match[0]);
+        var rr = intersect(r1, match[1]);
+        if (pres[0]) {
+          return Belt_internalAVLset.joinShared(ll, v1, rr);
         } else {
-          return Belt_internalAVLset.empty;
+          return Belt_internalAVLset.concatShared(ll, rr);
         }
       } else {
         return Belt_internalAVLset.empty;
@@ -236,22 +232,18 @@ define(["exports", "./belt_internalAVLset.js", "./belt_internalSetString.js"],
     }
     
     function diff(s1, s2) {
-      if (s1 !== null) {
-        if (s2 !== null) {
-          var l1 = s1.left;
-          var v1 = s1.value;
-          var r1 = s1.right;
-          var pres = [/* false */0];
-          var match = splitAuxPivot(s2, v1, pres);
-          var ll = diff(l1, match[0]);
-          var rr = diff(r1, match[1]);
-          if (pres[0]) {
-            return Belt_internalAVLset.concatShared(ll, rr);
-          } else {
-            return Belt_internalAVLset.joinShared(ll, v1, rr);
-          }
+      if (s1 !== null && s2 !== null) {
+        var l1 = s1.left;
+        var v1 = s1.value;
+        var r1 = s1.right;
+        var pres = [/* false */0];
+        var match = splitAuxPivot(s2, v1, pres);
+        var ll = diff(l1, match[0]);
+        var rr = diff(r1, match[1]);
+        if (pres[0]) {
+          return Belt_internalAVLset.concatShared(ll, rr);
         } else {
-          return s1;
+          return Belt_internalAVLset.joinShared(ll, v1, rr);
         }
       } else {
         return s1;
@@ -260,9 +252,13 @@ define(["exports", "./belt_internalAVLset.js", "./belt_internalSetString.js"],
     
     var empty = Belt_internalAVLset.empty;
     
-    var ofArray = Belt_internalSetString.ofArray;
+    var ofArray = Belt_internalSetString.fromArray;
     
-    var ofSortedArrayUnsafe = Belt_internalAVLset.ofSortedArrayUnsafe;
+    var ofSortedArrayUnsafe = Belt_internalAVLset.fromSortedArrayUnsafe;
+    
+    var fromArray = Belt_internalSetString.fromArray;
+    
+    var fromSortedArrayUnsafe = Belt_internalAVLset.fromSortedArrayUnsafe;
     
     var isEmpty = Belt_internalAVLset.isEmpty;
     
@@ -323,6 +319,8 @@ define(["exports", "./belt_internalAVLset.js", "./belt_internalSetString.js"],
     exports.empty = empty;
     exports.ofArray = ofArray;
     exports.ofSortedArrayUnsafe = ofSortedArrayUnsafe;
+    exports.fromArray = fromArray;
+    exports.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
     exports.isEmpty = isEmpty;
     exports.has = has;
     exports.add = add;

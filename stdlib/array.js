@@ -138,7 +138,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
           ];
           _i = i - 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -151,7 +150,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
           _param = param[1];
           _accu = accu + 1 | 0;
           continue ;
-          
         } else {
           return accu;
         }
@@ -171,7 +169,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
             _param = param[1];
             _i = i + 1 | 0;
             continue ;
-            
           } else {
             return a;
           }
@@ -234,7 +231,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
               Caml_array.caml_array_set(a, i$1, Caml_array.caml_array_get(a, j));
               _i = j;
               continue ;
-              
             } else {
               return Caml_array.caml_array_set(a, i$1, e$1);
             }
@@ -259,7 +255,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
             Caml_array.caml_array_set(a, i$1, Caml_array.caml_array_get(a, j));
             _i = j;
             continue ;
-            
           };
         }
         catch (raw_exn){
@@ -290,7 +285,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
             if (father > 0) {
               _i = father;
               continue ;
-              
             } else {
               return Caml_array.caml_array_set(a, 0, e);
             }
@@ -340,7 +334,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
               _s1 = Caml_array.caml_array_get(a, i1$1);
               _i1 = i1$1;
               continue ;
-              
             } else {
               return blit(src2, i2, dst, d + 1 | 0, src2r - i2 | 0);
             }
@@ -352,7 +345,6 @@ define(["exports", "./curry.js", "./js_exn.js", "./caml_array.js", "./caml_excep
               _s2 = Caml_array.caml_array_get(src2, i2$1);
               _i2 = i2$1;
               continue ;
-              
             } else {
               return blit(a, i1, dst, d + 1 | 0, src1r - i1 | 0);
             }

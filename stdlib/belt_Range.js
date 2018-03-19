@@ -21,7 +21,6 @@ define(["exports", "./curry.js"],
         } else if (p(s)) {
           _s = s + 1 | 0;
           continue ;
-          
         } else {
           return /* false */0;
         }
@@ -45,7 +44,6 @@ define(["exports", "./curry.js"],
           } else if (p$1(s$1)) {
             _s = s$1 + step$1 | 0;
             continue ;
-            
           } else {
             return /* false */0;
           }
@@ -69,7 +67,6 @@ define(["exports", "./curry.js"],
         } else {
           _s = s + 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -93,7 +90,6 @@ define(["exports", "./curry.js"],
           } else {
             _s = s$1 + step$1 | 0;
             continue ;
-            
           }
         };
       } else {

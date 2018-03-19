@@ -57,7 +57,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
               _n = n$1 - 1 | 0;
               _x = x$1[1];
               continue ;
-              
             }
           } else {
             return /* None */0;
@@ -82,7 +81,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
               _n = n$1 - 1 | 0;
               _x = x$1[1];
               continue ;
-              
             }
           } else {
             throw new Error("getExn");
@@ -108,13 +106,11 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _precX = next;
             _cell = t;
             continue ;
-            
           } else {
             precY[1] = next;
             _precY = next;
             _cell = t;
             continue ;
-            
           }
         } else {
           return /* () */0;
@@ -143,7 +139,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _precX = nextA;
           _cell = cell[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -163,7 +158,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _prec = next;
           _cellX = cellX[1];
           continue ;
-          
         } else {
           return prec;
         }
@@ -186,11 +180,9 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _prec = next;
             _cellX = t;
             continue ;
-            
           } else {
             _cellX = t;
             continue ;
-            
           }
         } else {
           return /* () */0;
@@ -214,11 +206,9 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _prec = next;
             _cellX = t;
             continue ;
-            
           } else {
             _cellX = t;
             continue ;
-            
           }
         } else {
           return /* () */0;
@@ -245,7 +235,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _prec = next;
             _cellX = t;
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -278,7 +267,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _prec = next;
             _cellX = t;
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -299,7 +287,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _prec = next;
           _cellX = cellX[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -311,24 +298,19 @@ define(["exports", "./curry.js", "./belt_Array.js"],
         var prec = _prec;
         var cellY = _cellY;
         var cellX = _cellX;
-        if (cellX) {
-          if (cellY) {
-            var next = /* :: */[
-              /* tuple */[
-                cellX[0],
-                cellY[0]
-              ],
-              /* [] */0
-            ];
-            prec[1] = next;
-            _prec = next;
-            _cellY = cellY[1];
-            _cellX = cellX[1];
-            continue ;
-            
-          } else {
-            return /* () */0;
-          }
+        if (cellX && cellY) {
+          var next = /* :: */[
+            /* tuple */[
+              cellX[0],
+              cellY[0]
+            ],
+            /* [] */0
+          ];
+          prec[1] = next;
+          _prec = next;
+          _cellY = cellY[1];
+          _cellX = cellX[1];
+          continue ;
         } else {
           return /* () */0;
         }
@@ -340,21 +322,16 @@ define(["exports", "./curry.js", "./belt_Array.js"],
         var prec = _prec;
         var cellY = _cellY;
         var cellX = _cellX;
-        if (cellX) {
-          if (cellY) {
-            var next = /* :: */[
-              f(cellX[0], cellY[0]),
-              /* [] */0
-            ];
-            prec[1] = next;
-            _prec = next;
-            _cellY = cellY[1];
-            _cellX = cellX[1];
-            continue ;
-            
-          } else {
-            return /* () */0;
-          }
+        if (cellX && cellY) {
+          var next = /* :: */[
+            f(cellX[0], cellY[0]),
+            /* [] */0
+          ];
+          prec[1] = next;
+          _prec = next;
+          _cellY = cellY[1];
+          _cellX = cellX[1];
+          continue ;
         } else {
           return /* () */0;
         }
@@ -376,7 +353,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _cellX = cellX[1];
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -400,7 +376,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _cell = cell[1];
           _n = n - 1 | 0;
           continue ;
-          
         } else {
           return /* false */0;
         }
@@ -424,7 +399,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _cell = cell[1];
           _n = n - 1 | 0;
           continue ;
-          
         } else {
           return /* None */0;
         }
@@ -467,7 +441,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _n = n$1 - 1 | 0;
             _l = l[1];
             continue ;
-            
           } else {
             return /* None */0;
           }
@@ -533,17 +506,13 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     }
     
     function zipByU(l1, l2, f) {
-      if (l1) {
-        if (l2) {
-          var cell = /* :: */[
-            f(l1[0], l2[0]),
-            /* [] */0
-          ];
-          copyAuxWithMap2(f, l1[1], l2[1], cell);
-          return cell;
-        } else {
-          return /* [] */0;
-        }
+      if (l1 && l2) {
+        var cell = /* :: */[
+          f(l1[0], l2[0]),
+          /* [] */0
+        ];
+        copyAuxWithMap2(f, l1[1], l2[1], cell);
+        return cell;
       } else {
         return /* [] */0;
       }
@@ -630,7 +599,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _acc = acc + 1 | 0;
           _x = x[1];
           continue ;
-          
         } else {
           return acc;
         }
@@ -646,14 +614,13 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _x = x[1];
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return /* () */0;
         }
       };
     }
     
-    function ofArray(a) {
+    function fromArray(a) {
       var a$1 = a;
       var _i = a.length - 1 | 0;
       var _res = /* [] */0;
@@ -669,7 +636,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           ];
           _i = i - 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -684,7 +650,7 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     function shuffle(xs) {
       var v = toArray(xs);
       Belt_Array.shuffleInPlace(v);
-      return ofArray(v);
+      return fromArray(v);
     }
     
     function reverseConcat(_l1, _l2) {
@@ -698,7 +664,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           ];
           _l1 = l1[1];
           continue ;
-          
         } else {
           return l2;
         }
@@ -717,7 +682,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _xs = xs[1];
           _prec = copyAuxCont(xs[0], prec);
           continue ;
-          
         } else {
           prec[1] = /* [] */0;
           return /* () */0;
@@ -740,7 +704,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = xs[1];
             continue ;
-            
           }
         } else {
           return /* [] */0;
@@ -780,7 +743,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             accu
           ];
           continue ;
-          
         } else {
           return accu;
         }
@@ -798,7 +760,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           f(xs[0]);
           _xs = xs[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -821,7 +782,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _i = i + 1 | 0;
           _xs = xs[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -840,7 +800,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           _accu = f(accu, l[0]);
           _l = l[1];
           continue ;
-          
         } else {
           return accu;
         }
@@ -881,19 +840,14 @@ define(["exports", "./curry.js", "./belt_Array.js"],
         var accu = _accu;
         var l2$1 = _l2;
         var l1$1 = _l1;
-        if (l1$1) {
-          if (l2$1) {
-            _accu = /* :: */[
-              f$1(l1$1[0], l2$1[0]),
-              accu
-            ];
-            _l2 = l2$1[1];
-            _l1 = l1$1[1];
-            continue ;
-            
-          } else {
-            return accu;
-          }
+        if (l1$1 && l2$1) {
+          _accu = /* :: */[
+            f$1(l1$1[0], l2$1[0]),
+            accu
+          ];
+          _l2 = l2$1[1];
+          _l1 = l1$1[1];
+          continue ;
         } else {
           return accu;
         }
@@ -908,16 +862,11 @@ define(["exports", "./curry.js", "./belt_Array.js"],
       while(true) {
         var l2 = _l2;
         var l1 = _l1;
-        if (l1) {
-          if (l2) {
-            f(l1[0], l2[0]);
-            _l2 = l2[1];
-            _l1 = l1[1];
-            continue ;
-            
-          } else {
-            return /* () */0;
-          }
+        if (l1 && l2) {
+          f(l1[0], l2[0]);
+          _l2 = l2[1];
+          _l1 = l1[1];
+          continue ;
         } else {
           return /* () */0;
         }
@@ -933,16 +882,11 @@ define(["exports", "./curry.js", "./belt_Array.js"],
         var accu = _accu;
         var l2 = _l2;
         var l1 = _l1;
-        if (l1) {
-          if (l2) {
-            _accu = f(accu, l1[0], l2[0]);
-            _l2 = l2[1];
-            _l1 = l1[1];
-            continue ;
-            
-          } else {
-            return accu;
-          }
+        if (l1 && l2) {
+          _accu = f(accu, l1[0], l2[0]);
+          _l2 = l2[1];
+          _l1 = l1[1];
+          continue ;
         } else {
           return accu;
         }
@@ -981,7 +925,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           if (p(xs[0])) {
             _xs = xs[1];
             continue ;
-            
           } else {
             return /* false */0;
           }
@@ -1004,7 +947,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = xs[1];
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -1020,18 +962,13 @@ define(["exports", "./curry.js", "./belt_Array.js"],
       while(true) {
         var l2 = _l2;
         var l1 = _l1;
-        if (l1) {
-          if (l2) {
-            if (p(l1[0], l2[0])) {
-              _l2 = l2[1];
-              _l1 = l1[1];
-              continue ;
-              
-            } else {
-              return /* false */0;
-            }
+        if (l1 && l2) {
+          if (p(l1[0], l2[0])) {
+            _l2 = l2[1];
+            _l1 = l1[1];
+            continue ;
           } else {
-            return /* true */1;
+            return /* false */0;
           }
         } else {
           return /* true */1;
@@ -1052,7 +989,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _l2 = l2[1];
             _l1 = l1[1];
             continue ;
-            
           } else {
             return 1;
           }
@@ -1075,7 +1011,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
               _l2 = l2[1];
               _l1 = l1[1];
               continue ;
-              
             } else {
               return c;
             }
@@ -1099,15 +1034,10 @@ define(["exports", "./curry.js", "./belt_Array.js"],
         var l2 = _l2;
         var l1 = _l1;
         if (l1) {
-          if (l2) {
-            if (p(l1[0], l2[0])) {
-              _l2 = l2[1];
-              _l1 = l1[1];
-              continue ;
-              
-            } else {
-              return /* false */0;
-            }
+          if (l2 && p(l1[0], l2[0])) {
+            _l2 = l2[1];
+            _l1 = l1[1];
+            continue ;
           } else {
             return /* false */0;
           }
@@ -1127,18 +1057,13 @@ define(["exports", "./curry.js", "./belt_Array.js"],
       while(true) {
         var l2 = _l2;
         var l1 = _l1;
-        if (l1) {
-          if (l2) {
-            if (p(l1[0], l2[0])) {
-              return /* true */1;
-            } else {
-              _l2 = l2[1];
-              _l1 = l1[1];
-              continue ;
-              
-            }
+        if (l1 && l2) {
+          if (p(l1[0], l2[0])) {
+            return /* true */1;
           } else {
-            return /* false */0;
+            _l2 = l2[1];
+            _l1 = l1[1];
+            continue ;
           }
         } else {
           return /* false */0;
@@ -1159,7 +1084,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = xs[1];
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -1181,7 +1105,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = xs[1];
             continue ;
-            
           }
         } else {
           return /* None */0;
@@ -1202,7 +1125,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = xs[1];
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -1296,7 +1218,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = xs[1];
             continue ;
-            
           }
         } else {
           return /* None */0;
@@ -1324,7 +1245,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = t;
             continue ;
-            
           }
         } else {
           return /* [] */0;
@@ -1352,7 +1272,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else {
             _xs = t;
             continue ;
-            
           }
         } else {
           return /* [] */0;
@@ -1425,26 +1344,24 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     }
     
     function zip(l1, l2) {
-      if (l1) {
-        if (l2) {
-          var cell = /* :: */[
-            /* tuple */[
-              l1[0],
-              l2[0]
-            ],
-            /* [] */0
-          ];
-          zipAux(l1[1], l2[1], cell);
-          return cell;
-        } else {
-          return /* [] */0;
-        }
+      if (l1 && l2) {
+        var cell = /* :: */[
+          /* tuple */[
+            l1[0],
+            l2[0]
+          ],
+          /* [] */0
+        ];
+        zipAux(l1[1], l2[1], cell);
+        return cell;
       } else {
         return /* [] */0;
       }
     }
     
     var size = length;
+    
+    var ofArray = fromArray;
     
     exports.length = length;
     exports.size = size;
@@ -1474,6 +1391,7 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     exports.mapWithIndexU = mapWithIndexU;
     exports.mapWithIndex = mapWithIndex;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.toArray = toArray;
     exports.reverse = reverse;
     exports.mapReverseU = mapReverseU;

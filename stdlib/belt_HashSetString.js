@@ -17,7 +17,6 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
           ndata_tail[nidx] = old_bucket;
           _old_bucket = old_bucket.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -51,7 +50,6 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
               _cell = cell_next;
               _prec = cell;
               continue ;
-              
             } else {
               return /* () */0;
             }
@@ -72,7 +70,6 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
           if (n !== undefined) {
             _cell = n;
             continue ;
-            
           } else {
             h.size = h.size + 1 | 0;
             cell.next = {
@@ -145,7 +142,6 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
             if (match !== undefined) {
               _cell = match;
               continue ;
-              
             } else {
               return /* false */0;
             }
@@ -164,7 +160,7 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
       return prim.size;
     }
     
-    function ofArray(arr) {
+    function fromArray(arr) {
       var len = arr.length;
       var v = Belt_internalBucketsType.make(/* () */0, /* () */0, len);
       for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
@@ -199,6 +195,8 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     
     var toArray = Belt_internalSetBuckets.toArray;
     
+    var ofArray = fromArray;
+    
     var getBucketHistogram = Belt_internalSetBuckets.getBucketHistogram;
     
     exports.make = make;
@@ -216,6 +214,7 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     exports.logStats = logStats;
     exports.toArray = toArray;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.mergeMany = mergeMany;
     exports.getBucketHistogram = getBucketHistogram;
     

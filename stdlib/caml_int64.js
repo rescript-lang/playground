@@ -184,26 +184,20 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
         var exit$1 = 0;
         var exit$2 = 0;
         var exit$3 = 0;
-        if (this_hi !== 0) {
-          exit$3 = 4;
-        } else if ($$this[/* lo */1] !== 0) {
+        if (this_hi !== 0 || $$this[/* lo */1] !== 0) {
           exit$3 = 4;
         } else {
           return zero;
         }
         if (exit$3 === 4) {
-          if (other[/* hi */0] !== 0) {
-            exit$2 = 3;
-          } else if (other[/* lo */1] !== 0) {
+          if (other[/* hi */0] !== 0 || other[/* lo */1] !== 0) {
             exit$2 = 3;
           } else {
             return zero;
           }
         }
         if (exit$2 === 3) {
-          if (this_hi !== -2147483648) {
-            exit$1 = 2;
-          } else if ($$this[/* lo */1] !== 0) {
+          if (this_hi !== -2147483648 || $$this[/* lo */1] !== 0) {
             exit$1 = 2;
           } else {
             lo = other[/* lo */1];
@@ -214,9 +208,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
           var other_hi = other[/* hi */0];
           var lo$1 = $$this[/* lo */1];
           var exit$4 = 0;
-          if (other_hi !== -2147483648) {
-            exit$4 = 3;
-          } else if (other[/* lo */1] !== 0) {
+          if (other_hi !== -2147483648 || other[/* lo */1] !== 0) {
             exit$4 = 3;
           } else {
             lo = lo$1;
@@ -229,7 +221,6 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
                 _other = neg(other);
                 _this = neg($$this);
                 continue ;
-                
               } else {
                 return neg(mul(neg($$this), other));
               }
@@ -396,18 +387,14 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
         var self_hi = self[/* hi */0];
         var exit = 0;
         var exit$1 = 0;
-        if (other[/* hi */0] !== 0) {
-          exit$1 = 2;
-        } else if (other[/* lo */1] !== 0) {
+        if (other[/* hi */0] !== 0 || other[/* lo */1] !== 0) {
           exit$1 = 2;
         } else {
           throw Caml_builtin_exceptions.division_by_zero;
         }
         if (exit$1 === 2) {
           if (self_hi !== -2147483648) {
-            if (self_hi !== 0) {
-              exit = 1;
-            } else if (self[/* lo */1] !== 0) {
+            if (self_hi !== 0 || self[/* lo */1] !== 0) {
               exit = 1;
             } else {
               return zero;
@@ -423,9 +410,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
             var half_this = asr_(self, 1);
             var approx = lsl_(div(half_this, other), 1);
             var exit$2 = 0;
-            if (approx[/* hi */0] !== 0) {
-              exit$2 = 3;
-            } else if (approx[/* lo */1] !== 0) {
+            if (approx[/* hi */0] !== 0 || approx[/* lo */1] !== 0) {
               exit$2 = 3;
             } else if (other_hi < 0) {
               return one;
@@ -443,9 +428,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
         if (exit === 1) {
           var other_hi$1 = other[/* hi */0];
           var exit$3 = 0;
-          if (other_hi$1 !== -2147483648) {
-            exit$3 = 2;
-          } else if (other[/* lo */1] !== 0) {
+          if (other_hi$1 !== -2147483648 || other[/* lo */1] !== 0) {
             exit$3 = 2;
           } else {
             return zero;
@@ -456,7 +439,6 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
                 _other = neg(other);
                 _self = neg(self);
                 continue ;
-                
               } else {
                 return neg(div(neg(self), other));
               }
@@ -532,9 +514,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
       var match = x[/* hi */0];
       var match$1 = x[/* lo */1];
       var exit = 0;
-      if (match !== 0) {
-        exit = 1;
-      } else if (match$1 !== 0) {
+      if (match !== 0 || match$1 !== 0) {
         exit = 1;
       } else {
         return "0";

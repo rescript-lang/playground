@@ -145,7 +145,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             if (l) {
               _param = l;
               continue ;
-              
             } else {
               return param[1];
             }
@@ -162,7 +161,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             if (r) {
               _param = r;
               continue ;
-              
             } else {
               return param[1];
             }
@@ -249,7 +247,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             } else {
               _param = c < 0 ? param[0] : param[2];
               continue ;
-              
             }
           } else {
             return /* false */0;
@@ -311,20 +308,16 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
         }
       };
       var inter = function (s1, s2) {
-        if (s1) {
-          if (s2) {
-            var r1 = s1[2];
-            var v1 = s1[1];
-            var l1 = s1[0];
-            var match = split(v1, s2);
-            var l2 = match[0];
-            if (match[1] !== 0) {
-              return join(inter(l1, l2), v1, inter(r1, match[2]));
-            } else {
-              return concat(inter(l1, l2), inter(r1, match[2]));
-            }
+        if (s1 && s2) {
+          var r1 = s1[2];
+          var v1 = s1[1];
+          var l1 = s1[0];
+          var match = split(v1, s2);
+          var l2 = match[0];
+          if (match[1] !== 0) {
+            return join(inter(l1, l2), v1, inter(r1, match[2]));
           } else {
-            return /* Empty */0;
+            return concat(inter(l1, l2), inter(r1, match[2]));
           }
         } else {
           return /* Empty */0;
@@ -362,7 +355,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             ];
             _s = s[0];
             continue ;
-            
           } else {
             return e;
           }
@@ -383,7 +375,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
                 _e2 = cons_enum(e2[1], e2[2]);
                 _e1 = cons_enum(e1[1], e1[2]);
                 continue ;
-                
               }
             } else {
               return 1;
@@ -415,7 +406,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
                   _s2 = r2;
                   _s1 = r1;
                   continue ;
-                  
                 } else {
                   return /* false */0;
                 }
@@ -428,7 +418,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
                       ], l2)) {
                   _s1 = r1;
                   continue ;
-                  
                 } else {
                   return /* false */0;
                 }
@@ -440,7 +429,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
                     ], r2)) {
                 _s1 = l1;
                 continue ;
-                
               } else {
                 return /* false */0;
               }
@@ -460,7 +448,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             Curry._1(f, param[1]);
             _param = param[2];
             continue ;
-            
           } else {
             return /* () */0;
           }
@@ -474,7 +461,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             _accu = Curry._2(f, s[1], fold(f, s[0], accu));
             _s = s[2];
             continue ;
-            
           } else {
             return accu;
           }
@@ -484,14 +470,9 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
         while(true) {
           var param = _param;
           if (param) {
-            if (Curry._1(p, param[1])) {
-              if (for_all(p, param[0])) {
-                _param = param[2];
-                continue ;
-                
-              } else {
-                return /* false */0;
-              }
+            if (Curry._1(p, param[1]) && for_all(p, param[0])) {
+              _param = param[2];
+              continue ;
             } else {
               return /* false */0;
             }
@@ -504,14 +485,11 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
         while(true) {
           var param = _param;
           if (param) {
-            if (Curry._1(p, param[1])) {
-              return /* true */1;
-            } else if (exists(p, param[0])) {
+            if (Curry._1(p, param[1]) || exists(p, param[0])) {
               return /* true */1;
             } else {
               _param = param[2];
               continue ;
-              
             }
           } else {
             return /* false */0;
@@ -579,7 +557,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
               elements_aux(accu, param[2])
             ];
             continue ;
-            
           } else {
             return accu;
           }
@@ -599,7 +576,6 @@ define(["exports", "./list.js", "./curry.js", "./caml_builtin_exceptions.js"],
             } else {
               _param = c < 0 ? param[0] : param[2];
               continue ;
-              
             }
           } else {
             throw Caml_builtin_exceptions.not_found;

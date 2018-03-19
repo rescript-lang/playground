@@ -28,6 +28,8 @@ define(["exports"],
     
     var HashMap = 0;
     
+    var Option = 0;
+    
     exports.Id = Id;
     exports.$$Array = $$Array;
     exports.SortArray = SortArray;
@@ -41,6 +43,7 @@ define(["exports"],
     exports.MutableMap = MutableMap;
     exports.HashSet = HashSet;
     exports.HashMap = HashMap;
+    exports.Option = Option;
     
   })
 /* No side effect */

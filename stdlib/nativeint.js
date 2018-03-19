@@ -18,10 +18,6 @@ define(["exports", "./caml_format.js", "./caml_primitive.js"],
       }
     }
     
-    var min_int = -9007199254740991;
-    
-    var max_int = 9007199254740991;
-    
     function lognot(n) {
       return n ^ -1;
     }
@@ -39,6 +35,10 @@ define(["exports", "./caml_format.js", "./caml_primitive.js"],
     var minus_one = -1;
     
     var size = 54;
+    
+    var max_int = 9007199254740991;
+    
+    var min_int = -9007199254740991;
     
     exports.zero = zero;
     exports.one = one;

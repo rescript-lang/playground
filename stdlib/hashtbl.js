@@ -28,14 +28,11 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
     function power_2_above(_x, n) {
       while(true) {
         var x = _x;
-        if (x >= n) {
-          return x;
-        } else if ((x << 1) < x) {
+        if (x >= n || (x << 1) < x) {
           return x;
         } else {
           _x = (x << 1);
           continue ;
-          
         }
       };
     }
@@ -197,7 +194,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
                       } else {
                         _param = param[2];
                         continue ;
-                        
                       }
                     } else {
                       throw Caml_builtin_exceptions.not_found;
@@ -231,7 +227,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
             } else {
               _param = rest;
               continue ;
-              
             }
           } else {
             return /* [] */0;
@@ -297,7 +292,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
           } else {
             _param = param[2];
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -313,7 +307,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
             Curry._2(f, param[0], param[1]);
             _param = param[2];
             continue ;
-            
           } else {
             return /* () */0;
           }
@@ -335,7 +328,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
             _accu = Curry._3(f, b[0], b[1], accu);
             _b = b[2];
             continue ;
-            
           } else {
             return accu;
           }
@@ -357,7 +349,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
           _param = param[2];
           _accu = accu + 1 | 0;
           continue ;
-          
         } else {
           return accu;
         }
@@ -447,7 +438,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
                     } else {
                       _param = param[2];
                       continue ;
-                      
                     }
                   } else {
                     throw Caml_builtin_exceptions.not_found;
@@ -478,7 +468,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
               } else {
                 _param = rest;
                 continue ;
-                
               }
             } else {
               return /* [] */0;
@@ -542,7 +531,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
             } else {
               _param = param[2];
               continue ;
-              
             }
           } else {
             return /* false */0;
@@ -634,7 +622,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
                     } else {
                       _param = param[2];
                       continue ;
-                      
                     }
                   } else {
                     throw Caml_builtin_exceptions.not_found;
@@ -665,7 +652,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
               } else {
                 _param = rest;
                 continue ;
-                
               }
             } else {
               return /* [] */0;
@@ -729,7 +715,6 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
             } else {
               _param = param[2];
               continue ;
-              
             }
           } else {
             return /* false */0;

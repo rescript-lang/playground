@@ -134,7 +134,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             } else {
               _param = c < 0 ? param[0] : param[3];
               continue ;
-              
             }
           } else {
             throw Caml_builtin_exceptions.not_found;
@@ -151,7 +150,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             } else {
               _param = c < 0 ? param[0] : param[3];
               continue ;
-              
             }
           } else {
             return /* false */0;
@@ -166,7 +164,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             if (l) {
               _param = l;
               continue ;
-              
             } else {
               return /* tuple */[
                       param[1],
@@ -186,7 +183,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             if (r) {
               _param = r;
               continue ;
-              
             } else {
               return /* tuple */[
                       param[1],
@@ -250,7 +246,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             Curry._2(f, param[1], param[2]);
             _param = param[3];
             continue ;
-            
           } else {
             return /* () */0;
           }
@@ -297,7 +292,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             _accu = Curry._3(f, m[1], m[2], fold(f, m[0], accu));
             _m = m[3];
             continue ;
-            
           } else {
             return accu;
           }
@@ -307,14 +301,9 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
         while(true) {
           var param = _param;
           if (param) {
-            if (Curry._2(p, param[1], param[2])) {
-              if (for_all(p, param[0])) {
-                _param = param[3];
-                continue ;
-                
-              } else {
-                return /* false */0;
-              }
+            if (Curry._2(p, param[1], param[2]) && for_all(p, param[0])) {
+              _param = param[3];
+              continue ;
             } else {
               return /* false */0;
             }
@@ -327,14 +316,11 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
         while(true) {
           var param = _param;
           if (param) {
-            if (Curry._2(p, param[1], param[2])) {
-              return /* true */1;
-            } else if (exists(p, param[0])) {
+            if (Curry._2(p, param[1], param[2]) || exists(p, param[0])) {
               return /* true */1;
             } else {
               _param = param[3];
               continue ;
-              
             }
           } else {
             return /* false */0;
@@ -520,7 +506,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
             ];
             _m = m[0];
             continue ;
-            
           } else {
             return e;
           }
@@ -545,7 +530,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
                   _e2 = cons_enum(e2[2], e2[3]);
                   _e1 = cons_enum(e1[2], e1[3]);
                   continue ;
-                  
                 }
               }
             } else {
@@ -565,19 +549,10 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
           var e2 = _e2;
           var e1 = _e1;
           if (e1) {
-            if (e2) {
-              if (Curry._2(funarg[/* compare */0], e1[0], e2[0]) === 0) {
-                if (Curry._2(cmp, e1[1], e2[1])) {
-                  _e2 = cons_enum(e2[2], e2[3]);
-                  _e1 = cons_enum(e1[2], e1[3]);
-                  continue ;
-                  
-                } else {
-                  return /* false */0;
-                }
-              } else {
-                return /* false */0;
-              }
+            if (e2 && Curry._2(funarg[/* compare */0], e1[0], e2[0]) === 0 && Curry._2(cmp, e1[1], e2[1])) {
+              _e2 = cons_enum(e2[2], e2[3]);
+              _e1 = cons_enum(e1[2], e1[3]);
+              continue ;
             } else {
               return /* false */0;
             }
@@ -609,7 +584,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
               bindings_aux(accu, param[3])
             ];
             continue ;
-            
           } else {
             return accu;
           }

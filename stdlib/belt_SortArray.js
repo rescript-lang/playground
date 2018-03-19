@@ -14,7 +14,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _acc = acc + 1 | 0;
             _prec = v;
             continue ;
-            
           } else {
             return acc;
           }
@@ -46,7 +45,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
                 _acc = acc + 1 | 0;
                 _prec = v;
                 continue ;
-                
               } else {
                 return acc;
               }
@@ -80,7 +78,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
           } else if (cmp$1(a$1[i], a$1[i + 1 | 0]) <= 0) {
             _i = i + 1 | 0;
             continue ;
-            
           } else {
             return /* false */0;
           }
@@ -114,7 +111,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$1];
             _i1 = i1$1;
             continue ;
-            
           } else {
             return Belt_Array.blitUnsafe(src2, i2, dst, d + 1 | 0, src2r - i2 | 0);
           }
@@ -126,7 +122,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s2 = src2[i2$1];
             _i2 = i2$1;
             continue ;
-            
           } else {
             return Belt_Array.blitUnsafe(src, i1, dst, d + 1 | 0, src1r - i1 | 0);
           }
@@ -158,7 +153,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$1];
             _i1 = i1$1;
             continue ;
-            
           } else {
             Belt_Array.blitUnsafe(src2, i2, dst, d$1, src2r - i2 | 0);
             return (d$1 + src2r | 0) - i2 | 0;
@@ -175,7 +169,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$2];
             _i1 = i1$2;
             continue ;
-            
           } else if (i1$2 === src1r) {
             Belt_Array.blitUnsafe(src2, i2$1, dst, d$2, src2r - i2$1 | 0);
             return (d$2 + src2r | 0) - i2$1 | 0;
@@ -192,7 +185,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s2 = src2[i2$2];
             _i2 = i2$2;
             continue ;
-            
           } else {
             Belt_Array.blitUnsafe(src, i1, dst, d$3, src1r - i1 | 0);
             return (d$3 + src1r | 0) - i1 | 0;
@@ -226,7 +218,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$1];
             _i1 = i1$1;
             continue ;
-            
           } else {
             return d;
           }
@@ -242,7 +233,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$2];
             _i1 = i1$2;
             continue ;
-            
           } else {
             return d$1;
           }
@@ -252,7 +242,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s2 = src2[i2$2];
             _i2 = i2$2;
             continue ;
-            
           } else {
             return d;
           }
@@ -288,7 +277,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$1];
             _i1 = i1$1;
             continue ;
-            
           } else {
             return d$1;
           }
@@ -301,7 +289,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s1 = src[i1$2];
             _i1 = i1$2;
             continue ;
-            
           } else if (i1$2 === src1r) {
             return d;
           } else {
@@ -314,7 +301,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
             _s2 = src2[i2$2];
             _i2 = i2$2;
             continue ;
-            
           } else {
             Belt_Array.blitUnsafe(src, i1, dst, d, src1r - i1 | 0);
             return (d + src1r | 0) - i1 | 0;
@@ -418,7 +404,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
                 } else {
                   _hi = mid;
                   continue ;
-                  
                 }
               } else if (lo$1 === mid) {
                 if (cmp$1(arr[hi$1], key$1) === 0) {
@@ -429,7 +414,6 @@ define(["exports", "./curry.js", "./belt_Array.js"],
               } else {
                 _lo = mid;
                 continue ;
-                
               }
             };
           }

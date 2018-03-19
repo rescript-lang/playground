@@ -138,7 +138,6 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js", "./belt_internalMa
               _i = i + 1 | 0;
               _t = u;
               continue ;
-              
             } else {
               return u;
             }
@@ -197,7 +196,9 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js", "./belt_internalMa
     
     var toArray = Belt_internalAVLtree.toArray;
     
-    var ofArray = Belt_internalMapString.ofArray;
+    var ofArray = Belt_internalMapString.fromArray;
+    
+    var fromArray = Belt_internalMapString.fromArray;
     
     var keysToArray = Belt_internalAVLtree.keysToArray;
     
@@ -270,6 +271,7 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js", "./belt_internalMa
     exports.toList = toList;
     exports.toArray = toArray;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
     exports.minKey = minKey;

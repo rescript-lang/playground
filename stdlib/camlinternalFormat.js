@@ -274,7 +274,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else {
               _i = i + 1 | 0;
               continue ;
-              
             }
           } else {
             return 0;
@@ -293,13 +292,9 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else {
               exit = 1;
             }
-          } else if (switcher > 47 || switcher < 1) {
-            if (is_in_char_set(set, Pervasives.char_of_int(i + 1 | 0))) {
-              exit = 1;
-            } else {
-              print_char(buf, i - 1 | 0);
-              return print_out(set, i + 1 | 0);
-            }
+          } else if ((switcher > 47 || switcher < 1) && !is_in_char_set(set, Pervasives.char_of_int(i + 1 | 0))) {
+            print_char(buf, i - 1 | 0);
+            return print_out(set, i + 1 | 0);
           } else {
             exit = 1;
           }
@@ -322,7 +317,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 } else {
                   _j = j + 1 | 0;
                   continue ;
-                  
                 }
               };
             } else {
@@ -384,7 +378,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     
     function bprint_pad_opt(buf, pad_opt) {
       if (pad_opt) {
-        return buffer_add_string(buf, "" + pad_opt[0]);
+        return buffer_add_string(buf, String(pad_opt[0]));
       } else {
         return /* () */0;
       }
@@ -398,7 +392,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         if (pad.tag) {
           return buffer_add_char(buf, /* "*" */42);
         } else {
-          return buffer_add_string(buf, "" + pad[1]);
+          return buffer_add_string(buf, String(pad[1]));
         }
       }
     }
@@ -412,7 +406,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         }
       } else {
         buffer_add_char(buf, /* "." */46);
-        return buffer_add_string(buf, "" + prec[0]);
+        return buffer_add_string(buf, String(prec[0]));
       }
     }
     
@@ -553,67 +547,67 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 buffer_add_string(buf, "%c");
                 _fmtty = fmtty[0];
                 continue ;
-                case 1 : 
+            case 1 : 
                 buffer_add_string(buf, "%s");
                 _fmtty = fmtty[0];
                 continue ;
-                case 2 : 
+            case 2 : 
                 buffer_add_string(buf, "%i");
                 _fmtty = fmtty[0];
                 continue ;
-                case 3 : 
+            case 3 : 
                 buffer_add_string(buf, "%li");
                 _fmtty = fmtty[0];
                 continue ;
-                case 4 : 
+            case 4 : 
                 buffer_add_string(buf, "%ni");
                 _fmtty = fmtty[0];
                 continue ;
-                case 5 : 
+            case 5 : 
                 buffer_add_string(buf, "%Li");
                 _fmtty = fmtty[0];
                 continue ;
-                case 6 : 
+            case 6 : 
                 buffer_add_string(buf, "%f");
                 _fmtty = fmtty[0];
                 continue ;
-                case 7 : 
+            case 7 : 
                 buffer_add_string(buf, "%B");
                 _fmtty = fmtty[0];
                 continue ;
-                case 8 : 
+            case 8 : 
                 buffer_add_string(buf, "%{");
                 bprint_fmtty(buf, fmtty[0]);
                 buffer_add_string(buf, "%}");
                 _fmtty = fmtty[1];
                 continue ;
-                case 9 : 
+            case 9 : 
                 buffer_add_string(buf, "%(");
                 bprint_fmtty(buf, fmtty[0]);
                 buffer_add_string(buf, "%)");
                 _fmtty = fmtty[2];
                 continue ;
-                case 10 : 
+            case 10 : 
                 buffer_add_string(buf, "%a");
                 _fmtty = fmtty[0];
                 continue ;
-                case 11 : 
+            case 11 : 
                 buffer_add_string(buf, "%t");
                 _fmtty = fmtty[0];
                 continue ;
-                case 12 : 
+            case 12 : 
                 buffer_add_string(buf, "%?");
                 _fmtty = fmtty[0];
                 continue ;
-                case 13 : 
+            case 13 : 
                 buffer_add_string(buf, "%r");
                 _fmtty = fmtty[0];
                 continue ;
-                case 14 : 
+            case 14 : 
                 buffer_add_string(buf, "%_r");
                 _fmtty = fmtty[0];
                 continue ;
-                
+            
           }
         }
       };
@@ -644,14 +638,14 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 1 : 
+            case 1 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "C" */67);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 2 : 
+            case 2 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_padding(buf, fmt$1[0]);
@@ -659,7 +653,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[1];
                 continue ;
-                case 3 : 
+            case 3 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_padding(buf, fmt$1[0]);
@@ -667,51 +661,51 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[1];
                 continue ;
-                case 4 : 
+            case 4 : 
                 bprint_int_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2]);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[3];
                 continue ;
-                case 5 : 
+            case 5 : 
                 bprint_altint_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2], /* "l" */108);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[3];
                 continue ;
-                case 6 : 
+            case 6 : 
                 bprint_altint_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2], /* "n" */110);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[3];
                 continue ;
-                case 7 : 
+            case 7 : 
                 bprint_altint_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2], /* "L" */76);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[3];
                 continue ;
-                case 8 : 
+            case 8 : 
                 bprint_float_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2]);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[3];
                 continue ;
-                case 9 : 
+            case 9 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "B" */66);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 10 : 
+            case 10 : 
                 buffer_add_string(buf, "%!");
                 _fmt = fmt$1[0];
                 continue ;
-                case 11 : 
+            case 11 : 
                 bprint_string_literal(buf, fmt$1[0]);
                 _fmt = fmt$1[1];
                 continue ;
-                case 12 : 
+            case 12 : 
                 bprint_char_literal(buf, fmt$1[0]);
                 _fmt = fmt$1[1];
                 continue ;
-                case 13 : 
+            case 13 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_pad_opt(buf, fmt$1[0]);
@@ -722,7 +716,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[2];
                 continue ;
-                case 14 : 
+            case 14 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_pad_opt(buf, fmt$1[0]);
@@ -733,37 +727,37 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[2];
                 continue ;
-                case 15 : 
+            case 15 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "a" */97);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 16 : 
+            case 16 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "t" */116);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 17 : 
+            case 17 : 
                 bprint_string_literal(buf, string_of_formatting_lit(fmt$1[0]));
                 _fmt = fmt$1[1];
                 continue ;
-                case 18 : 
+            case 18 : 
                 bprint_string_literal(buf, "@{");
                 bprint_string_literal(buf, string_of_formatting_gen(fmt$1[0]));
                 _fmt = fmt$1[1];
                 continue ;
-                case 19 : 
+            case 19 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "r" */114);
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 20 : 
+            case 20 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_pad_opt(buf, fmt$1[0]);
@@ -771,26 +765,26 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[2];
                 continue ;
-                case 21 : 
+            case 21 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, char_of_counter(fmt$1[0]));
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[1];
                 continue ;
-                case 22 : 
+            case 22 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_string_literal(buf, "0c");
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[0];
                 continue ;
-                case 23 : 
+            case 23 : 
                 var match = param_format_of_ignored_format(fmt$1[0], fmt$1[1]);
                 _ign_flag = /* true */1;
                 _fmt = match[0];
                 continue ;
-                case 24 : 
+            case 24 : 
                 for(var _i = 1 ,_i_finish = int_of_custom_arity(fmt$1[0]); _i <= _i_finish; ++_i){
                   buffer_add_char(buf, /* "%" */37);
                   bprint_ignored_flag(buf, ign_flag);
@@ -799,7 +793,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _ign_flag = /* false */0;
                 _fmt = fmt$1[2];
                 continue ;
-                
+            
           }
         }
       };
@@ -1573,7 +1567,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                       ]
                     ];
               }
-              break;
           case 11 : 
               if (typeof ty2 === "number") {
                 throw [
@@ -1829,7 +1822,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 10 : 
                 _fmtty = fmtty[0];
                 continue ;
-                case 13 : 
+            case 13 : 
                 return /* Format_arg_ty */Block.__(8, [
                           fmtty[1],
                           fmtty_of_fmt(fmtty[2])
@@ -1876,7 +1869,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             default:
               _fmtty = fmtty[1];
               continue ;
-              
           }
         }
         if (exit === 1) {
@@ -2003,7 +1995,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         match[1]
                       ];
               }
-              break;
           case 1 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2016,7 +2007,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         match$1[1]
                       ];
               }
-              break;
           case 2 : 
               var match$2 = type_padding(fmt[0], fmtty);
               var match$3 = match$2[1];
@@ -2034,7 +2024,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 3 : 
               var match$5 = type_padding(fmt[0], fmtty);
               var match$6 = match$5[1];
@@ -2052,7 +2041,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 4 : 
               var match$8 = type_padprec(fmt[1], fmt[2], fmtty);
               var match$9 = match$8[2];
@@ -2072,7 +2060,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 5 : 
               var match$11 = type_padprec(fmt[1], fmt[2], fmtty);
               var match$12 = match$11[2];
@@ -2092,7 +2079,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 6 : 
               var match$14 = type_padprec(fmt[1], fmt[2], fmtty);
               var match$15 = match$14[2];
@@ -2112,7 +2098,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 7 : 
               var match$17 = type_padprec(fmt[1], fmt[2], fmtty);
               var match$18 = match$17[2];
@@ -2132,7 +2117,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 8 : 
               var match$20 = type_padprec(fmt[1], fmt[2], fmtty);
               var match$21 = match$20[2];
@@ -2152,7 +2136,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 9 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2165,7 +2148,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 10 : 
               var match$24 = type_format_gen(fmt[0], fmtty);
               return /* Fmt_fmtty_EBB */[
@@ -2210,7 +2192,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 14 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2231,7 +2212,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 15 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2244,7 +2224,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 16 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2257,7 +2236,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 17 : 
               var match$31 = type_format_gen(fmt[1], fmtty);
               return /* Fmt_fmtty_EBB */[
@@ -2312,7 +2290,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 20 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2329,7 +2306,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 21 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2345,7 +2321,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 23 : 
               var ign = fmt[0];
               var fmt$1 = fmt[1];
@@ -2421,7 +2396,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         match[1]
                       ];
               }
-              break;
           case 1 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2434,7 +2408,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 2 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2447,7 +2420,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 3 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2460,7 +2432,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 4 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2473,7 +2444,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 5 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2486,7 +2456,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 6 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2499,7 +2468,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 7 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2512,7 +2480,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 8 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2532,7 +2499,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 9 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2561,7 +2527,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 10 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2574,7 +2539,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 11 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2587,7 +2551,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 12 : 
               throw Type_mismatch;
           case 13 : 
@@ -2602,7 +2565,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           case 14 : 
               if (typeof fmtty === "number") {
                 throw Type_mismatch;
@@ -2615,7 +2577,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 throw Type_mismatch;
               }
-              break;
           
         }
       }
@@ -2733,7 +2694,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else {
               return str;
             }
-            break;
         case 2 : 
             if (prec$1 > len) {
               var res$2 = Bytes.make(prec$1, /* "0" */48);
@@ -2742,7 +2702,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else {
               return str;
             }
-            break;
         
       }
     }
@@ -2927,7 +2886,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         buffer_add_char(buf, /* "%" */37);
         bprint_fconv_flag(buf, fconv);
         buffer_add_char(buf, /* "." */46);
-        buffer_add_string(buf, "" + prec$1);
+        buffer_add_string(buf, String(prec$1));
         buffer_add_char(buf, symb);
         return buffer_contents(buf);
       }
@@ -2968,7 +2927,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 if (switcher !== 55) {
                   _i = i + 1 | 0;
                   continue ;
-                  
                 } else {
                   return /* true */1;
                 }
@@ -2977,7 +2935,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 _i = i + 1 | 0;
                 continue ;
-                
               }
             }
           };
@@ -3197,21 +3154,21 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 _fmt = fmt[0];
                 _acc = /* Acc_flush */Block.__(7, [acc]);
                 continue ;
-                case 11 : 
+            case 11 : 
                 _fmt = fmt[1];
                 _acc = /* Acc_string_literal */Block.__(2, [
                     acc,
                     fmt[0]
                   ]);
                 continue ;
-                case 12 : 
+            case 12 : 
                 _fmt = fmt[1];
                 _acc = /* Acc_char_literal */Block.__(3, [
                     acc,
                     fmt[0]
                   ]);
                 continue ;
-                case 13 : 
+            case 13 : 
                 var rest$3 = fmt[2];
                 var ty = string_of_fmtty(fmt[1]);
                 return (function(k,acc,rest$3,ty){
@@ -3259,7 +3216,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                     fmt[0]
                   ]);
                 continue ;
-                case 18 : 
+            case 18 : 
                 var match = fmt[0];
                 if (match.tag) {
                   var rest$7 = fmt[1];
@@ -3275,7 +3232,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   _acc = /* End_of_acc */0;
                   _k = k$prime;
                   continue ;
-                  
                 } else {
                   var rest$8 = fmt[1];
                   var k$prime$1 = (function(k,acc,rest$8){
@@ -3290,9 +3246,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   _acc = /* End_of_acc */0;
                   _k = k$prime$1;
                   continue ;
-                  
                 }
-                break;
             case 19 : 
                 throw [
                       Caml_builtin_exceptions.assert_failure,
@@ -3631,14 +3585,11 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   Pervasives.output_string(o, "@[");
                   _acc = match[0];
                   continue ;
-                  
                 } else {
                   Pervasives.output_string(o, "@{");
                   _acc = match[0];
                   continue ;
-                  
                 }
-                break;
             case 2 : 
             case 4 : 
                 exit = 1;
@@ -3694,14 +3645,11 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   Buffer.add_string(b, "@[");
                   _acc = match[0];
                   continue ;
-                  
                 } else {
                   Buffer.add_string(b, "@{");
                   _acc = match[0];
                   continue ;
-                  
                 }
-                break;
             case 2 : 
             case 4 : 
                 exit = 1;
@@ -3716,7 +3664,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 7 : 
                 _acc = acc[0];
                 continue ;
-                case 8 : 
+            case 8 : 
                 bufput_acc(b, acc[0]);
                 throw [
                       Caml_builtin_exceptions.invalid_argument,
@@ -3757,14 +3705,11 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   Buffer.add_string(b, "@[");
                   _acc = match[0];
                   continue ;
-                  
                 } else {
                   Buffer.add_string(b, "@{");
                   _acc = match[0];
                   continue ;
-                  
                 }
-                break;
             case 2 : 
             case 4 : 
                 exit = 1;
@@ -3779,7 +3724,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 7 : 
                 _acc = acc[0];
                 continue ;
-                case 8 : 
+            case 8 : 
                 strput_acc(b, acc[0]);
                 throw [
                       Caml_builtin_exceptions.invalid_argument,
@@ -3846,12 +3791,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 } else {
                   _i = i + 1 | 0;
                   continue ;
-                  
                 }
               } else {
                 _i = i + 1 | 0;
                 continue ;
-                
               }
             }
           };
@@ -3868,7 +3811,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 _j = j + 1 | 0;
                 continue ;
-                
               }
             }
           };
@@ -3886,14 +3828,12 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 } else {
                   _j = j + 1 | 0;
                   continue ;
-                  
                 }
               } else if (match !== 45) {
                 return j;
               } else {
                 _j = j + 1 | 0;
                 continue ;
-                
               }
             }
           };
@@ -4275,7 +4215,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               if (legacy_behavior$1) {
                 _sharp = /* false */0;
                 continue ;
-                
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "'#'");
               }
@@ -4288,14 +4227,12 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 if (legacy_behavior$1) {
                   _space = /* false */0;
                   continue ;
-                  
                 } else {
                   return incompatible_flag(pct_ind, str_ind, /* " " */32, "'+'");
                 }
               } else if (legacy_behavior$1) {
                 _plus = /* false */0;
                 continue ;
-                
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "'+'");
               }
@@ -4303,7 +4240,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               if (legacy_behavior$1) {
                 _space = /* false */0;
                 continue ;
-                
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "' '");
               }
@@ -4375,7 +4311,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             _acc = new_acc;
             _str_ind = str_ind + 1 | 0;
             continue ;
-            
           }
         };
       };
@@ -4388,12 +4323,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         };
         if (typeof pad === "number") {
           var exit = 0;
-          if (typeof prec === "number") {
-            if (prec !== 0) {
-              exit = 1;
-            } else {
-              return parse_conv(/* No_padding */0);
-            }
+          if (typeof prec === "number" && prec === 0) {
+            return parse_conv(/* No_padding */0);
           } else {
             exit = 1;
           }
@@ -4500,7 +4431,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               if (match !== 64) {
                 _str_ind = str_ind + 1 | 0;
                 continue ;
-                
               } else {
                 var match$1 = parse_after_at(str_ind + 1 | 0, end_ind);
                 return add_literal(lit_start, str_ind, match$1[0]);
@@ -4605,7 +4535,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                                   match$4[0]
                                 ])];
                     }
-                    break;
                 case 12 : 
                     var beg_ind$4 = str_ind + 1 | 0;
                     var match$5 = parse_literal(beg_ind$4, beg_ind$4, end_ind);
@@ -4755,9 +4684,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                     }
                     catch (raw_exn$1){
                       var exn$1 = Js_exn.internalToOCamlException(raw_exn$1);
-                      if (exn$1 === Caml_builtin_exceptions.not_found) {
-                        match$13 = /* None */0;
-                      } else if (exn$1[0] === Caml_builtin_exceptions.failure) {
+                      if (exn$1 === Caml_builtin_exceptions.not_found || exn$1[0] === Caml_builtin_exceptions.failure) {
                         match$13 = /* None */0;
                       } else {
                         throw exn$1;
@@ -4870,7 +4797,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           if (Caml_string.get(str, str_ind) === /* " " */32) {
             _str_ind = str_ind + 1 | 0;
             continue ;
-            
           } else {
             return str_ind;
           }
@@ -4928,7 +4854,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               if (legacy_behavior$1) {
                 _space = /* false */0;
                 continue ;
-                
               } else {
                 return incompatible_flag(pct_ind, str_ind, /* " " */32, "'+'");
               }
@@ -4967,7 +4892,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 if (legacy_behavior$1) {
                   _plus = /* false */0;
                   continue ;
-                  
                 } else {
                   return incompatible_flag(pct_ind, str_ind, symb, "'+'");
                 }
@@ -5009,7 +4933,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               if (legacy_behavior$1) {
                 _space = /* false */0;
                 continue ;
-                
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "' '");
               }
@@ -5092,7 +5015,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           if (match !== 37) {
             _str_ind = str_ind + 1 | 0;
             continue ;
-            
           } else {
             if ((str_ind + 1 | 0) === end_ind) {
               invalid_format_message(end_ind, "unexpected end of format");
@@ -5112,7 +5034,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                           var sub_end = search_subformat_end(str_ind + 2 | 0, end_ind, /* "}" */125);
                           _str_ind = sub_end + 2 | 0;
                           continue ;
-                          case 1 : 
+                      case 1 : 
                           exit = 1;
                           break;
                       case 2 : 
@@ -5131,18 +5053,15 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                     if (match$2 !== 123) {
                       _str_ind = str_ind + 3 | 0;
                       continue ;
-                      
                     } else {
                       var sub_end$1 = search_subformat_end(str_ind + 3 | 0, end_ind, /* "}" */125);
                       _str_ind = sub_end$1 + 2 | 0;
                       continue ;
-                      
                     }
                   } else {
                     var sub_end$2 = search_subformat_end(str_ind + 3 | 0, end_ind, /* ")" */41);
                     _str_ind = sub_end$2 + 2 | 0;
                     continue ;
-                    
                   }
                 }
               } else if (match$1 !== 40) {
@@ -5155,12 +5074,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 var sub_end$3 = search_subformat_end(str_ind + 2 | 0, end_ind, /* ")" */41);
                 _str_ind = sub_end$3 + 2 | 0;
                 continue ;
-                
               }
               if (exit === 1) {
                 _str_ind = str_ind + 2 | 0;
                 continue ;
-                
               }
               
             }
@@ -5965,19 +5882,19 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   set_flag(str_ind$1, space);
                   _str_ind = str_ind$1 + 1 | 0;
                   continue ;
-                  case 3 : 
+              case 3 : 
                   set_flag(str_ind$1, sharp);
                   _str_ind = str_ind$1 + 1 | 0;
                   continue ;
-                  case 11 : 
+              case 11 : 
                   set_flag(str_ind$1, plus);
                   _str_ind = str_ind$1 + 1 | 0;
                   continue ;
-                  case 13 : 
+              case 13 : 
                   set_flag(str_ind$1, minus);
                   _str_ind = str_ind$1 + 1 | 0;
                   continue ;
-                  case 1 : 
+              case 1 : 
               case 2 : 
               case 4 : 
               case 5 : 
@@ -5995,7 +5912,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   set_flag(str_ind$1, zero);
                   _str_ind = str_ind$1 + 1 | 0;
                   continue ;
-                  
+              
             }
           }
           if (exit === 1) {
@@ -6230,12 +6147,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   }
                   var c$prime$2 = Caml_string.get(str, str_ind$1 + 1 | 0);
                   var exit$2 = 0;
-                  if (c$prime$2 !== 37) {
-                    if (c$prime$2 !== 64) {
-                      return fail_single_percent(str_ind$1);
-                    } else {
-                      exit$2 = 1;
-                    }
+                  if (c$prime$2 !== 37 && c$prime$2 !== 64) {
+                    return fail_single_percent(str_ind$1);
                   } else {
                     exit$2 = 1;
                   }
@@ -6267,7 +6180,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               _c = c$prime;
               _str_ind = str_ind + 1 | 0;
               continue ;
-              
             }
             
           };
@@ -6289,7 +6201,6 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               add_in_char_set(char_set, /* "-" */45);
               _str_ind = str_ind + 1 | 0;
               continue ;
-              
             }
           };
         };
@@ -6319,27 +6230,21 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               ];
       };
       var check_open_box = function (fmt) {
-        if (typeof fmt === "number") {
+        if (typeof fmt === "number" || !(fmt.tag === 11 && typeof fmt[1] === "number")) {
           return /* () */0;
-        } else if (fmt.tag === 11) {
-          if (typeof fmt[1] === "number") {
-            try {
-              open_box_of_string(fmt[0]);
-              return /* () */0;
-            }
-            catch (raw_exn){
-              var exn = Js_exn.internalToOCamlException(raw_exn);
-              if (exn[0] === Caml_builtin_exceptions.failure) {
-                return /* () */0;
-              } else {
-                throw exn;
-              }
-            }
-          } else {
+        } else {
+          try {
+            open_box_of_string(fmt[0]);
             return /* () */0;
           }
-        } else {
-          return /* () */0;
+          catch (raw_exn){
+            var exn = Js_exn.internalToOCamlException(raw_exn);
+            if (exn[0] === Caml_builtin_exceptions.failure) {
+              return /* () */0;
+            } else {
+              throw exn;
+            }
+          }
         }
       };
       var parse_tag = function (is_open_tag, str_ind, end_ind) {

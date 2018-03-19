@@ -12,7 +12,6 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
           } else {
             _t = x < v ? t.left : t.right;
             continue ;
-            
           }
         } else {
           return /* false */0;
@@ -24,24 +23,19 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
       while(true) {
         var e2 = _e2;
         var e1 = _e1;
-        if (e1) {
-          if (e2) {
-            var h2 = e2[0];
-            var h1 = e1[0];
-            var k1 = h1.value;
-            var k2 = h2.value;
-            if (k1 === k2) {
-              _e2 = Belt_internalAVLset.stackAllLeft(h2.right, e2[1]);
-              _e1 = Belt_internalAVLset.stackAllLeft(h1.right, e1[1]);
-              continue ;
-              
-            } else if (k1 < k2) {
-              return -1;
-            } else {
-              return 1;
-            }
+        if (e1 && e2) {
+          var h2 = e2[0];
+          var h1 = e1[0];
+          var k1 = h1.value;
+          var k2 = h2.value;
+          if (k1 === k2) {
+            _e2 = Belt_internalAVLset.stackAllLeft(h2.right, e2[1]);
+            _e1 = Belt_internalAVLset.stackAllLeft(h1.right, e1[1]);
+            continue ;
+          } else if (k1 < k2) {
+            return -1;
           } else {
-            return 0;
+            return 1;
           }
         } else {
           return 0;
@@ -82,7 +76,6 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
                 _s2 = r2;
                 _s1 = r1;
                 continue ;
-                
               } else {
                 return /* false */0;
               }
@@ -90,14 +83,12 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
               if (subset(Belt_internalAVLset.create(l1, v1, Belt_internalAVLset.empty), l2)) {
                 _s1 = r1;
                 continue ;
-                
               } else {
                 return /* false */0;
               }
             } else if (subset(Belt_internalAVLset.create(Belt_internalAVLset.empty, v1, r1), r2)) {
               _s1 = l1;
               continue ;
-              
             } else {
               return /* false */0;
             }
@@ -120,7 +111,6 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
           } else {
             _n = x < v ? n.left : n.right;
             continue ;
-            
           }
         } else {
           return /* None */0;
@@ -138,7 +128,6 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
           } else {
             _n = x < v ? n.left : n.right;
             continue ;
-            
           }
         } else {
           return undefined;
@@ -156,7 +145,6 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
           } else {
             _n = x < v ? n.left : n.right;
             continue ;
-            
           }
         } else {
           throw new Error("getExn");
@@ -184,7 +172,7 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
       }
     }
     
-    function ofArray(xs) {
+    function fromArray(xs) {
       var len = xs.length;
       if (len === 0) {
         return Belt_internalAVLset.empty;
@@ -192,10 +180,10 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
         var next = Belt_SortArrayString.strictlySortedLength(xs);
         var result;
         if (next >= 0) {
-          result = Belt_internalAVLset.ofSortedArrayAux(xs, 0, next);
+          result = Belt_internalAVLset.fromSortedArrayAux(xs, 0, next);
         } else {
           next = -next | 0;
-          result = Belt_internalAVLset.ofSortedArrayRevAux(xs, next - 1 | 0, next);
+          result = Belt_internalAVLset.fromSortedArrayRevAux(xs, next - 1 | 0, next);
         }
         for(var i = next ,i_finish = len - 1 | 0; i <= i_finish; ++i){
           result = addMutate(result, xs[i]);
@@ -222,7 +210,7 @@ define(["exports", "./belt_internalAVLset.js", "./belt_SortArrayString.js"],
     exports.getUndefined = getUndefined;
     exports.getExn = getExn;
     exports.addMutate = addMutate;
-    exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     
   })
 /* No side effect */

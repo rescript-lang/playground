@@ -43,7 +43,6 @@ define(["exports"],
           dict[match[0]] = match[1];
           _param = param[1];
           continue ;
-          
         } else {
           return dict;
         }

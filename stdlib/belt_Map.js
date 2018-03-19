@@ -2,11 +2,11 @@
 define(["exports", "./curry.js", "./belt_MapDict.js"],
   function(exports, Curry, Belt_MapDict){
     'use strict';
-    function ofArray(data, id) {
+    function fromArray(data, id) {
       var cmp = id[/* cmp */0];
       return {
               cmp: cmp,
-              data: Belt_MapDict.ofArray(data, cmp)
+              data: Belt_MapDict.fromArray(data, cmp)
             };
     }
     
@@ -302,6 +302,8 @@ define(["exports", "./curry.js", "./belt_MapDict.js"],
     
     var Dict = 0;
     
+    var ofArray = fromArray;
+    
     exports.Int = Int;
     exports.$$String = $$String;
     exports.Dict = Dict;
@@ -324,6 +326,7 @@ define(["exports", "./curry.js", "./belt_MapDict.js"],
     exports.toArray = toArray;
     exports.toList = toList;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
     exports.minKey = minKey;

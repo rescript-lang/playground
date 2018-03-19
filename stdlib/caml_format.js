@@ -118,7 +118,6 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
             if (a === /* "_" */95) {
               _k = k + 1 | 0;
               continue ;
-              
             } else {
               var v = parse_digit(a);
               if (v < 0 || v >= base) {
@@ -137,7 +136,6 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                   _k = k + 1 | 0;
                   _acc = acc$1;
                   continue ;
-                  
                 }
               }
             }
@@ -212,7 +210,6 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
             if (a === /* "_" */95) {
               _k = k + 1 | 0;
               continue ;
-              
             } else {
               var v = Caml_int64.of_int32(parse_digit(a));
               if (Caml_int64.lt(v, /* int64 */[
@@ -228,7 +225,6 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                 _k = k + 1 | 0;
                 _acc = acc$1;
                 continue ;
-                
               }
             }
           }
@@ -311,7 +307,7 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                       f[/* uppercase */7] = /* true */1;
                       _i = i + 1 | 0;
                       continue ;
-                      case 13 : 
+                  case 13 : 
                   case 14 : 
                   case 15 : 
                       exit = 5;
@@ -324,11 +320,11 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                       f[/* base */4] = /* Oct */0;
                       _i = i + 1 | 0;
                       continue ;
-                      case 29 : 
+                  case 29 : 
                       f[/* base */4] = /* Dec */2;
                       _i = i + 1 | 0;
                       continue ;
-                      case 1 : 
+                  case 1 : 
                   case 2 : 
                   case 3 : 
                   case 4 : 
@@ -358,7 +354,7 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                       f[/* base */4] = /* Hex */1;
                       _i = i + 1 | 0;
                       continue ;
-                      
+                  
                 }
               }
             } else if (c >= 72) {
@@ -369,7 +365,6 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
               f[/* conv */10] = String.fromCharCode(lowercase(c));
               _i = i + 1 | 0;
               continue ;
-              
             }
           } else {
             var switcher = c - 32 | 0;
@@ -381,7 +376,7 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                     f[/* alternate */3] = /* true */1;
                     _i = i + 1 | 0;
                     continue ;
-                    case 0 : 
+                case 0 : 
                 case 11 : 
                     exit = 2;
                     break;
@@ -389,7 +384,7 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                     f[/* justify */0] = "-";
                     _i = i + 1 | 0;
                     continue ;
-                    case 14 : 
+                case 14 : 
                     f[/* prec */9] = 0;
                     var j = i + 1 | 0;
                     while((function(j){
@@ -403,7 +398,7 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                     };
                     _i = j;
                     continue ;
-                    case 1 : 
+                case 1 : 
                 case 2 : 
                 case 4 : 
                 case 5 : 
@@ -420,7 +415,7 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                     f[/* filter */2] = "0";
                     _i = i + 1 | 0;
                     continue ;
-                    case 17 : 
+                case 17 : 
                 case 18 : 
                 case 19 : 
                 case 20 : 
@@ -439,11 +434,11 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
             case 1 : 
                 _i = i + 1 | 0;
                 continue ;
-                case 2 : 
+            case 2 : 
                 f[/* signstyle */1] = String.fromCharCode(c);
                 _i = i + 1 | 0;
                 continue ;
-                case 3 : 
+            case 3 : 
                 f[/* width */6] = 0;
                 var j$1 = i;
                 while((function(j$1){
@@ -457,17 +452,17 @@ define(["exports", "./curry.js", "./caml_int32.js", "./caml_int64.js", "./caml_u
                 };
                 _i = j$1;
                 continue ;
-                case 4 : 
+            case 4 : 
                 f[/* signedconv */5] = /* true */1;
                 f[/* base */4] = /* Dec */2;
                 _i = i + 1 | 0;
                 continue ;
-                case 5 : 
+            case 5 : 
                 f[/* signedconv */5] = /* true */1;
                 f[/* conv */10] = String.fromCharCode(c);
                 _i = i + 1 | 0;
                 continue ;
-                
+            
           }
         }
       };

@@ -27,7 +27,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                 if (typeof match === "number") {
                   _d = d2;
                   continue ;
-                  
                 } else if (match.tag) {
                   throw [
                         Caml_builtin_exceptions.assert_failure,
@@ -46,7 +45,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                               ])
                           ]);
                 }
-                break;
             case 2 : 
                 var f = d[0];
                 var tag = f.tag | 0;
@@ -54,7 +52,7 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                     tag === 246 ? CamlinternalLazy.force_lazy_block(f) : f
                   );
                 continue ;
-                case 3 : 
+            case 3 : 
                 var g = d[0];
                 var match$1 = g[/* curr */0];
                 if (match$1) {
@@ -80,7 +78,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                     return /* Sempty */0;
                   }
                 }
-                break;
             case 4 : 
                 var b = d[0];
                 if (b[/* ind */3] >= b[/* len */2]) {
@@ -96,7 +93,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                             d
                           ]);
                 }
-                break;
             
           }
         }
@@ -129,7 +125,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                   s[1] = d;
                   return /* Some */[d[0]];
                 }
-                break;
             case 2 : 
                 var f = match[0];
                 var tag = f.tag | 0;
@@ -137,7 +132,7 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                     tag === 246 ? CamlinternalLazy.force_lazy_block(f) : f
                   );
                 continue ;
-                case 3 : 
+            case 3 : 
                 var g = match[0];
                 var match$1 = g[/* curr */0];
                 if (match$1) {
@@ -147,7 +142,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
                   g[/* curr */0] = /* Some */[x];
                   return x;
                 }
-                break;
             case 4 : 
                 var b = match[0];
                 if (b[/* ind */3] >= b[/* len */2]) {
@@ -201,7 +195,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
           var match$2 = peek(s);
           if (match$2) {
             continue ;
-            
           } else {
             return /* () */0;
           }
@@ -279,7 +272,6 @@ define(["exports", "./list.js", "./block.js", "./curry.js", "./caml_bytes.js", "
           Curry._1(f, match[0]);
           _param = /* () */0;
           continue ;
-          
         } else {
           return /* () */0;
         }

@@ -65,10 +65,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
       }
     }
     
-    function string_of_int(param) {
-      return "" + param;
-    }
-    
     function valid_float_lexem(s) {
       var l = s.length;
       var _i = 0;
@@ -84,14 +80,12 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
             } else {
               _i = i + 1 | 0;
               continue ;
-              
             }
           } else if (match !== 45) {
             return s;
           } else {
             _i = i + 1 | 0;
             continue ;
-            
           }
         }
       };
@@ -167,7 +161,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
           }
           _param = param[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -277,7 +270,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
             _len = len - r | 0;
             _ofs = ofs + r | 0;
             continue ;
-            
           }
         }
       };
@@ -312,7 +304,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
             _param = param[1];
             _pos = pos - len | 0;
             continue ;
-            
           } else {
             return buf;
           }
@@ -351,7 +342,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
               accu
             ];
             continue ;
-            
           }
         };
       };
@@ -380,16 +370,11 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
     }
     
     function print_int(i) {
-      return output_string(stdout, "" + i);
+      return output_string(stdout, String(i));
     }
     
     function print_float(f) {
       return output_string(stdout, valid_float_lexem(Caml_format.caml_format_float("%.12g", f)));
-    }
-    
-    function print_endline(param) {
-      console.log(param);
-      return 0;
     }
     
     function print_newline() {
@@ -410,16 +395,11 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
     }
     
     function prerr_int(i) {
-      return output_string(stderr, "" + i);
+      return output_string(stderr, String(i));
     }
     
     function prerr_float(f) {
       return output_string(stderr, valid_float_lexem(Caml_format.caml_format_float("%.12g", f)));
-    }
-    
-    function prerr_endline(param) {
-      console.error(param);
-      return 0;
     }
     
     function prerr_newline() {
@@ -472,16 +452,6 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
     }
     
     var max_int = 2147483647;
-    
-    var infinity = Infinity;
-    
-    var neg_infinity = -Infinity;
-    
-    var nan = NaN;
-    
-    var max_float = Number.MAX_VALUE;
-    
-    var min_float = Number.MIN_VALUE;
     
     var epsilon_float = 2.220446049250313e-16;
     
@@ -583,16 +553,10 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
     exports.max_int = max_int;
     exports.min_int = min_int;
     exports.lnot = lnot;
-    exports.infinity = infinity;
-    exports.neg_infinity = neg_infinity;
-    exports.nan = nan;
-    exports.max_float = max_float;
-    exports.min_float = min_float;
     exports.epsilon_float = epsilon_float;
     exports.char_of_int = char_of_int;
     exports.string_of_bool = string_of_bool;
     exports.bool_of_string = bool_of_string;
-    exports.string_of_int = string_of_int;
     exports.string_of_float = string_of_float;
     exports.$at = $at;
     exports.stdin = stdin;
@@ -603,14 +567,12 @@ define(["exports", "./curry.js", "./caml_io.js", "./caml_sys.js", "./caml_format
     exports.print_bytes = print_bytes;
     exports.print_int = print_int;
     exports.print_float = print_float;
-    exports.print_endline = print_endline;
     exports.print_newline = print_newline;
     exports.prerr_char = prerr_char;
     exports.prerr_string = prerr_string;
     exports.prerr_bytes = prerr_bytes;
     exports.prerr_int = prerr_int;
     exports.prerr_float = prerr_float;
-    exports.prerr_endline = prerr_endline;
     exports.prerr_newline = prerr_newline;
     exports.read_line = read_line;
     exports.read_int = read_int;

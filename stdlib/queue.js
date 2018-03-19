@@ -88,7 +88,6 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
               _cell = cell[/* next */1];
               _prev = res;
               continue ;
-              
             } else {
               return 0;
             }
@@ -120,7 +119,6 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
           if (cell !== tail) {
             _cell = cell[/* next */1];
             continue ;
-            
           } else {
             return 0;
           }
@@ -147,7 +145,6 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
             _cell = cell[/* next */1];
             _accu = accu$2;
             continue ;
-            
           }
         };
       }

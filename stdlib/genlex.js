@@ -85,7 +85,7 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                     case 32 : 
                         Stream.junk(strm__);
                         continue ;
-                        case 34 : 
+                    case 34 : 
                         Stream.junk(strm__);
                         reset_buffer(/* () */0);
                         return /* Some */[/* String */Block.__(4, [string(strm__)])];
@@ -122,7 +122,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                                 ""
                               ];
                         }
-                        break;
                     case 40 : 
                         Stream.junk(strm__);
                         var strm__$1 = strm__;
@@ -295,7 +294,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                         Stream.junk(strm__$3);
                         store(c$3);
                         continue ;
-                        
                       }
                       
                     } else {
@@ -390,7 +388,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
               Stream.junk(strm__);
               store(c);
               continue ;
-              
             }
             
           } else {
@@ -423,7 +420,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                 Stream.junk(strm__);
                 store(c);
                 continue ;
-                
               } else {
                 exit = 1;
               }
@@ -444,7 +440,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                       Stream.junk(strm__$1);
                       store(c$1);
                       continue ;
-                      
                     }
                   } else if (switcher > 31 || switcher < 1) {
                     Stream.junk(strm__$1);
@@ -497,7 +492,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
               Stream.junk(strm__);
               store(c);
               continue ;
-              
             }
           } else {
             return /* Some */[/* Float */Block.__(3, [Caml_format.caml_float_of_string(get_string(/* () */0))])];
@@ -514,7 +508,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
               if (c !== 92) {
                 store(c);
                 continue ;
-                
               } else {
                 var c$1;
                 try {
@@ -532,7 +525,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                 }
                 store(c$1);
                 continue ;
-                
               }
             } else {
               return get_string(/* () */0);
@@ -651,7 +643,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
             if (switcher > 2 || switcher < 0) {
               Stream.junk(strm__);
               continue ;
-              
             } else {
               switch (switcher) {
                 case 0 : 
@@ -673,7 +664,7 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                 case 1 : 
                     Stream.junk(strm__);
                     continue ;
-                    case 2 : 
+                case 2 : 
                     Stream.junk(strm__);
                     var strm__$2 = strm__;
                     while(true) {
@@ -686,7 +677,6 @@ define(["exports", "./char.js", "./list.js", "./block.js", "./bytes.js", "./stre
                             return comment(strm__$2);
                           } else {
                             continue ;
-                            
                           }
                         } else {
                           return /* () */0;

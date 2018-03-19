@@ -84,7 +84,6 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
           if (llist[1]) {
             _llist = merge2(llist);
             continue ;
-            
           } else {
             return llist[0];
           }
@@ -144,12 +143,10 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
               qsort(lo, j);
               _lo = i;
               continue ;
-              
             } else {
               qsort(i, hi);
               _hi = j;
               continue ;
-              
             }
           } else {
             return 0;

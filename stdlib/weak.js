@@ -61,11 +61,9 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                             _accu = Curry._2(f, match[0], accu);
                             _i = i + 1 | 0;
                             continue ;
-                            
                           } else {
                             _i = i + 1 | 0;
                             continue ;
-                            
                           }
                         }
                       };
@@ -85,11 +83,9 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                             Curry._1(f, match[0]);
                             _i = i + 1 | 0;
                             continue ;
-                            
                           } else {
                             _i = i + 1 | 0;
                             continue ;
-                            
                           }
                         }
                       };
@@ -110,11 +106,9 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                             Curry._3(f, b, Caml_array.caml_array_get(t[/* hashes */1], j), i);
                             _i = i + 1 | 0;
                             continue ;
-                            
                           } else {
                             _i = i + 1 | 0;
                             continue ;
-                            
                           }
                         }
                       };
@@ -132,7 +126,6 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
             ) | 0;
             _i = i + 1 | 0;
             continue ;
-            
           }
         };
       };
@@ -162,18 +155,15 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                 if (Caml_weak.caml_weak_check(bucket, i)) {
                   _i = i + 1 | 0;
                   continue ;
-                  
                 } else if (Caml_weak.caml_weak_check(bucket, j)) {
                   Caml_weak.caml_weak_blit(bucket, j, bucket, i, 1);
                   Caml_array.caml_array_set(hbucket, i, Caml_array.caml_array_get(hbucket, j));
                   _j = j - 1 | 0;
                   _i = i + 1 | 0;
                   continue ;
-                  
                 } else {
                   _j = j - 1 | 0;
                   continue ;
-                  
                 }
               } else {
                 return 0;
@@ -258,7 +248,6 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
           } else if (Caml_weak.caml_weak_check(bucket, i)) {
             _i = i + 1 | 0;
             continue ;
-            
           } else {
             Curry._3(setter, bucket, i, d);
             return Caml_array.caml_array_set(hashes, i, h);
@@ -290,22 +279,18 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                 } else {
                   _i = i + 1 | 0;
                   continue ;
-                  
                 }
               } else {
                 _i = i + 1 | 0;
                 continue ;
-                
               }
             } else {
               _i = i + 1 | 0;
               continue ;
-              
             }
           } else {
             _i = i + 1 | 0;
             continue ;
-            
           }
         };
       };
@@ -339,17 +324,14 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
               } else {
                 _i = i + 1 | 0;
                 continue ;
-                
               }
             } else {
               _i = i + 1 | 0;
               continue ;
-              
             }
           } else {
             _i = i + 1 | 0;
             continue ;
-            
           }
         };
       };
@@ -388,26 +370,21 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                   ];
                   _i = i + 1 | 0;
                   continue ;
-                  
                 } else {
                   _i = i + 1 | 0;
                   continue ;
-                  
                 }
               } else {
                 _i = i + 1 | 0;
                 continue ;
-                
               }
             } else {
               _i = i + 1 | 0;
               continue ;
-              
             }
           } else {
             _i = i + 1 | 0;
             continue ;
-            
           }
         };
       };

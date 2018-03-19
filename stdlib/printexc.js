@@ -152,7 +152,6 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
           } else {
             _param = param[1];
             continue ;
-            
           }
         } else if (x === Caml_builtin_exceptions.out_of_memory) {
           return "Out of memory";
@@ -415,7 +414,6 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
               } else {
                 _i = i - 1 | 0;
                 continue ;
-                
               }
             } else {
               return /* false */0;

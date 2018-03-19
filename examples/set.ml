@@ -1,16 +1,19 @@
 
-module S = Belt.Set.Int 
+module S = Belt.Set.Int
 let data = [|1;2;3;4;4;3|]
 
-let v  = S.ofArray data 
+let v  = S.fromArray data
 
 let () = Js.log (S.toArray v)
 
 module S0 = Belt.Set
-module Id = 
-  (val Belt.Id.comparableU 
-    ~cmp:(fun[@bs] (a : int) b -> b - a))
+module Id =
+   Belt.Id.MakeComparableU(struct
+    type t = int
+    let cmp = fun[@bs] a b -> b - a
+   end)
 
-let v1 = S0.ofArray ~id:(module Id) data
+
+let v1 = S0.fromArray ~id:(module Id) data
 
 let () = Js.log (S0.toArray v1)

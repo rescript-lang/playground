@@ -17,7 +17,6 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
           ndata_tail[nidx] = old_bucket;
           _old_bucket = old_bucket.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -35,7 +34,6 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
           if (match !== undefined) {
             _cell = match;
             continue ;
-            
           } else {
             return /* true */1;
           }
@@ -121,7 +119,6 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
                 _buckets = cell_next;
                 _prec = buckets;
                 continue ;
-                
               }
             } else {
               return /* () */0;
@@ -161,7 +158,6 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
                       } else {
                         _buckets = buckets.next;
                         continue ;
-                        
                       }
                     } else {
                       return /* None */0;
@@ -197,7 +193,6 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
             if (match !== undefined) {
               _cell = match;
               continue ;
-              
             } else {
               return /* false */0;
             }
@@ -216,7 +211,7 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
       return prim.size;
     }
     
-    function ofArray(arr) {
+    function fromArray(arr) {
       var len = arr.length;
       var v = Belt_internalBucketsType.make(/* () */0, /* () */0, len);
       for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
@@ -263,6 +258,8 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
     
     var logStats = Belt_internalBuckets.logStats;
     
+    var ofArray = fromArray;
+    
     exports.make = make;
     exports.clear = clear;
     exports.isEmpty = isEmpty;
@@ -281,10 +278,11 @@ define(["exports", "./caml_hash.js", "./belt_internalBuckets.js", "./belt_intern
     exports.toArray = toArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
-    exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.mergeMany = mergeMany;
     exports.getBucketHistogram = getBucketHistogram;
     exports.logStats = logStats;
+    exports.ofArray = ofArray;
     
   })
 /* No side effect */

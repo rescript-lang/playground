@@ -698,7 +698,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
             }
             catch (exn$2){
               if (exn$2 === Caml_builtin_exceptions.not_found) {
-                service = "" + p;
+                service = String(p);
               } else {
                 throw exn$2;
               }
@@ -733,7 +733,6 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
                 throw exn;
               } else {
                 continue ;
-                
               }
             } else {
               throw exn;
@@ -1161,7 +1160,6 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
                 throw exn;
               } else {
                 continue ;
-                
               }
             } else {
               throw exn;

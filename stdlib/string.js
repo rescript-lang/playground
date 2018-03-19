@@ -99,14 +99,12 @@ define(["exports", "./list.js", "./bytes.js", "./caml_int32.js", "./caml_string.
                 } else {
                   _i = i + 1 | 0;
                   continue ;
-                  
                 }
               } else if (switcher > 57 || switcher < 1) {
                 return /* true */1;
               } else {
                 _i = i + 1 | 0;
                 continue ;
-                
               }
             } else {
               return /* true */1;

@@ -16,7 +16,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _prec = ncopy;
           _c = c.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -63,7 +62,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _buckets = buckets.next;
           _accu = accu + 1 | 0;
           continue ;
-          
         } else {
           return accu;
         }
@@ -77,7 +75,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           f(buckets.key, buckets.value);
           _buckets = buckets.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -104,7 +101,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _accu = f(accu, b.key, b.value);
           _b = b.next;
           continue ;
-          
         } else {
           return accu;
         }
@@ -175,7 +171,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
             _cell = n;
             _prec = cell;
             continue ;
-            
           } else {
             cell.next = n;
             return /* () */0;
@@ -185,7 +180,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           if (n !== undefined) {
             _cell = n;
             continue ;
-            
           } else if (prec !== undefined) {
             prec.next = n;
             return /* () */0;
@@ -226,7 +220,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _cell = match;
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return i + 1 | 0;
         }
@@ -243,7 +236,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _cell = match;
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return i + 1 | 0;
         }

@@ -142,8 +142,13 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
       }
     }
     
-    function cat(a, b) {
-      return a.concat(b);
+    function cat(s1, s2) {
+      var l1 = s1.length;
+      var l2 = s2.length;
+      var r = Caml_string.caml_create_string(l1 + l2 | 0);
+      Caml_string.caml_blit_bytes(s1, 0, r, 0, l1);
+      Caml_string.caml_blit_bytes(s2, 0, r, l1, l2);
+      return r;
     }
     
     function is_space(param) {
@@ -347,7 +352,6 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
         } else {
           _i = i + 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -378,7 +382,6 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
         } else {
           _i = i - 1 | 0;
           continue ;
-          
         }
       };
     }

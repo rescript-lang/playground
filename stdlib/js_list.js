@@ -12,7 +12,6 @@ define(["exports", "./js_vector.js"],
           _param = param[1];
           _len = len + 1 | 0;
           continue ;
-          
         } else {
           return len;
         }
@@ -62,7 +61,6 @@ define(["exports", "./js_vector.js"],
               _n = n$1 - 1 | 0;
               _l = l$1[1];
               continue ;
-              
             }
           } else {
             return /* None */0;
@@ -82,7 +80,6 @@ define(["exports", "./js_vector.js"],
           ];
           _l1 = l1[1];
           continue ;
-          
         } else {
           return l2;
         }
@@ -104,7 +101,6 @@ define(["exports", "./js_vector.js"],
             acc
           ];
           continue ;
-          
         } else {
           return acc;
         }
@@ -126,7 +122,6 @@ define(["exports", "./js_vector.js"],
           f(param[0]);
           _param = param[1];
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -145,7 +140,6 @@ define(["exports", "./js_vector.js"],
           _param = param[1];
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -160,7 +154,6 @@ define(["exports", "./js_vector.js"],
           _l = l[1];
           _accu = f(accu, l[0]);
           continue ;
-          
         } else {
           return accu;
         }
@@ -175,7 +168,6 @@ define(["exports", "./js_vector.js"],
           _param = param[1];
           _acc = f(param[0], acc);
           continue ;
-          
         } else {
           return acc;
         }
@@ -209,7 +201,6 @@ define(["exports", "./js_vector.js"],
           _lx = lx$1[1];
           _acc = revAppend(lx$1[0], acc);
           continue ;
-          
         } else {
           return revAppend(acc, /* [] */0);
         }
@@ -231,10 +222,8 @@ define(["exports", "./js_vector.js"],
               acc
             ];
             continue ;
-            
           } else {
             continue ;
-            
           }
         } else {
           return acc;
@@ -260,10 +249,8 @@ define(["exports", "./js_vector.js"],
               acc
             ];
             continue ;
-            
           } else {
             continue ;
-            
           }
         } else {
           return acc;
@@ -286,7 +273,6 @@ define(["exports", "./js_vector.js"],
           _xs = xs$1[1];
           _acc = f$1(xs$1[0]) ? acc + 1 | 0 : acc;
           continue ;
-          
         } else {
           return acc;
         }
@@ -310,7 +296,6 @@ define(["exports", "./js_vector.js"],
             _param = param[1];
             _i = i + 1 | 0;
             continue ;
-            
           } else {
             return a;
           }
@@ -325,15 +310,10 @@ define(["exports", "./js_vector.js"],
         var ys = _ys;
         var xs = _xs;
         if (xs) {
-          if (ys) {
-            if (cmp(xs[0], ys[0])) {
-              _ys = ys[1];
-              _xs = xs[1];
-              continue ;
-              
-            } else {
-              return /* false */0;
-            }
+          if (ys && cmp(xs[0], ys[0])) {
+            _ys = ys[1];
+            _xs = xs[1];
+            continue ;
           } else {
             return /* false */0;
           }

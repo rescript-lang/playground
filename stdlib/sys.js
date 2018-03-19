@@ -14,10 +14,6 @@ define(["exports", "./caml_sys.js", "./caml_exceptions.js"],
     
     var cygwin = /* false */0;
     
-    var max_array_length = 2147483647;
-    
-    var max_string_length = 2147483647;
-    
     var interactive = [/* false */0];
     
     function set_signal(_, _$1) {
@@ -37,6 +33,10 @@ define(["exports", "./caml_sys.js", "./caml_exceptions.js"],
     var os_type = "Unix";
     
     var word_size = 32;
+    
+    var max_string_length = 2147483647;
+    
+    var max_array_length = 2147483647;
     
     var sigabrt = -1;
     

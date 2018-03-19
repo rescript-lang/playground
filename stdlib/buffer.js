@@ -183,7 +183,6 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
           _i = i + 1 | 0;
           _k = k$1 + 1 | 0;
           continue ;
-          
         } else if (Caml_string.get(s, i) === closing) {
           if (k$1 === 0) {
             return i;
@@ -191,12 +190,10 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
             _i = i + 1 | 0;
             _k = k$1 - 1 | 0;
             continue ;
-            
           }
         } else {
           _i = i + 1 | 0;
           continue ;
-          
         }
       };
     }
@@ -237,7 +234,6 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
           if (exit === 1) {
             _i = i + 1 | 0;
             continue ;
-            
           }
           
         }
@@ -250,16 +246,12 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
       } else {
         var c = Caml_string.get(s, start);
         var exit = 0;
-        if (c !== 40) {
-          if (c !== 123) {
-            var stop = advance_to_non_alpha(s, start + 1 | 0);
-            return /* tuple */[
-                    $$String.sub(s, start, stop - start | 0),
-                    stop
-                  ];
-          } else {
-            exit = 1;
-          }
+        if (c !== 40 && c !== 123) {
+          var stop = advance_to_non_alpha(s, start + 1 | 0);
+          return /* tuple */[
+                  $$String.sub(s, start, stop - start | 0),
+                  stop
+                ];
         } else {
           exit = 1;
         }
@@ -291,25 +283,21 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
               _i = i + 1 | 0;
               _previous = /* " " */32;
               continue ;
-              
             } else if (current !== 92) {
               add_char(b, current);
               _i = i + 1 | 0;
               _previous = current;
               continue ;
-              
             } else {
               _i = i + 1 | 0;
               _previous = current;
               continue ;
-              
             }
           } else if (previous === /* "\\" */92) {
             add_char(b, current);
             _i = i + 1 | 0;
             _previous = /* " " */32;
             continue ;
-            
           } else {
             var j = i + 1 | 0;
             var match = find_ident(s, j, lim);
@@ -317,7 +305,6 @@ define(["exports", "./bytes.js", "./curry.js", "./string.js", "./pervasives.js",
             _i = match[1];
             _previous = /* " " */32;
             continue ;
-            
           }
         } else if (previous === /* "\\" */92) {
           return add_char(b, previous);

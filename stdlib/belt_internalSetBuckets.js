@@ -15,7 +15,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _prec = ncopy;
           _c = c.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -61,7 +60,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _buckets = buckets.next;
           _accu = accu + 1 | 0;
           continue ;
-          
         } else {
           return accu;
         }
@@ -75,7 +73,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           f(buckets.key);
           _buckets = buckets.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -104,7 +101,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _cell = match;
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return i + 1 | 0;
         }
@@ -133,7 +129,6 @@ define(["exports", "./curry.js", "./belt_Array.js", "./belt_internalBucketsType.
           _accu = f(accu, b.key);
           _b = b.next;
           continue ;
-          
         } else {
           return accu;
         }

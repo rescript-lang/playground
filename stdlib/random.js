@@ -10,7 +10,7 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
     
     function full_init(s, seed) {
       var combine = function (accu, x) {
-        return Digest.string(accu + x);
+        return Digest.string(accu + String(x));
       };
       var extract = function (d) {
         return ((Caml_string.get(d, 0) + (Caml_string.get(d, 1) << 8) | 0) + (Caml_string.get(d, 2) << 16) | 0) + (Caml_string.get(d, 3) << 24) | 0;
@@ -78,7 +78,6 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
           var v = r % n;
           if ((r - v | 0) > ((1073741823 - n | 0) + 1 | 0)) {
             continue ;
-            
           } else {
             return v;
           }
@@ -102,7 +101,6 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
           var v = r % n;
           if ((r - v | 0) > ((Int32.max_int - n | 0) + 1 | 0)) {
             continue ;
-            
           } else {
             return v;
           }
@@ -136,7 +134,6 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
                       /* lo */1
                     ]))) {
             continue ;
-            
           } else {
             return v;
           }

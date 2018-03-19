@@ -97,11 +97,9 @@ define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptio
               if (tag_a === 250) {
                 _a = a[0];
                 continue ;
-                
               } else if (tag_b === 250) {
                 _b = b[0];
                 continue ;
-                
               } else if (tag_a === 248) {
                 return Caml_primitive.caml_int_compare(a[1], b[1]);
               } else if (tag_a === 251) {
@@ -134,7 +132,6 @@ define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptio
                       } else {
                         _i = i + 1 | 0;
                         continue ;
-                        
                       }
                     }
                   };
@@ -154,7 +151,6 @@ define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptio
                       } else {
                         _i$1 = i$1 + 1 | 0;
                         continue ;
-                        
                       }
                     }
                   };
@@ -174,7 +170,6 @@ define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptio
                       } else {
                         _i$2 = i$2 + 1 | 0;
                         continue ;
-                        
                       }
                     }
                   };
@@ -211,11 +206,9 @@ define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptio
               if (tag_a === 250) {
                 _a = a[0];
                 continue ;
-                
               } else if (tag_b === 250) {
                 _b = b[0];
                 continue ;
-                
               } else if (tag_a === 248) {
                 return +(a[1] === b[1]);
               } else if (tag_a === 251) {
@@ -240,7 +233,6 @@ define(["exports", "./block.js", "./caml_primitive.js", "./caml_builtin_exceptio
                     } else if (caml_equal(a$1[i], b$1[i])) {
                       _i = i + 1 | 0;
                       continue ;
-                      
                     } else {
                       return /* false */0;
                     }

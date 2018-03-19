@@ -16,7 +16,6 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
           ndata_tail[nidx] = old_bucket;
           _old_bucket = old_bucket.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -52,7 +51,6 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
               _cell = cell_next;
               _prec = cell;
               continue ;
-              
             } else {
               return /* () */0;
             }
@@ -75,7 +73,6 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
           if (n !== undefined) {
             _cell = n;
             continue ;
-            
           } else {
             h.size = h.size + 1 | 0;
             cell.next = {
@@ -153,7 +150,6 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
             if (match !== undefined) {
               _cell = match;
               continue ;
-              
             } else {
               return /* false */0;
             }
@@ -172,7 +168,7 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
       return prim.size;
     }
     
-    function ofArray(arr, id) {
+    function fromArray(arr, id) {
       var eq = id[/* eq */1];
       var hash = id[/* hash */0];
       var len = arr.length;
@@ -215,6 +211,8 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
     
     var toArray = Belt_internalSetBuckets.toArray;
     
+    var ofArray = fromArray;
+    
     var getBucketHistogram = Belt_internalSetBuckets.getBucketHistogram;
     
     exports.Int = Int;
@@ -234,6 +232,7 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
     exports.logStats = logStats;
     exports.toArray = toArray;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.mergeMany = mergeMany;
     exports.getBucketHistogram = getBucketHistogram;
     

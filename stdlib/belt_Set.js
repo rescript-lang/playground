@@ -2,11 +2,11 @@
 define(["exports", "./curry.js", "./belt_SetDict.js"],
   function(exports, Curry, Belt_SetDict){
     'use strict';
-    function ofArray(data, id) {
+    function fromArray(data, id) {
       var cmp = id[/* cmp */0];
       return {
               cmp: cmp,
-              data: Belt_SetDict.ofArray(data, cmp)
+              data: Belt_SetDict.fromArray(data, cmp)
             };
     }
     
@@ -228,10 +228,10 @@ define(["exports", "./curry.js", "./belt_SetDict.js"],
       return Belt_SetDict.has(m.data, e, m.cmp);
     }
     
-    function ofSortedArrayUnsafe(xs, id) {
+    function fromSortedArrayUnsafe(xs, id) {
       return {
               cmp: id[/* cmp */0],
-              data: Belt_SetDict.ofSortedArrayUnsafe(xs)
+              data: Belt_SetDict.fromSortedArrayUnsafe(xs)
             };
     }
     
@@ -261,12 +261,18 @@ define(["exports", "./curry.js", "./belt_SetDict.js"],
     
     var Dict = 0;
     
+    var ofArray = fromArray;
+    
+    var ofSortedArrayUnsafe = fromSortedArrayUnsafe;
+    
     exports.Int = Int;
     exports.$$String = $$String;
     exports.Dict = Dict;
     exports.make = make;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.ofSortedArrayUnsafe = ofSortedArrayUnsafe;
+    exports.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
     exports.isEmpty = isEmpty;
     exports.has = has;
     exports.add = add;

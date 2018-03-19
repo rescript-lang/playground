@@ -82,7 +82,6 @@ define(["exports", "./curry.js"],
             _acc = acc + 1 | 0;
             _x = match$1;
             continue ;
-            
           } else {
             return acc + 1 | 0;
           }
@@ -101,7 +100,6 @@ define(["exports", "./curry.js"],
           f$1(s$1.head);
           _s = s$1.tail;
           continue ;
-          
         } else {
           return /* () */0;
         }

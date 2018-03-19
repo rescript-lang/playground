@@ -141,7 +141,6 @@ define(["exports", "./curry.js"],
           _cell = cell.next;
           _prev = res;
           continue ;
-          
         } else {
           qRes.last = prev;
           return qRes;
@@ -175,7 +174,6 @@ define(["exports", "./curry.js"],
           _cell = cell.next;
           _prev = res;
           continue ;
-          
         } else {
           qRes.last = prev;
           return qRes;
@@ -204,7 +202,6 @@ define(["exports", "./curry.js"],
           f$1(cell.content);
           _cell = cell.next;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -227,7 +224,6 @@ define(["exports", "./curry.js"],
           _cell = cell.next;
           _accu = accu$2;
           continue ;
-          
         } else {
           return accu$1;
         }
@@ -266,7 +262,6 @@ define(["exports", "./curry.js"],
           _cell = cell.next;
           _i = i + 1 | 0;
           continue ;
-          
         } else {
           return /* () */0;
         }
@@ -279,7 +274,7 @@ define(["exports", "./curry.js"],
       return v;
     }
     
-    function ofArray(arr) {
+    function fromArray(arr) {
       var q = make(/* () */0);
       for(var i = 0 ,i_finish = arr.length - 1 | 0; i <= i_finish; ++i){
         add(q, arr[i]);
@@ -287,10 +282,13 @@ define(["exports", "./curry.js"],
       return q;
     }
     
+    var ofArray = fromArray;
+    
     exports.make = make;
     exports.clear = clear;
     exports.isEmpty = isEmpty;
     exports.ofArray = ofArray;
+    exports.fromArray = fromArray;
     exports.add = add;
     exports.peek = peek;
     exports.peekUndefined = peekUndefined;
