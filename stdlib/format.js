@@ -1,6 +1,6 @@
 'use strict';
 define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./string.js", "./caml_io.js", "./caml_obj.js", "./pervasives.js", "./caml_string.js", "./caml_primitive.js", "./caml_exceptions.js", "./camlinternalFormat.js", "./caml_builtin_exceptions.js"],
-  function(exports, Block, Bytes, Curry, Buffer, $$String, Caml_io, Caml_obj, Pervasives, Caml_string, Caml_primitive, Caml_exceptions, CamlinternalFormat, Caml_builtin_exceptions){
+  function(exports, Block, Bytes, Curry, $$Buffer, $$String, Caml_io, Caml_obj, Pervasives, Caml_string, Caml_primitive, Caml_exceptions, CamlinternalFormat, Caml_builtin_exceptions){
     'use strict';
     function add_queue(x, q) {
       var c = /* Cons */[/* record */[
@@ -1029,13 +1029,13 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     
     function formatter_of_buffer(b) {
       return make_formatter((function (param, param$1, param$2) {
-                    return Buffer.add_substring(b, param, param$1, param$2);
+                    return $$Buffer.add_substring(b, param, param$1, param$2);
                   }), (function () {
                     return /* () */0;
                   }));
     }
     
-    var stdbuf = Buffer.create(512);
+    var stdbuf = $$Buffer.create(512);
     
     var std_formatter = formatter_of_out_channel(Pervasives.stdout);
     
@@ -1045,15 +1045,15 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     
     function flush_str_formatter() {
       pp_flush_queue(str_formatter, /* false */0);
-      var s = Buffer.contents(stdbuf);
-      Buffer.reset(stdbuf);
+      var s = $$Buffer.contents(stdbuf);
+      $$Buffer.reset(stdbuf);
       return s;
     }
     
     function flush_buf_formatter(buf, ppf) {
       pp_flush_queue(ppf, /* false */0);
-      var s = Buffer.contents(buf);
-      Buffer.reset(buf);
+      var s = $$Buffer.contents(buf);
+      $$Buffer.reset(buf);
       return s;
     }
     
@@ -1257,15 +1257,15 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     }
     
     function compute_tag(output, tag_acc) {
-      var buf = Buffer.create(16);
+      var buf = $$Buffer.create(16);
       var ppf = formatter_of_buffer(buf);
       Curry._2(output, ppf, tag_acc);
       pp_print_flush(ppf, /* () */0);
       var len = buf[/* position */1];
       if (len < 2) {
-        return Buffer.contents(buf);
+        return $$Buffer.contents(buf);
       } else {
-        return Buffer.sub(buf, 1, len - 2 | 0);
+        return $$Buffer.sub(buf, 1, len - 2 | 0);
       }
     }
     
@@ -1622,7 +1622,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     }
     
     function ksprintf(k, param) {
-      var b = Buffer.create(512);
+      var b = $$Buffer.create(512);
       var ppf = formatter_of_buffer(b);
       var k$prime = function (_, acc) {
         strput_acc(ppf, acc);
@@ -1638,7 +1638,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     }
     
     function asprintf(param) {
-      var b = Buffer.create(512);
+      var b = $$Buffer.create(512);
       var ppf = formatter_of_buffer(b);
       var k$prime = function (ppf, acc) {
         output_acc(ppf, acc);

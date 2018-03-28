@@ -1,6 +1,6 @@
 'use strict';
 define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./string.js", "./caml_io.js", "./caml_obj.js", "./caml_bytes.js", "./caml_float.js", "./caml_int32.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_primitive.js", "./caml_exceptions.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
-  function(exports, Char, Block, Bytes, Curry, Buffer, Js_exn, $$String, Caml_io, Caml_obj, Caml_bytes, Caml_float, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_primitive, Caml_exceptions, Caml_builtin_exceptions, CamlinternalFormatBasics){
+  function(exports, Char, Block, Bytes, Curry, $$Buffer, Js_exn, $$String, Caml_io, Caml_obj, Caml_bytes, Caml_float, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_primitive, Caml_exceptions, Caml_builtin_exceptions, CamlinternalFormatBasics){
     'use strict';
     function create_char_set() {
       return Bytes.make(32, /* "\000" */0);
@@ -3636,17 +3636,17 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 0 : 
                 var s = string_of_formatting_lit(acc[1]);
                 bufput_acc(b, acc[0]);
-                return Buffer.add_string(b, s);
+                return $$Buffer.add_string(b, s);
             case 1 : 
                 var match = acc[1];
                 var p = acc[0];
                 bufput_acc(b, p);
                 if (match.tag) {
-                  Buffer.add_string(b, "@[");
+                  $$Buffer.add_string(b, "@[");
                   _acc = match[0];
                   continue ;
                 } else {
-                  Buffer.add_string(b, "@{");
+                  $$Buffer.add_string(b, "@{");
                   _acc = match[0];
                   continue ;
                 }
@@ -3676,10 +3676,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         switch (exit) {
           case 1 : 
               bufput_acc(b, acc[0]);
-              return Buffer.add_string(b, acc[1]);
+              return $$Buffer.add_string(b, acc[1]);
           case 2 : 
               bufput_acc(b, acc[0]);
-              return Buffer.add_char(b, acc[1]);
+              return $$Buffer.add_char(b, acc[1]);
           
         }
       };
@@ -3696,17 +3696,17 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 0 : 
                 var s = string_of_formatting_lit(acc[1]);
                 strput_acc(b, acc[0]);
-                return Buffer.add_string(b, s);
+                return $$Buffer.add_string(b, s);
             case 1 : 
                 var match = acc[1];
                 var p = acc[0];
                 strput_acc(b, p);
                 if (match.tag) {
-                  Buffer.add_string(b, "@[");
+                  $$Buffer.add_string(b, "@[");
                   _acc = match[0];
                   continue ;
                 } else {
-                  Buffer.add_string(b, "@{");
+                  $$Buffer.add_string(b, "@{");
                   _acc = match[0];
                   continue ;
                 }
@@ -3720,7 +3720,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 break;
             case 6 : 
                 strput_acc(b, acc[0]);
-                return Buffer.add_string(b, Curry._1(acc[1], /* () */0));
+                return $$Buffer.add_string(b, Curry._1(acc[1], /* () */0));
             case 7 : 
                 _acc = acc[0];
                 continue ;
@@ -3736,20 +3736,20 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         switch (exit) {
           case 1 : 
               strput_acc(b, acc[0]);
-              return Buffer.add_string(b, acc[1]);
+              return $$Buffer.add_string(b, acc[1]);
           case 2 : 
               strput_acc(b, acc[0]);
-              return Buffer.add_char(b, acc[1]);
+              return $$Buffer.add_char(b, acc[1]);
           
         }
       };
     }
     
     function failwith_message(param) {
-      var buf = Buffer.create(256);
+      var buf = $$Buffer.create(256);
       var k = function (_, acc) {
         strput_acc(buf, acc);
-        var s = Buffer.contents(buf);
+        var s = $$Buffer.contents(buf);
         throw [
               Caml_builtin_exceptions.failure,
               s

@@ -1,6 +1,6 @@
 'use strict';
 define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./printf.js", "./random.js", "./string.js", "./caml_sys.js", "./pervasives.js", "./caml_string.js", "./camlinternalLazy.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js"],
-  function(exports, Block, Curry, Buffer, Js_exn, Printf, Random, $$String, Caml_sys, Pervasives, Caml_string, CamlinternalLazy, Caml_missing_polyfill, Caml_builtin_exceptions){
+  function(exports, Block, Curry, $$Buffer, Js_exn, Printf, Random, $$String, Caml_sys, Pervasives, Caml_string, CamlinternalLazy, Caml_missing_polyfill, Caml_builtin_exceptions){
     'use strict';
     function generic_basename(is_dir_sep, current_dir_name, name) {
       if (name === "") {
@@ -125,17 +125,17 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
       var quotequote = "'\\''";
       var s = param;
       var l = s.length;
-      var b = Buffer.create(l + 20 | 0);
-      Buffer.add_char(b, /* "'" */39);
+      var b = $$Buffer.create(l + 20 | 0);
+      $$Buffer.add_char(b, /* "'" */39);
       for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
         if (Caml_string.get(s, i) === /* "'" */39) {
-          Buffer.add_string(b, quotequote);
+          $$Buffer.add_string(b, quotequote);
         } else {
-          Buffer.add_char(b, Caml_string.get(s, i));
+          $$Buffer.add_char(b, Caml_string.get(s, i));
         }
       }
-      Buffer.add_char(b, /* "'" */39);
-      return Buffer.contents(b);
+      $$Buffer.add_char(b, /* "'" */39);
+      return $$Buffer.contents(b);
     }
     
     function basename(param) {

@@ -1,6 +1,6 @@
 'use strict';
 define(["exports", "./curry.js", "./buffer.js", "./pervasives.js", "./camlinternalFormat.js"],
-  function(exports, Curry, Buffer, Pervasives, CamlinternalFormat){
+  function(exports, Curry, $$Buffer, Pervasives, CamlinternalFormat){
     'use strict';
     function kfprintf(k, o, param) {
       return CamlinternalFormat.make_printf((function (o, acc) {
@@ -50,9 +50,9 @@ define(["exports", "./curry.js", "./buffer.js", "./pervasives.js", "./camlintern
     
     function ksprintf(k, param) {
       var k$prime = function (_, acc) {
-        var buf = Buffer.create(64);
+        var buf = $$Buffer.create(64);
         CamlinternalFormat.strput_acc(buf, acc);
-        return Curry._1(k, Buffer.contents(buf));
+        return Curry._1(k, $$Buffer.contents(buf));
       };
       return CamlinternalFormat.make_printf(k$prime, /* () */0, /* End_of_acc */0, param[0]);
     }

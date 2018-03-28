@@ -9,10 +9,10 @@ var failed = false
 
 /**
  * @return {string|bool} return string if successful otherwise return false
- * @param {*} input 
+ * @param {*} input
  */
 function test(input) {
-    var output = JSON.parse(ocaml.compile(input))
+    var output = (ocaml.compile(input))
     if (output && output.js_code) {
         var js_code = output.js_code
         if (js_code.includes(header)) {
@@ -22,7 +22,7 @@ function test(input) {
             return false
         }
     } else {
-        failed = true 
+        failed = true
         return false
     }
 }

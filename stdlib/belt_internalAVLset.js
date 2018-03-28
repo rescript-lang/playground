@@ -367,16 +367,16 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
       }
     }
     
-    function toListAux(_accu, _n) {
+    function toListAux(_n, _accu) {
       while(true) {
-        var n = _n;
         var accu = _accu;
+        var n = _n;
         if (n !== null) {
-          _n = n.left;
           _accu = /* :: */[
             n.value,
-            toListAux(accu, n.right)
+            toListAux(n.right, accu)
           ];
+          _n = n.left;
           continue ;
         } else {
           return accu;
@@ -385,7 +385,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
     }
     
     function toList(s) {
-      return toListAux(/* [] */0, s);
+      return toListAux(s, /* [] */0);
     }
     
     function checkInvariantInternal(_v) {
@@ -396,7 +396,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
           var r = v.right;
           var diff = treeHeight(l) - treeHeight(r) | 0;
           if (!(diff <= 2 && diff >= -2)) {
-            throw new Error("File \"belt_internalAVLset.ml\", line 301, characters 6-12");
+            throw new Error("File \"belt_internalAVLset.ml\", line 302, characters 6-12");
           }
           checkInvariantInternal(l);
           _v = r;

@@ -1,6 +1,6 @@
 'use strict';
 define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./printf.js", "./caml_io.js", "./caml_array.js", "./pervasives.js", "./caml_backtrace.js", "./caml_builtin_exceptions.js"],
-  function(exports, Obj, $$Array, Block, Curry, Buffer, Js_exn, Printf, Caml_io, Caml_array, Pervasives, Caml_backtrace, Caml_builtin_exceptions){
+  function(exports, Obj, $$Array, Block, Curry, $$Buffer, Js_exn, Printf, Caml_io, Caml_array, Pervasives, Caml_backtrace, Caml_builtin_exceptions){
     'use strict';
     var printers = [/* [] */0];
     
@@ -350,7 +350,7 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
     function backtrace_to_string(backtrace) {
       if (backtrace) {
         var a = backtrace[0];
-        var b = Buffer.create(1024);
+        var b = $$Buffer.create(1024);
         for(var i = 0 ,i_finish = a.length - 1 | 0; i <= i_finish; ++i){
           var match = format_backtrace_slot(i, Caml_array.caml_array_get(a, i));
           if (match) {
@@ -367,7 +367,7 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
           }
           
         }
-        return Buffer.contents(b);
+        return $$Buffer.contents(b);
       } else {
         return "(Program not linked with -g, cannot print stack backtrace)\n";
       }

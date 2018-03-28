@@ -1,6 +1,6 @@
 'use strict';
 define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./js_exn.js", "./printf.js", "./string.js", "./caml_bytes.js", "./caml_int32.js", "./pervasives.js", "./caml_format.js", "./caml_string.js", "./caml_exceptions.js", "./camlinternalFormat.js", "./caml_missing_polyfill.js", "./caml_builtin_exceptions.js", "./camlinternalFormatBasics.js"],
-  function(exports, List, Block, Bytes, Curry, Buffer, Js_exn, Printf, $$String, Caml_bytes, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_exceptions, CamlinternalFormat, Caml_missing_polyfill, Caml_builtin_exceptions, CamlinternalFormatBasics){
+  function(exports, List, Block, Bytes, Curry, $$Buffer, Js_exn, Printf, $$String, Caml_bytes, Caml_int32, Pervasives, Caml_format, Caml_string, Caml_exceptions, CamlinternalFormat, Caml_missing_polyfill, Caml_builtin_exceptions, CamlinternalFormatBasics){
     'use strict';
     function next_char(ib) {
       try {
@@ -75,7 +75,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     
     function token(ib) {
       var tokbuf = ib[/* tokbuf */7];
-      var tok = Buffer.contents(tokbuf);
+      var tok = $$Buffer.contents(tokbuf);
       tokbuf[/* position */1] = 0;
       ib[/* token_count */5] = ib[/* token_count */5] + 1 | 0;
       return tok;
@@ -88,7 +88,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     }
     
     function store_char(width, ib, c) {
-      Buffer.add_char(ib[/* tokbuf */7], c);
+      $$Buffer.add_char(ib[/* tokbuf */7], c);
       return ignore_char(width, ib);
     }
     
@@ -101,7 +101,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               /* line_count */0,
               /* token_count */0,
               /* get_next_char */next,
-              /* tokbuf */Buffer.create(1024),
+              /* tokbuf */$$Buffer.create(1024),
               /* input_name */iname
             ];
     }
@@ -1773,7 +1773,7 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       var str = param[1];
       var fmt = param[0];
       var k = function (readers, f) {
-        Buffer.reset(ib[/* tokbuf */7]);
+        $$Buffer.reset(ib[/* tokbuf */7]);
         var match;
         try {
           match = /* Args */Block.__(0, [make_scanf(ib, fmt, readers)]);
@@ -1868,17 +1868,17 @@ define(["exports", "./list.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     
     function string_to_String(s) {
       var l = s.length;
-      var b = Buffer.create(l + 2 | 0);
-      Buffer.add_char(b, /* "\"" */34);
+      var b = $$Buffer.create(l + 2 | 0);
+      $$Buffer.add_char(b, /* "\"" */34);
       for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
         var c = Caml_string.get(s, i);
         if (c === /* "\"" */34) {
-          Buffer.add_char(b, /* "\\" */92);
+          $$Buffer.add_char(b, /* "\\" */92);
         }
-        Buffer.add_char(b, c);
+        $$Buffer.add_char(b, c);
       }
-      Buffer.add_char(b, /* "\"" */34);
-      return Buffer.contents(b);
+      $$Buffer.add_char(b, /* "\"" */34);
+      return $$Buffer.contents(b);
     }
     
     function format_from_string(s, fmt) {

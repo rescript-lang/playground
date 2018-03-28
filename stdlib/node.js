@@ -24,7 +24,7 @@ define(["exports"],
     
     var Module = 0;
     
-    var Buffer = 0;
+    var $$Buffer = 0;
     
     var Child_process = 0;
     
@@ -32,7 +32,7 @@ define(["exports"],
     exports.Fs = Fs;
     exports.Process = Process;
     exports.Module = Module;
-    exports.Buffer = Buffer;
+    exports.$$Buffer = $$Buffer;
     exports.Child_process = Child_process;
     exports.test = test;
     

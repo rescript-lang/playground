@@ -178,7 +178,7 @@ function onEditChanges(cm, change) {
   errorMirror.setValue(get_error_output());
   console.error = original_err;
   console.log(raw);
-  var rsp = JSON.parse(raw); // can we save this from parsing?
+  var rsp = raw; // can we save this from parsing?
   if (rsp.js_code !== undefined) {
     jsCode1Mirror.setValue(rsp.js_code);
     // eval

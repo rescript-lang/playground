@@ -1,6 +1,6 @@
 'use strict';
-define(["exports", "./curry.js", "./belt_Array.js"],
-  function(exports, Curry, Belt_Array){
+define(["exports", "./curry.js", "./belt_Array.js", "./belt_SortArray.js"],
+  function(exports, Curry, Belt_Array, Belt_SortArray){
     'use strict';
     function head(x) {
       if (x) {
@@ -1208,6 +1208,16 @@ define(["exports", "./curry.js", "./belt_Array.js"],
       return setAssocU(xs, x, k, Curry.__2(eq));
     }
     
+    function sortU(xs, cmp) {
+      var arr = toArray(xs);
+      Belt_SortArray.stableSortInPlaceByU(arr, cmp);
+      return fromArray(arr);
+    }
+    
+    function sort(xs, cmp) {
+      return sortU(xs, Curry.__2(cmp));
+    }
+    
     function getByU(_xs, p) {
       while(true) {
         var xs = _xs;
@@ -1444,6 +1454,8 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     exports.removeAssoc = removeAssoc;
     exports.setAssocU = setAssocU;
     exports.setAssoc = setAssoc;
+    exports.sortU = sortU;
+    exports.sort = sort;
     
   })
 /* No side effect */
