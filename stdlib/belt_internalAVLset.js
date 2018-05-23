@@ -48,12 +48,12 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
     function heightGe(l, r) {
       if (r !== null) {
         if (l !== null) {
-          return +(l.height >= r.height);
+          return l.height >= r.height;
         } else {
-          return /* false */0;
+          return false;
         }
       } else {
-        return /* true */1;
+        return true;
       }
     }
     
@@ -165,11 +165,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
     }
     
     function isEmpty(n) {
-      if (n !== null) {
-        return /* false */0;
-      } else {
-        return /* true */1;
-      }
+      return n === null;
     }
     
     function stackAllLeft(_v, _s) {
@@ -236,10 +232,10 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
             _n = n.right;
             continue ;
           } else {
-            return /* false */0;
+            return false;
           }
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }
@@ -253,13 +249,13 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
         var n = _n;
         if (n !== null) {
           if (p(n.value) || someU(n.left, p)) {
-            return /* true */1;
+            return true;
           } else {
             _n = n.right;
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -637,13 +633,13 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
           var v = t.value;
           var c = cmp(x, v);
           if (c === 0) {
-            return /* true */1;
+            return true;
           } else {
             _t = c < 0 ? t.left : t.right;
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -681,7 +677,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
     }
     
     function eq(s1, s2, c) {
-      return +(cmp(s1, s2, c) === 0);
+      return cmp(s1, s2, c) === 0;
     }
     
     function subset(_s1, _s2, cmp) {
@@ -703,26 +699,26 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
                 _s1 = r1;
                 continue ;
               } else {
-                return /* false */0;
+                return false;
               }
             } else if (c < 0) {
               if (subset(create(l1, v1, null), l2, cmp)) {
                 _s1 = r1;
                 continue ;
               } else {
-                return /* false */0;
+                return false;
               }
             } else if (subset(create(null, v1, r1), r2, cmp)) {
               _s1 = l1;
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           } else {
-            return /* false */0;
+            return false;
           }
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }
@@ -893,7 +889,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js"],
         return null;
       } else {
         var next = Belt_SortArray.strictlySortedLengthU(xs, (function (x, y) {
-                return +(cmp(x, y) < 0);
+                return cmp(x, y) < 0;
               }));
         var result;
         if (next >= 0) {

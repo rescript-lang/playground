@@ -154,15 +154,9 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
     function is_space(param) {
       var switcher = param - 9 | 0;
       if (switcher > 4 || switcher < 0) {
-        if (switcher !== 23) {
-          return /* false */0;
-        } else {
-          return /* true */1;
-        }
-      } else if (switcher !== 2) {
-        return /* true */1;
+        return switcher === 23;
       } else {
-        return /* false */0;
+        return switcher !== 2;
       }
     }
     
@@ -411,11 +405,11 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
       } else {
         try {
           index_rec(s, l, i, c);
-          return /* true */1;
+          return true;
         }
         catch (exn){
           if (exn === Caml_builtin_exceptions.not_found) {
-            return /* false */0;
+            return false;
           } else {
             throw exn;
           }
@@ -436,11 +430,11 @@ define(["exports", "./char.js", "./list.js", "./curry.js", "./caml_obj.js", "./c
       } else {
         try {
           rindex_rec(s, i, c);
-          return /* true */1;
+          return true;
         }
         catch (exn){
           if (exn === Caml_builtin_exceptions.not_found) {
-            return /* false */0;
+            return false;
           } else {
             throw exn;
           }

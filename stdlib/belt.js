@@ -30,6 +30,10 @@ define(["exports"],
     
     var Option = 0;
     
+    var Result = 0;
+    
+    var Debug = 0;
+    
     exports.Id = Id;
     exports.$$Array = $$Array;
     exports.SortArray = SortArray;
@@ -44,6 +48,8 @@ define(["exports"],
     exports.HashSet = HashSet;
     exports.HashMap = HashMap;
     exports.Option = Option;
+    exports.Result = Result;
+    exports.Debug = Debug;
     
   })
 /* No side effect */

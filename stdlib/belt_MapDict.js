@@ -310,8 +310,6 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
     
     var toArray = Belt_internalAVLtree.toArray;
     
-    var ofArray = Belt_internalAVLtree.fromArray;
-    
     var fromArray = Belt_internalAVLtree.fromArray;
     
     var keysToArray = Belt_internalAVLtree.keysToArray;
@@ -378,7 +376,6 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js"],
     exports.size = size;
     exports.toList = toList;
     exports.toArray = toArray;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;

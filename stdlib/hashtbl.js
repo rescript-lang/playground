@@ -14,10 +14,10 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
       return Caml_hash.caml_hash(10, 100, seed, x);
     }
     
-    var randomized = [/* false */0];
+    var randomized = [false];
     
     function randomize() {
-      randomized[0] = /* true */1;
+      randomized[0] = true;
       return /* () */0;
     }
     
@@ -124,7 +124,7 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
       if (h.length >= 3) {
         return Caml_hash.caml_hash(10, 100, h[/* seed */2], key) & (h[/* data */1].length - 1 | 0);
       } else {
-        return Caml_missing_polyfill.not_implemented("caml_hash_univ_param not implemented by bucklescript yet\n") % h[/* data */1].length;
+        return Caml_missing_polyfill.not_implemented("caml_hash_univ_param") % h[/* data */1].length;
       }
     }
     
@@ -288,13 +288,13 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
         var param = _param;
         if (param) {
           if (Caml_obj.caml_equal(param[0], key)) {
-            return /* true */1;
+            return true;
           } else {
             _param = param[2];
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -527,13 +527,13 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
           var param = _param;
           if (param) {
             if (Curry._2(H[/* equal */0], param[0], key)) {
-              return /* true */1;
+              return true;
             } else {
               _param = param[2];
               continue ;
             }
           } else {
-            return /* false */0;
+            return false;
           }
         };
       };
@@ -711,18 +711,18 @@ define(["exports", "./array.js", "./block.js", "./curry.js", "./random.js", "./c
           var param = _param;
           if (param) {
             if (Curry._2(equal, param[0], key)) {
-              return /* true */1;
+              return true;
             } else {
               _param = param[2];
               continue ;
             }
           } else {
-            return /* false */0;
+            return false;
           }
         };
       };
       var create$1 = function (sz) {
-        return create(/* Some */[/* false */0], sz);
+        return create(/* Some */[false], sz);
       };
       return /* module */[
               /* create */create$1,

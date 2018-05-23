@@ -186,7 +186,7 @@ define(["exports", "./curry.js"],
     }
     
     function isEmpty(q) {
-      return +(q.length === 0);
+      return q.length === 0;
     }
     
     function size(q) {
@@ -282,12 +282,9 @@ define(["exports", "./curry.js"],
       return q;
     }
     
-    var ofArray = fromArray;
-    
     exports.make = make;
     exports.clear = clear;
     exports.isEmpty = isEmpty;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.add = add;
     exports.peek = peek;

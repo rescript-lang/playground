@@ -94,13 +94,13 @@ define(["exports", "./curry.js", "./belt_SortArray.js", "./caml_primitive.js", "
         if (n !== null) {
           var v = n.key;
           if (x === v) {
-            return /* true */1;
+            return true;
           } else {
             _n = x < v ? n.left : n.right;
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -280,10 +280,10 @@ define(["exports", "./curry.js", "./belt_SortArray.js", "./caml_primitive.js", "
             _e1 = Belt_internalAVLtree.stackAllLeft(h1.right, e1[1]);
             continue ;
           } else {
-            return /* false */0;
+            return false;
           }
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }
@@ -294,7 +294,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js", "./caml_primitive.js", "
       if (len1 === len2) {
         return eqAux(Belt_internalAVLtree.stackAllLeft(s1, /* [] */0), Belt_internalAVLtree.stackAllLeft(s2, /* [] */0), eq);
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -331,7 +331,7 @@ define(["exports", "./curry.js", "./belt_SortArray.js", "./caml_primitive.js", "
         return Belt_internalAVLtree.empty;
       } else {
         var next = Belt_SortArray.strictlySortedLengthU(xs, (function (param, param$1) {
-                return +(param[0] < param$1[0]);
+                return param[0] < param$1[0];
               }));
         var result;
         if (next >= 0) {

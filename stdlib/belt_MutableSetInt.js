@@ -85,7 +85,7 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
     function removeCheck0(nt, x, removed) {
       var k = nt.value;
       if (x === k) {
-        removed[0] = /* true */1;
+        removed[0] = true;
         var l = nt.left;
         var r = nt.right;
         if (l !== null) {
@@ -120,14 +120,14 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
     function removeCheck(d, v) {
       var oldRoot = d.data;
       if (oldRoot !== null) {
-        var removed = [/* false */0];
+        var removed = [false];
         var newRoot = removeCheck0(oldRoot, v, removed);
         if (newRoot !== oldRoot) {
           d.data = newRoot;
         }
         return removed[0];
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -148,14 +148,14 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
           return Belt_internalAVLset.balMutate(t);
         }
       } else {
-        added[0] = /* true */1;
+        added[0] = true;
         return Belt_internalAVLset.singleton(x);
       }
     }
     
     function addCheck(m, e) {
       var oldRoot = m.data;
-      var added = [/* false */0];
+      var added = [false];
       var newRoot = addCheck0(oldRoot, e, added);
       if (newRoot !== oldRoot) {
         m.data = newRoot;
@@ -194,7 +194,8 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
     }
     
     function isEmpty(d) {
-      return Belt_internalAVLset.isEmpty(d.data);
+      var n = d.data;
+      return n === null;
     }
     
     function minimum(d) {
@@ -308,7 +309,7 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
                     data: Belt_internalAVLset.fromSortedArrayAux(arr, next, len - next | 0)
                   }
                 ],
-                /* false */0
+                false
               ];
       } else {
         return /* tuple */[
@@ -320,7 +321,7 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
                     data: Belt_internalAVLset.fromSortedArrayAux(arr, i + 1 | 0, (len - i | 0) - 1 | 0)
                   }
                 ],
-                /* true */1
+                true
               ];
       }
     }
@@ -467,15 +468,9 @@ define(["exports", "./curry.js", "./belt_SortArrayInt.js", "./belt_internalAVLse
             };
     }
     
-    var ofArray = fromArray;
-    
-    var ofSortedArrayUnsafe = fromSortedArrayUnsafe;
-    
     exports.make = make;
     exports.fromArray = fromArray;
     exports.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
-    exports.ofArray = ofArray;
-    exports.ofSortedArrayUnsafe = ofSortedArrayUnsafe;
     exports.copy = copy;
     exports.isEmpty = isEmpty;
     exports.has = has;

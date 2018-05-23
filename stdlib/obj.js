@@ -7,7 +7,7 @@ define(["exports", "./marshal.js", "./caml_array.js", "./caml_missing_polyfill.j
     var set_double_field = Caml_array.caml_array_set;
     
     function marshal() {
-      return Caml_missing_polyfill.not_implemented("caml_output_value_to_string not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("caml_output_value_to_string");
     }
     
     function unmarshal(str, pos) {

@@ -7,11 +7,7 @@ define(["exports"],
     }
     
     function is_none(x) {
-      if (x) {
-        return false;
-      } else {
-        return true;
-      }
+      return x === /* None */0;
     }
     
     function to_def(x) {
@@ -30,11 +26,7 @@ define(["exports"],
     }
     
     function is_list_empty(x) {
-      if (x) {
-        return false;
-      } else {
-        return true;
-      }
+      return x === /* [] */0;
     }
     
     var none = /* None */0;

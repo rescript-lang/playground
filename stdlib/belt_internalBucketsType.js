@@ -37,7 +37,7 @@ define(["exports"],
     }
     
     function isEmpty(h) {
-      return +(h.size === 0);
+      return h.size === 0;
     }
     
     exports.emptyOpt = emptyOpt;

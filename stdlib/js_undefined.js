@@ -3,11 +3,11 @@ define(["exports"],
   function(exports){
     'use strict';
     function test(x) {
-      return +(x === undefined);
+      return x === undefined;
     }
     
     function testAny(x) {
-      return +(x === undefined);
+      return x === undefined;
     }
     
     function getExn(f) {

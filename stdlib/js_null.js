@@ -3,7 +3,7 @@ define(["exports"],
   function(exports){
     'use strict';
     function test(x) {
-      return +(x === null);
+      return x === null;
     }
     
     function getExn(f) {

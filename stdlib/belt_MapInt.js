@@ -150,7 +150,7 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
       }
     }
     
-    function mergeArray(h, arr) {
+    function mergeMany(h, arr) {
       var len = arr.length;
       var v = h;
       for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
@@ -196,8 +196,6 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
     
     var toArray = Belt_internalAVLtree.toArray;
     
-    var ofArray = Belt_internalMapInt.fromArray;
-    
     var fromArray = Belt_internalMapInt.fromArray;
     
     var keysToArray = Belt_internalAVLtree.keysToArray;
@@ -228,6 +226,8 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
     
     var getExn = Belt_internalMapInt.getExn;
     
+    var checkInvariantInternal = Belt_internalAVLtree.checkInvariantInternal;
+    
     var mergeU = Belt_internalMapInt.mergeU;
     
     var merge = Belt_internalMapInt.merge;
@@ -250,8 +250,6 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
     
     var mapWithKey = Belt_internalAVLtree.mapWithKey;
     
-    var checkInvariantInternal = Belt_internalAVLtree.checkInvariantInternal;
-    
     exports.empty = empty;
     exports.isEmpty = isEmpty;
     exports.has = has;
@@ -270,7 +268,6 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
     exports.size = size;
     exports.toList = toList;
     exports.toArray = toArray;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;
@@ -286,14 +283,15 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
     exports.getUndefined = getUndefined;
     exports.getWithDefault = getWithDefault;
     exports.getExn = getExn;
+    exports.checkInvariantInternal = checkInvariantInternal;
     exports.remove = remove;
     exports.removeMany = removeMany;
     exports.set = set;
     exports.updateU = updateU;
     exports.update = update;
-    exports.mergeArray = mergeArray;
     exports.mergeU = mergeU;
     exports.merge = merge;
+    exports.mergeMany = mergeMany;
     exports.keepU = keepU;
     exports.keep = keep;
     exports.partitionU = partitionU;
@@ -303,7 +301,6 @@ define(["exports", "./curry.js", "./belt_internalMapInt.js", "./belt_internalAVL
     exports.map = map;
     exports.mapWithKeyU = mapWithKeyU;
     exports.mapWithKey = mapWithKey;
-    exports.checkInvariantInternal = checkInvariantInternal;
     
   })
 /* No side effect */

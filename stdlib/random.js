@@ -15,7 +15,7 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
       var extract = function (d) {
         return ((Caml_string.get(d, 0) + (Caml_string.get(d, 1) << 8) | 0) + (Caml_string.get(d, 2) << 16) | 0) + (Caml_string.get(d, 3) << 24) | 0;
       };
-      var seed$1 = seed.length === 0 ? /* int array */[0] : seed;
+      var seed$1 = seed.length === 0 ? /* array */[0] : seed;
       var l = seed$1.length;
       for(var i = 0; i <= 54; ++i){
         Caml_array.caml_array_set(s[/* st */0], i, i);
@@ -156,7 +156,7 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
     }
     
     function bool(s) {
-      return +((bits(s) & 1) === 0);
+      return (bits(s) & 1) === 0;
     }
     
     var $$default = /* record */[
@@ -253,7 +253,7 @@ define(["exports", "./array.js", "./curry.js", "./int32.js", "./int64.js", "./di
     }
     
     function init(seed) {
-      return full_init($$default, /* int array */[seed]);
+      return full_init($$default, /* array */[seed]);
     }
     
     function self_init() {

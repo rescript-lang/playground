@@ -2,19 +2,19 @@
 define(["exports", "./caml_sys.js", "./caml_exceptions.js"],
   function(exports, Caml_sys, Caml_exceptions){
     'use strict';
-    var is_js = /* true */1;
+    var is_js = true;
     
     var match = Caml_sys.caml_sys_get_argv(/* () */0);
     
-    var big_endian = /* false */0;
+    var big_endian = false;
     
-    var unix = /* true */1;
+    var unix = true;
     
-    var win32 = /* false */0;
+    var win32 = false;
     
-    var cygwin = /* false */0;
+    var cygwin = false;
     
-    var interactive = [/* false */0];
+    var interactive = [false];
     
     function set_signal(_, _$1) {
       return /* () */0;

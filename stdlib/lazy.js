@@ -18,7 +18,7 @@ define(["exports", "./obj.js", "./block.js", "./caml_obj.js", "./camlinternalLaz
     }
     
     function is_val(l) {
-      return +((l.tag | 0) !== Obj.lazy_tag);
+      return (l.tag | 0) !== Obj.lazy_tag;
     }
     
     var Undefined = CamlinternalLazy.Undefined;

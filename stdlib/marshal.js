@@ -9,7 +9,7 @@ define(["exports", "./caml_string.js", "./caml_missing_polyfill.js", "./caml_bui
               "Marshal.to_buffer: substring out of bounds"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("caml_output_value_to_buffer not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("caml_output_value_to_buffer");
       }
     }
     
@@ -20,7 +20,7 @@ define(["exports", "./caml_string.js", "./caml_missing_polyfill.js", "./caml_bui
               "Marshal.data_size"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("caml_marshal_data_size not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("caml_marshal_data_size");
       }
     }
     
@@ -35,14 +35,14 @@ define(["exports", "./caml_string.js", "./caml_missing_polyfill.js", "./caml_bui
               "Marshal.from_bytes"
             ];
       } else {
-        var len = Caml_missing_polyfill.not_implemented("caml_marshal_data_size not implemented by bucklescript yet\n");
+        var len = Caml_missing_polyfill.not_implemented("caml_marshal_data_size");
         if (ofs > (buff.length - (20 + len | 0) | 0)) {
           throw [
                 Caml_builtin_exceptions.invalid_argument,
                 "Marshal.from_bytes"
               ];
         } else {
-          return Caml_missing_polyfill.not_implemented("caml_input_value_from_string not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("caml_input_value_from_string");
         }
       }
     }
@@ -52,11 +52,11 @@ define(["exports", "./caml_string.js", "./caml_missing_polyfill.js", "./caml_bui
     }
     
     function to_channel(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("caml_output_value not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("caml_output_value");
     }
     
     function from_channel() {
-      return Caml_missing_polyfill.not_implemented("caml_input_value not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("caml_input_value");
     }
     
     var header_size = 20;

@@ -340,10 +340,10 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
             _param = param[1];
             continue ;
           } else {
-            return /* false */0;
+            return false;
           }
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }
@@ -353,13 +353,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         var param = _param;
         if (param) {
           if (Curry._1(p, param[0])) {
-            return /* true */1;
+            return true;
           } else {
             _param = param[1];
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -375,7 +375,7 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
               _l1 = l1[1];
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           } else {
             throw [
@@ -389,7 +389,7 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                 "List.for_all2"
               ];
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }
@@ -401,7 +401,7 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         if (l1) {
           if (l2) {
             if (Curry._2(p, l1[0], l2[0])) {
-              return /* true */1;
+              return true;
             } else {
               _l2 = l2[1];
               _l1 = l1[1];
@@ -419,7 +419,7 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
                 "List.exists2"
               ];
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -429,13 +429,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         var param = _param;
         if (param) {
           if (Caml_obj.caml_equal(param[0], x)) {
-            return /* true */1;
+            return true;
           } else {
             _param = param[1];
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -445,13 +445,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         var param = _param;
         if (param) {
           if (param[0] === x) {
-            return /* true */1;
+            return true;
           } else {
             _param = param[1];
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -495,13 +495,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         var param = _param;
         if (param) {
           if (Caml_obj.caml_equal(param[0][0], x)) {
-            return /* true */1;
+            return true;
           } else {
             _param = param[1];
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -511,13 +511,13 @@ define(["exports", "./curry.js", "./caml_obj.js", "./pervasives.js", "./caml_bui
         var param = _param;
         if (param) {
           if (param[0][0] === x) {
-            return /* true */1;
+            return true;
           } else {
             _param = param[1];
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }

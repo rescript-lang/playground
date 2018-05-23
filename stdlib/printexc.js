@@ -255,7 +255,7 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
         }
       };
       if (slot.tag) {
-        if (slot[0] !== 0) {
+        if (slot[0]) {
           return /* None */0;
         } else {
           return /* Some */[Curry._1(Printf.sprintf(/* Format */[
@@ -267,7 +267,7 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
                                   ])
                               ]),
                             "%s unknown location"
-                          ]), info(/* false */0))];
+                          ]), info(false))];
         }
       } else {
         return /* Some */[Curry._5(Printf.sprintf(/* Format */[
@@ -400,9 +400,9 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
         var backtrace = match[0];
         var usable_slot = function (param) {
           if (param.tag) {
-            return /* false */0;
+            return false;
           } else {
-            return /* true */1;
+            return true;
           }
         };
         var exists_usable = function (_i) {
@@ -410,13 +410,13 @@ define(["exports", "./obj.js", "./array.js", "./block.js", "./curry.js", "./buff
             var i = _i;
             if (i !== -1) {
               if (usable_slot(Caml_array.caml_array_get(backtrace, i))) {
-                return /* true */1;
+                return true;
               } else {
                 _i = i - 1 | 0;
                 continue ;
               }
             } else {
-              return /* false */0;
+              return false;
             }
           };
         };

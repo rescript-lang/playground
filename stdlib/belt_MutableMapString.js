@@ -9,7 +9,8 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js", "./belt_internalMa
     }
     
     function isEmpty(m) {
-      return Belt_internalAVLtree.isEmpty(m.data);
+      var x = m.data;
+      return x === null;
     }
     
     function clear(m) {
@@ -321,8 +322,6 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js", "./belt_internalMa
       return Belt_internalMapString.getExn(d.data, x);
     }
     
-    var ofArray = fromArray;
-    
     exports.make = make;
     exports.clear = clear;
     exports.isEmpty = isEmpty;
@@ -342,7 +341,6 @@ define(["exports", "./curry.js", "./belt_internalAVLtree.js", "./belt_internalMa
     exports.size = size;
     exports.toList = toList;
     exports.toArray = toArray;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;

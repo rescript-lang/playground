@@ -1,13 +1,13 @@
 'use strict';
-define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.js"],
-  function(exports, Caml_hash, Belt_internalSetBuckets, Belt_internalBucketsType){
+define(["exports", "./caml_hash_primitive.js", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.js"],
+  function(exports, Caml_hash_primitive, Belt_internalSetBuckets, Belt_internalBucketsType){
     'use strict';
     function copyBucket(h_buckets, ndata_tail, _old_bucket) {
       while(true) {
         var old_bucket = _old_bucket;
         if (old_bucket !== undefined) {
           var s = old_bucket.key;
-          var nidx = Caml_hash.caml_hash_final_mix(Caml_hash.caml_hash_mix_int(0, s)) & (h_buckets.length - 1 | 0);
+          var nidx = Caml_hash_primitive.caml_hash_final_mix(Caml_hash_primitive.caml_hash_mix_int(0, s)) & (h_buckets.length - 1 | 0);
           var match = ndata_tail[nidx];
           if (match !== undefined) {
             match.next = old_bucket;
@@ -25,7 +25,7 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     
     function remove(h, key) {
       var h_buckets = h.buckets;
-      var i = Caml_hash.caml_hash_final_mix(Caml_hash.caml_hash_mix_int(0, key)) & (h_buckets.length - 1 | 0);
+      var i = Caml_hash_primitive.caml_hash_final_mix(Caml_hash_primitive.caml_hash_mix_int(0, key)) & (h_buckets.length - 1 | 0);
       var l = h_buckets[i];
       if (l !== undefined) {
         var next_cell = l.next;
@@ -87,7 +87,7 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     function add(h, key) {
       var h_buckets = h.buckets;
       var buckets_len = h_buckets.length;
-      var i = Caml_hash.caml_hash_final_mix(Caml_hash.caml_hash_mix_int(0, key)) & (buckets_len - 1 | 0);
+      var i = Caml_hash_primitive.caml_hash_final_mix(Caml_hash_primitive.caml_hash_mix_int(0, key)) & (buckets_len - 1 | 0);
       var l = h_buckets[i];
       if (l !== undefined) {
         addBucket(h, key, l);
@@ -128,7 +128,7 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     
     function has(h, key) {
       var h_buckets = h.buckets;
-      var nid = Caml_hash.caml_hash_final_mix(Caml_hash.caml_hash_mix_int(0, key)) & (h_buckets.length - 1 | 0);
+      var nid = Caml_hash_primitive.caml_hash_final_mix(Caml_hash_primitive.caml_hash_mix_int(0, key)) & (h_buckets.length - 1 | 0);
       var bucket = h_buckets[nid];
       if (bucket !== undefined) {
         var key$1 = key;
@@ -136,19 +136,19 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
         while(true) {
           var cell = _cell;
           if (cell.key === key$1) {
-            return /* true */1;
+            return true;
           } else {
             var match = cell.next;
             if (match !== undefined) {
               _cell = match;
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           }
         };
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -195,8 +195,6 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     
     var toArray = Belt_internalSetBuckets.toArray;
     
-    var ofArray = fromArray;
-    
     var getBucketHistogram = Belt_internalSetBuckets.getBucketHistogram;
     
     exports.make = make;
@@ -213,7 +211,6 @@ define(["exports", "./caml_hash.js", "./belt_internalSetBuckets.js", "./belt_int
     exports.size = size;
     exports.logStats = logStats;
     exports.toArray = toArray;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.mergeMany = mergeMany;
     exports.getBucketHistogram = getBucketHistogram;

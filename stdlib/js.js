@@ -20,8 +20,6 @@ define(["exports"],
     
     var $$String = 0;
     
-    var $$Boolean = 0;
-    
     var Re = 0;
     
     var Promise = 0;
@@ -65,7 +63,6 @@ define(["exports"],
     exports.Exn = Exn;
     exports.$$Array = $$Array;
     exports.$$String = $$String;
-    exports.$$Boolean = $$Boolean;
     exports.Re = Re;
     exports.Promise = Promise;
     exports.$$Date = $$Date;

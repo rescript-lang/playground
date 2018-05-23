@@ -133,7 +133,7 @@ define(["exports", "./belt_internalAVLset.js"],
       var r = n.right;
       var c = cmp(x, v);
       if (c === 0) {
-        pres[0] = /* true */1;
+        pres[0] = true;
         return /* tuple */[
                 l,
                 r
@@ -167,7 +167,7 @@ define(["exports", "./belt_internalAVLset.js"],
     
     function split(t, x, cmp) {
       if (t !== null) {
-        var pres = [/* false */0];
+        var pres = [false];
         var v = splitAuxPivot(cmp, t, x, pres);
         return /* tuple */[
                 v,
@@ -179,7 +179,7 @@ define(["exports", "./belt_internalAVLset.js"],
                   Belt_internalAVLset.empty,
                   Belt_internalAVLset.empty
                 ],
-                /* false */0
+                false
               ];
       }
     }
@@ -221,7 +221,7 @@ define(["exports", "./belt_internalAVLset.js"],
         var l1 = s1.left;
         var v1 = s1.value;
         var r1 = s1.right;
-        var pres = [/* false */0];
+        var pres = [false];
         var match = splitAuxPivot(cmp, s2, v1, pres);
         var ll = intersect(l1, match[0], cmp);
         var rr = intersect(r1, match[1], cmp);
@@ -240,7 +240,7 @@ define(["exports", "./belt_internalAVLset.js"],
         var l1 = s1.left;
         var v1 = s1.value;
         var r1 = s1.right;
-        var pres = [/* false */0];
+        var pres = [false];
         var match = splitAuxPivot(cmp, s2, v1, pres);
         var ll = diff(l1, match[0], cmp);
         var rr = diff(r1, match[1], cmp);
@@ -255,10 +255,6 @@ define(["exports", "./belt_internalAVLset.js"],
     }
     
     var empty = Belt_internalAVLset.empty;
-    
-    var ofArray = Belt_internalAVLset.fromArray;
-    
-    var ofSortedArrayUnsafe = Belt_internalAVLset.fromSortedArrayUnsafe;
     
     var fromArray = Belt_internalAVLset.fromArray;
     
@@ -321,8 +317,6 @@ define(["exports", "./belt_internalAVLset.js"],
     var checkInvariantInternal = Belt_internalAVLset.checkInvariantInternal;
     
     exports.empty = empty;
-    exports.ofArray = ofArray;
-    exports.ofSortedArrayUnsafe = ofSortedArrayUnsafe;
     exports.fromArray = fromArray;
     exports.fromSortedArrayUnsafe = fromSortedArrayUnsafe;
     exports.isEmpty = isEmpty;

@@ -28,7 +28,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
     ];
     
     function neg_signed(x) {
-      return +((x & 2147483648) !== 0);
+      return (x & 2147483648) !== 0;
     }
     
     function add(param, param$1) {
@@ -54,9 +54,9 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
     
     function eq(x, y) {
       if (x[/* hi */0] === y[/* hi */0]) {
-        return +(x[/* lo */1] === y[/* lo */1]);
+        return x[/* lo */1] === y[/* lo */1];
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -64,7 +64,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
       if (y !== null) {
         return eq(x, y);
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -72,13 +72,13 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
       if (y !== undefined) {
         return eq(x, y);
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
     function equal_nullable(x, y) {
       if (y == null) {
-        return /* false */0;
+        return false;
       } else {
         return eq(x, y);
       }
@@ -168,9 +168,9 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
     
     function is_zero(param) {
       if (param[/* hi */0] !== 0 || param[/* lo */1] !== 0) {
-        return /* false */0;
+        return false;
       } else {
-        return /* true */1;
+        return true;
       }
     }
     
@@ -305,34 +305,34 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
       var other_hi = param$1[/* hi */0];
       var hi = param[/* hi */0];
       if (hi > other_hi) {
-        return /* true */1;
+        return true;
       } else if (hi < other_hi) {
-        return /* false */0;
+        return false;
       } else {
-        return +(param[/* lo */1] >= param$1[/* lo */1]);
+        return param[/* lo */1] >= param$1[/* lo */1];
       }
     }
     
     function neq(x, y) {
-      return 1 - eq(x, y);
+      return !eq(x, y);
     }
     
     function lt(x, y) {
-      return 1 - ge(x, y);
+      return !ge(x, y);
     }
     
     function gt(x, y) {
       if (x[/* hi */0] > y[/* hi */0]) {
-        return /* true */1;
+        return true;
       } else if (x[/* hi */0] < y[/* hi */0]) {
-        return /* false */0;
+        return false;
       } else {
-        return +(x[/* lo */1] > y[/* lo */1]);
+        return x[/* lo */1] > y[/* lo */1];
       }
     }
     
     function le(x, y) {
-      return 1 - gt(x, y);
+      return !gt(x, y);
     }
     
     function min(x, y) {
@@ -555,7 +555,7 @@ define(["exports", "./caml_int32.js", "./caml_utils.js", "./caml_primitive.js", 
     }
     
     function bits_of_float(x) {
-      var u = new Float64Array(/* float array */[x]);
+      var u = new Float64Array(/* array */[x]);
       var int32 = new Int32Array(u.buffer);
       var x$1 = int32[1];
       var hi = x$1;

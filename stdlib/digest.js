@@ -30,15 +30,15 @@ define(["exports", "./char.js", "./string.js", "./caml_md5.js", "./pervasives.js
       var exit = 0;
       var d;
       try {
-        d = Caml_missing_polyfill.not_implemented("caml_md5_chan not implemented by bucklescript yet\n");
+        d = Caml_missing_polyfill.not_implemented("caml_md5_chan");
         exit = 1;
       }
       catch (e){
-        Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
         throw e;
       }
       if (exit === 1) {
-        Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
         return d;
       }
       

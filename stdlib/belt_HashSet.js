@@ -144,19 +144,19 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
         while(true) {
           var cell = _cell;
           if (eq$1(cell.key, key$1)) {
-            return /* true */1;
+            return true;
           } else {
             var match = cell.next;
             if (match !== undefined) {
               _cell = match;
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           }
         };
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -211,8 +211,6 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
     
     var toArray = Belt_internalSetBuckets.toArray;
     
-    var ofArray = fromArray;
-    
     var getBucketHistogram = Belt_internalSetBuckets.getBucketHistogram;
     
     exports.Int = Int;
@@ -231,7 +229,6 @@ define(["exports", "./belt_internalSetBuckets.js", "./belt_internalBucketsType.j
     exports.size = size;
     exports.logStats = logStats;
     exports.toArray = toArray;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.mergeMany = mergeMany;
     exports.getBucketHistogram = getBucketHistogram;

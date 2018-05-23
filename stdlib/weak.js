@@ -2,12 +2,8 @@
 define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js", "./caml_array.js", "./caml_int32.js", "./pervasives.js", "./caml_primitive.js", "./caml_builtin_exceptions.js"],
   function(exports, $$Array, Curry, Caml_obj, Caml_weak, Caml_array, Caml_int32, Pervasives, Caml_primitive, Caml_builtin_exceptions){
     'use strict';
-    function length(x) {
-      return x.length - 1 | 0;
-    }
-    
     function fill(ar, ofs, len, x) {
-      if (ofs < 0 || len < 0 || (ofs + len | 0) > (ar.length - 1 | 0)) {
+      if (ofs < 0 || len < 0 || (ofs + len | 0) > ar.length) {
         throw [
               Caml_builtin_exceptions.invalid_argument,
               "Weak.fill"
@@ -30,7 +26,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
         var sz$2 = sz$1 > 2147483647 ? 2147483647 : sz$1;
         return /* record */[
                 /* table */Caml_array.caml_make_vect(sz$2, emptybucket),
-                /* hashes */Caml_array.caml_make_vect(sz$2, /* int array */[]),
+                /* hashes */Caml_array.caml_make_vect(sz$2, /* array */[]),
                 /* limit */7,
                 /* oversize */0,
                 /* rover */0
@@ -39,7 +35,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
       var clear = function (t) {
         for(var i = 0 ,i_finish = t[/* table */0].length - 1 | 0; i <= i_finish; ++i){
           Caml_array.caml_array_set(t[/* table */0], i, emptybucket);
-          Caml_array.caml_array_set(t[/* hashes */1], i, /* int array */[]);
+          Caml_array.caml_array_set(t[/* hashes */1], i, /* array */[]);
         }
         t[/* limit */2] = 7;
         t[/* oversize */3] = 0;
@@ -53,7 +49,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                       while(true) {
                         var accu = _accu;
                         var i = _i;
-                        if (i >= (b.length - 1 | 0)) {
+                        if (i >= b.length) {
                           return accu;
                         } else {
                           var match = Caml_weak.caml_weak_get(b, i);
@@ -75,7 +71,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                       var b = param;
                       while(true) {
                         var i = _i;
-                        if (i >= (b.length - 1 | 0)) {
+                        if (i >= b.length) {
                           return /* () */0;
                         } else {
                           var match = Caml_weak.caml_weak_get(b, i);
@@ -98,11 +94,11 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
                       var b = param$1;
                       while(true) {
                         var i = _i;
-                        if (i >= (b.length - 1 | 0)) {
+                        if (i >= b.length) {
                           return /* () */0;
                         } else {
                           var match = Caml_weak.caml_weak_check(b, i);
-                          if (match !== 0) {
+                          if (match) {
                             Curry._3(f, b, Caml_array.caml_array_get(t[/* hashes */1], j), i);
                             _i = i + 1 | 0;
                             continue ;
@@ -118,7 +114,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
         while(true) {
           var accu = _accu;
           var i = _i;
-          if (i >= (b.length - 1 | 0)) {
+          if (i >= b.length) {
             return accu;
           } else {
             _accu = accu + (
@@ -143,7 +139,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
       var test_shrink_bucket = function (t) {
         var bucket = Caml_array.caml_array_get(t[/* table */0], t[/* rover */4]);
         var hbucket = Caml_array.caml_array_get(t[/* hashes */1], t[/* rover */4]);
-        var len = bucket.length - 1 | 0;
+        var len = bucket.length;
         var prev_len = prev_sz(len);
         var live = count_bucket(0, bucket, 0);
         if (live <= prev_len) {
@@ -170,10 +166,10 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
               }
             };
           };
-          loop(0, (bucket.length - 1 | 0) - 1 | 0);
+          loop(0, bucket.length - 1 | 0);
           if (prev_len === 0) {
             Caml_array.caml_array_set(t[/* table */0], t[/* rover */4], emptybucket);
-            Caml_array.caml_array_set(t[/* hashes */1], t[/* rover */4], /* int array */[]);
+            Caml_array.caml_array_set(t[/* hashes */1], t[/* rover */4], /* array */[]);
           } else {
             Caml_obj.caml_obj_truncate(bucket, prev_len + 1 | 0);
             Caml_obj.caml_obj_truncate(hbucket, prev_len);
@@ -189,7 +185,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
       var add_aux = function (t, setter, d, h, index) {
         var bucket = Caml_array.caml_array_get(t[/* table */0], index);
         var hashes = Caml_array.caml_array_get(t[/* hashes */1], index);
-        var sz = bucket.length - 1 | 0;
+        var sz = bucket.length;
         var _i = 0;
         while(true) {
           var i = _i;
@@ -263,7 +259,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
         var index = get_index(t, h);
         var bucket = Caml_array.caml_array_get(t[/* table */0], index);
         var hashes = Caml_array.caml_array_get(t[/* hashes */1], index);
-        var sz = bucket.length - 1 | 0;
+        var sz = bucket.length;
         var _i = 0;
         while(true) {
           var i = _i;
@@ -310,7 +306,7 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
         var index = get_index(t, h);
         var bucket = Caml_array.caml_array_get(t[/* table */0], index);
         var hashes = Caml_array.caml_array_get(t[/* hashes */1], index);
-        var sz = bucket.length - 1 | 0;
+        var sz = bucket.length;
         var _i = 0;
         while(true) {
           var i = _i;
@@ -342,15 +338,15 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
       };
       var mem = function (t, d) {
         return find_shadow(t, d, (function (_, _$1) {
-                      return /* true */1;
-                    }), /* false */0);
+                      return true;
+                    }), false);
       };
       var find_all = function (t, d) {
         var h = Curry._1(H[/* hash */1], d);
         var index = get_index(t, h);
         var bucket = Caml_array.caml_array_get(t[/* table */0], index);
         var hashes = Caml_array.caml_array_get(t[/* hashes */1], index);
-        var sz = bucket.length - 1 | 0;
+        var sz = bucket.length;
         var _i = 0;
         var _accu = /* [] */0;
         while(true) {
@@ -390,7 +386,9 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
       };
       var stats = function (t) {
         var len = t[/* table */0].length;
-        var lens = $$Array.map(length, t[/* table */0]);
+        var lens = $$Array.map((function (prim) {
+                return prim.length;
+              }), t[/* table */0]);
         $$Array.sort(Caml_obj.caml_compare, lens);
         var totlen = $$Array.fold_left((function (prim, prim$1) {
                 return prim + prim$1 | 0;
@@ -421,6 +419,10 @@ define(["exports", "./array.js", "./curry.js", "./caml_obj.js", "./caml_weak.js"
     }
     
     var create = Caml_weak.caml_weak_create;
+    
+    function length(prim) {
+      return prim.length;
+    }
     
     var set = Caml_weak.caml_weak_set;
     

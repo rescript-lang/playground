@@ -8,9 +8,9 @@ define(["exports"],
     
     function isSome(param) {
       if (param) {
-        return /* true */1;
+        return true;
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -18,15 +18,15 @@ define(["exports"],
       if (x) {
         return eq(v, x[0]);
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
     function isNone(param) {
       if (param) {
-        return /* false */0;
+        return false;
       } else {
-        return /* true */1;
+        return true;
       }
     }
     
@@ -43,10 +43,10 @@ define(["exports"],
         if (b) {
           return eq(a[0], b[0]);
         } else {
-          return /* false */0;
+          return false;
         }
       } else {
-        return +(b === /* None */0);
+        return b === /* None */0;
       }
     }
     

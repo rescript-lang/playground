@@ -9,7 +9,7 @@ define(["exports"],
     }
     
     function caml_int32_bits_of_float(x) {
-      var float32 = new Float32Array(/* float array */[x]);
+      var float32 = new Float32Array(/* array */[x]);
       return new Int32Array(float32.buffer)[0];
     }
     
@@ -31,7 +31,7 @@ define(["exports"],
     
     function caml_modf_float(x) {
       if (isFinite(x)) {
-        var neg = +(1 / x < 0);
+        var neg = 1 / x < 0;
         var x$1 = Math.abs(x);
         var i = Math.floor(x$1);
         var f = x$1 - i;
@@ -84,7 +84,7 @@ define(["exports"],
                 0
               ];
       } else {
-        var neg = +(x < 0);
+        var neg = x < 0;
         var x$prime = Math.abs(x);
         var exp = Math.floor(Math.LOG2E * Math.log(x$prime)) + 1;
         x$prime = x$prime * Math.pow(2, -exp);

@@ -8,13 +8,13 @@ define(["exports", "./belt_SortArrayInt.js", "./belt_internalAVLset.js"],
         if (t !== null) {
           var v = t.value;
           if (x === v) {
-            return /* true */1;
+            return true;
           } else {
             _t = x < v ? t.left : t.right;
             continue ;
           }
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -56,7 +56,7 @@ define(["exports", "./belt_SortArrayInt.js", "./belt_internalAVLset.js"],
     }
     
     function eq(s1, s2) {
-      return +(cmp(s1, s2) === 0);
+      return cmp(s1, s2) === 0;
     }
     
     function subset(_s1, _s2) {
@@ -77,26 +77,26 @@ define(["exports", "./belt_SortArrayInt.js", "./belt_internalAVLset.js"],
                 _s1 = r1;
                 continue ;
               } else {
-                return /* false */0;
+                return false;
               }
             } else if (v1 < v2) {
               if (subset(Belt_internalAVLset.create(l1, v1, Belt_internalAVLset.empty), l2)) {
                 _s1 = r1;
                 continue ;
               } else {
-                return /* false */0;
+                return false;
               }
             } else if (subset(Belt_internalAVLset.create(Belt_internalAVLset.empty, v1, r1), r2)) {
               _s1 = l1;
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           } else {
-            return /* false */0;
+            return false;
           }
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }

@@ -3,7 +3,7 @@ define(["exports"],
   function(exports){
     'use strict';
     function equal(x, y) {
-      return +(x === y);
+      return x === y;
     }
     
     var max = 2147483647;

@@ -46,7 +46,7 @@ define(["exports", "./curry.js"],
     }
     
     function isEmpty(s) {
-      return +(s.root === null);
+      return s.root === null;
     }
     
     function popUndefined(s) {

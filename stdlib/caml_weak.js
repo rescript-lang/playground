@@ -29,7 +29,7 @@ define(["exports", "./caml_obj.js", "./caml_array.js", "./js_primitive.js"],
     }
     
     function caml_weak_check(xs, i) {
-      return +(xs[i] !== undefined);
+      return xs[i] !== undefined;
     }
     
     var caml_weak_blit = Caml_array.caml_array_blit;

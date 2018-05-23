@@ -7,9 +7,9 @@ define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_
     }
     
     var params = /* record */[
-      /* compact_table : true */1,
-      /* copy_parent : true */1,
-      /* clean_when_copying : true */1,
+      /* compact_table */true,
+      /* copy_parent */true,
+      /* clean_when_copying */true,
       /* retry_count */3,
       /* bucket_small_size */16
     ];
@@ -100,7 +100,7 @@ define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_
       } else {
         var label = new_method(table);
         table[/* methods_by_name */2] = Belt_MapString.set(table[/* methods_by_name */2], name, label);
-        table[/* methods_by_label */3] = Belt_MapInt.set(table[/* methods_by_label */3], label, /* true */1);
+        table[/* methods_by_label */3] = Belt_MapInt.set(table[/* methods_by_label */3], label, true);
         return label;
       }
     }
@@ -184,12 +184,12 @@ define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_
       var by_label = [Belt_MapInt.empty];
       List.iter2((function (met, label) {
               by_name[0] = Belt_MapString.set(by_name[0], met, label);
-              by_label[0] = Belt_MapInt.set(by_label[0], label, Belt_MapInt.getWithDefault(table[/* methods_by_label */3], label, /* true */1));
+              by_label[0] = Belt_MapInt.set(by_label[0], label, Belt_MapInt.getWithDefault(table[/* methods_by_label */3], label, true));
               return /* () */0;
             }), concr_meths$1, concr_meth_labs);
       List.iter2((function (met, label) {
               by_name[0] = Belt_MapString.set(by_name[0], met, label);
-              by_label[0] = Belt_MapInt.set(by_label[0], label, /* false */0);
+              by_label[0] = Belt_MapInt.set(by_label[0], label, false);
               return /* () */0;
             }), virt_meths$1, virt_meth_labs);
       table[/* methods_by_name */2] = by_name[0];
@@ -297,7 +297,7 @@ define(["exports", "./obj.js", "./list.js", "./array.js", "./curry.js", "./caml_
         $$Array.iteri((function (i, met) {
                 var lab = (i << 1) + 2 | 0;
                 table[/* methods_by_name */2] = Belt_MapString.set(table[/* methods_by_name */2], met, lab);
-                table[/* methods_by_label */3] = Belt_MapInt.set(table[/* methods_by_label */3], lab, /* true */1);
+                table[/* methods_by_label */3] = Belt_MapInt.set(table[/* methods_by_label */3], lab, true);
                 return /* () */0;
               }), public_methods);
         return table;

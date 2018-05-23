@@ -246,7 +246,7 @@ define(["exports", "./block.js", "./curry.js", "./printf.js", "./caml_gc.js"],
     }
     
     function create_alarm(f) {
-      var arec_000 = /* active */[/* true */1];
+      var arec_000 = /* active */[true];
       var arec = /* record */[
         arec_000,
         /* f */f
@@ -256,7 +256,7 @@ define(["exports", "./block.js", "./curry.js", "./printf.js", "./caml_gc.js"],
     }
     
     function delete_alarm(a) {
-      a[0] = /* false */0;
+      a[0] = false;
       return /* () */0;
     }
     

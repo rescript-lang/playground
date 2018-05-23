@@ -1,20 +1,20 @@
 'use strict';
-define(["exports", "./curry.js"],
-  function(exports, Curry){
+define(["exports", "./block.js", "./curry.js"],
+  function(exports, Block, Curry){
     'use strict';
     function getExn(param) {
-      if (param) {
-        return param[0];
-      } else {
+      if (param.tag) {
         throw new Error("getExn");
+      } else {
+        return param[0];
       }
     }
     
     function mapWithDefaultU(opt, $$default, f) {
-      if (opt) {
-        return f(opt[0]);
-      } else {
+      if (opt.tag) {
         return $$default;
+      } else {
+        return f(opt[0]);
       }
     }
     
@@ -23,10 +23,10 @@ define(["exports", "./curry.js"],
     }
     
     function mapU(opt, f) {
-      if (opt) {
-        return /* Some */[f(opt[0])];
+      if (opt.tag) {
+        return /* Error */Block.__(1, [opt[0]]);
       } else {
-        return /* None */0;
+        return /* Ok */Block.__(0, [f(opt[0])]);
       }
     }
     
@@ -35,10 +35,10 @@ define(["exports", "./curry.js"],
     }
     
     function flatMapU(opt, f) {
-      if (opt) {
-        return f(opt[0]);
+      if (opt.tag) {
+        return /* Error */Block.__(1, [opt[0]]);
       } else {
-        return /* None */0;
+        return f(opt[0]);
       }
     }
     
@@ -47,40 +47,40 @@ define(["exports", "./curry.js"],
     }
     
     function getWithDefault(opt, $$default) {
-      if (opt) {
-        return opt[0];
-      } else {
+      if (opt.tag) {
         return $$default;
+      } else {
+        return opt[0];
       }
     }
     
-    function isSome(param) {
-      if (param) {
-        return true;
-      } else {
+    function isOk(param) {
+      if (param.tag) {
         return false;
+      } else {
+        return true;
       }
     }
     
-    function isNone(param) {
-      if (param) {
-        return false;
-      } else {
+    function isError(param) {
+      if (param.tag) {
         return true;
+      } else {
+        return false;
       }
     }
     
     function eqU(a, b, f) {
-      if (a) {
-        if (b) {
-          return f(a[0], b[0]);
+      if (a.tag) {
+        if (b.tag) {
+          return true;
         } else {
           return false;
         }
-      } else if (b) {
+      } else if (b.tag) {
         return false;
       } else {
-        return true;
+        return f(a[0], b[0]);
       }
     }
     
@@ -89,16 +89,16 @@ define(["exports", "./curry.js"],
     }
     
     function cmpU(a, b, f) {
-      if (a) {
-        if (b) {
-          return f(a[0], b[0]);
+      if (a.tag) {
+        if (b.tag) {
+          return 0;
         } else {
-          return 1;
+          return -1;
         }
-      } else if (b) {
-        return -1;
+      } else if (b.tag) {
+        return 1;
       } else {
-        return 0;
+        return f(a[0], b[0]);
       }
     }
     
@@ -114,8 +114,8 @@ define(["exports", "./curry.js"],
     exports.flatMapU = flatMapU;
     exports.flatMap = flatMap;
     exports.getWithDefault = getWithDefault;
-    exports.isSome = isSome;
-    exports.isNone = isNone;
+    exports.isOk = isOk;
+    exports.isError = isError;
     exports.eqU = eqU;
     exports.eq = eq;
     exports.cmpU = cmpU;

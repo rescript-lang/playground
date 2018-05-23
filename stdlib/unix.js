@@ -285,7 +285,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
             Pervasives.prerr_string("\"");
           }
           Pervasives.prerr_string(": ");
-          console.error(Caml_missing_polyfill.not_implemented("unix_error_message not implemented by bucklescript yet\n"));
+          console.error(Caml_missing_polyfill.not_implemented("unix_error_message"));
           return Pervasives.exit(2);
         } else {
           throw exn;
@@ -300,7 +300,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.read"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_read not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_read");
       }
     }
     
@@ -311,7 +311,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.write"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_write not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_write");
       }
     }
     
@@ -322,7 +322,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.single_write"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_single_write not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_single_write");
       }
     }
     
@@ -336,13 +336,13 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     
     function try_set_close_on_exec() {
       try {
-        Caml_missing_polyfill.not_implemented("unix_set_close_on_exec not implemented by bucklescript yet\n");
-        return /* true */1;
+        Caml_missing_polyfill.not_implemented("unix_set_close_on_exec");
+        return true;
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
         if (exn[0] === Caml_builtin_exceptions.invalid_argument) {
-          return /* false */0;
+          return false;
         } else {
           throw exn;
         }
@@ -350,17 +350,17 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function pause() {
-      return Caml_missing_polyfill.not_implemented("unix_sigsuspend not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_sigsuspend");
     }
     
-    var inet_addr_any = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string not implemented by bucklescript yet\n");
+    var inet_addr_any = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string");
     
-    var inet_addr_loopback = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string not implemented by bucklescript yet\n");
+    var inet_addr_loopback = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string");
     
     var inet6_addr_any;
     
     try {
-      inet6_addr_any = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string not implemented by bucklescript yet\n");
+      inet6_addr_any = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string");
     }
     catch (raw_exn){
       var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -374,7 +374,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     var inet6_addr_loopback;
     
     try {
-      inet6_addr_loopback = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string not implemented by bucklescript yet\n");
+      inet6_addr_loopback = Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string");
     }
     catch (raw_exn$1){
       var exn$1 = Js_exn.internalToOCamlException(raw_exn$1);
@@ -404,7 +404,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.recv"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_recv not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_recv");
       }
     }
     
@@ -415,7 +415,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.recvfrom"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_recvfrom not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_recvfrom");
       }
     }
     
@@ -426,7 +426,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.send"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_send not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_send");
       }
     }
     
@@ -437,7 +437,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               "Unix.sendto"
             ];
       } else {
-        return Caml_missing_polyfill.not_implemented("unix_sendto not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_sendto");
       }
     }
     
@@ -450,11 +450,11 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function SO_005(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_getsockopt not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getsockopt");
     }
     
     function SO_006(_, _$1, _$2, _$3) {
-      return Caml_missing_polyfill.not_implemented("unix_setsockopt not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_setsockopt");
     }
     
     function getsockopt(fd, opt) {
@@ -495,7 +495,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     
     function getaddrinfo(node, service, opts) {
       try {
-        return List.rev(Caml_missing_polyfill.not_implemented("unix_getaddrinfo not implemented by bucklescript yet\n"));
+        return List.rev(Caml_missing_polyfill.not_implemented("unix_getaddrinfo"));
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -505,11 +505,11 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
           var opts$1 = opts;
           var opt_socktype = [/* None */0];
           var opt_protocol = [0];
-          var opt_passive = [/* false */0];
+          var opt_passive = [false];
           List.iter((function (param) {
                   if (typeof param === "number") {
                     if (param === 2) {
-                      opt_passive[0] = /* true */1;
+                      opt_passive[0] = true;
                       return /* () */0;
                     } else {
                       return /* () */0;
@@ -553,7 +553,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
                     return /* :: */[
                             /* tuple */[
                               ty,
-                              Caml_missing_polyfill.not_implemented("unix_getservbyname not implemented by bucklescript yet\n")[/* s_port */2]
+                              Caml_missing_polyfill.not_implemented("unix_getservbyname")[/* s_port */2]
                             ],
                             /* [] */0
                           ];
@@ -608,7 +608,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
             try {
               addresses = /* :: */[
                 /* tuple */[
-                  Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string not implemented by bucklescript yet\n"),
+                  Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string"),
                   node$1
                 ],
                 /* [] */0
@@ -618,7 +618,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               var exn$1 = Js_exn.internalToOCamlException(raw_exn$1);
               if (exn$1[0] === Caml_builtin_exceptions.failure) {
                 try {
-                  var he = Caml_missing_polyfill.not_implemented("unix_gethostbyname not implemented by bucklescript yet\n");
+                  var he = Caml_missing_polyfill.not_implemented("unix_gethostbyname");
                   addresses = List.map((function (a) {
                           return /* tuple */[
                                   a,
@@ -662,7 +662,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     
     function getnameinfo(addr, opts) {
       try {
-        return Caml_missing_polyfill.not_implemented("unix_getnameinfo not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_getnameinfo");
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -676,14 +676,14 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               if (List.mem(/* NI_NUMERICHOST */1, opts$1)) {
                 throw Caml_builtin_exceptions.not_found;
               }
-              hostname = Caml_missing_polyfill.not_implemented("unix_gethostbyaddr not implemented by bucklescript yet\n")[/* h_name */0];
+              hostname = Caml_missing_polyfill.not_implemented("unix_gethostbyaddr")[/* h_name */0];
             }
             catch (exn$1){
               if (exn$1 === Caml_builtin_exceptions.not_found) {
                 if (List.mem(/* NI_NAMEREQD */2, opts$1)) {
                   throw Caml_builtin_exceptions.not_found;
                 }
-                hostname = Caml_missing_polyfill.not_implemented("unix_string_of_inet_addr not implemented by bucklescript yet\n");
+                hostname = Caml_missing_polyfill.not_implemented("unix_string_of_inet_addr");
               } else {
                 throw exn$1;
               }
@@ -694,7 +694,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
                 throw Caml_builtin_exceptions.not_found;
               }
               List.mem(/* NI_DGRAM */4, opts$1) ? "udp" : "tcp";
-              service = Caml_missing_polyfill.not_implemented("unix_getservbyport not implemented by bucklescript yet\n")[/* s_name */0];
+              service = Caml_missing_polyfill.not_implemented("unix_getservbyport")[/* s_name */0];
             }
             catch (exn$2){
               if (exn$2 === Caml_builtin_exceptions.not_found) {
@@ -722,7 +722,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     function waitpid_non_intr() {
       while(true) {
         try {
-          return Caml_missing_polyfill.not_implemented("unix_waitpid not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_waitpid");
         }
         catch (raw_exn){
           var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -745,12 +745,12 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function system() {
-      var id = Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+      var id = Caml_missing_polyfill.not_implemented("unix_fork");
       if (id !== 0) {
         return waitpid_non_intr(id)[1];
       } else {
         try {
-          return Caml_missing_polyfill.not_implemented("unix_execv not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_execv");
         }
         catch (exn){
           return Pervasives.exit(127);
@@ -759,19 +759,19 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function safe_dup(fd) {
-      var new_fd = Caml_missing_polyfill.not_implemented("unix_dup not implemented by bucklescript yet\n");
+      var new_fd = Caml_missing_polyfill.not_implemented("unix_dup");
       if (new_fd >= 3) {
         return new_fd;
       } else {
         var res = safe_dup(fd);
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("unix_close");
         return res;
       }
     }
     
     function safe_close() {
       try {
-        return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        return Caml_missing_polyfill.not_implemented("unix_close");
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -790,22 +790,22 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
       safe_close(new_stdin);
       safe_close(new_stdout);
       safe_close(new_stderr);
-      Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-      Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-      Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-      Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-      Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-      return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("unix_dup2");
+      Caml_missing_polyfill.not_implemented("unix_close");
+      Caml_missing_polyfill.not_implemented("unix_dup2");
+      Caml_missing_polyfill.not_implemented("unix_close");
+      Caml_missing_polyfill.not_implemented("unix_dup2");
+      return Caml_missing_polyfill.not_implemented("unix_close");
     }
     
     function create_process(_, _$1, new_stdin, new_stdout, new_stderr) {
-      var id = Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+      var id = Caml_missing_polyfill.not_implemented("unix_fork");
       if (id !== 0) {
         return id;
       } else {
         try {
           perform_redirections(new_stdin, new_stdout, new_stderr);
-          return Caml_missing_polyfill.not_implemented("unix_execvp not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_execvp");
         }
         catch (exn){
           return Pervasives.exit(127);
@@ -814,13 +814,13 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function create_process_env(_, _$1, _$2, new_stdin, new_stdout, new_stderr) {
-      var id = Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+      var id = Caml_missing_polyfill.not_implemented("unix_fork");
       if (id !== 0) {
         return id;
       } else {
         try {
           perform_redirections(new_stdin, new_stdout, new_stderr);
-          return Caml_missing_polyfill.not_implemented("unix_execvpe not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_execvpe");
         }
         catch (exn){
           return Pervasives.exit(127);
@@ -832,25 +832,25 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     
     function open_proc(_, proc, input, output, toclose) {
       var cloexec = List.for_all(try_set_close_on_exec, toclose);
-      var id = Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+      var id = Caml_missing_polyfill.not_implemented("unix_fork");
       if (id !== 0) {
         return Hashtbl.add(popen_processes, proc, id);
       } else {
         if (input !== 0) {
-          Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-          Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+          Caml_missing_polyfill.not_implemented("unix_dup2");
+          Caml_missing_polyfill.not_implemented("unix_close");
         }
         if (output !== 1) {
-          Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-          Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+          Caml_missing_polyfill.not_implemented("unix_dup2");
+          Caml_missing_polyfill.not_implemented("unix_close");
         }
         if (!cloexec) {
           List.iter((function () {
-                  return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+                  return Caml_missing_polyfill.not_implemented("unix_close");
                 }), toclose);
         }
         try {
-          return Caml_missing_polyfill.not_implemented("unix_execv not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_execv");
         }
         catch (exn){
           return Pervasives.exit(127);
@@ -859,7 +859,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function open_process_in(cmd) {
-      var match = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+      var match = Caml_missing_polyfill.not_implemented("unix_pipe");
       var in_write = match[1];
       var in_read = match[0];
       var inchan = Caml_io.caml_ml_open_descriptor_in(in_read);
@@ -870,16 +870,16 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
             ]);
       }
       catch (e){
-        Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
+        Caml_missing_polyfill.not_implemented("unix_close");
         throw e;
       }
-      Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("unix_close");
       return inchan;
     }
     
     function open_process_out(cmd) {
-      var match = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+      var match = Caml_missing_polyfill.not_implemented("unix_pipe");
       var out_write = match[1];
       var out_read = match[0];
       var outchan = Caml_io.caml_ml_open_descriptor_out(out_write);
@@ -891,16 +891,16 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
       }
       catch (e){
         Caml_io.caml_ml_flush(outchan);
-        Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
+        Caml_missing_polyfill.not_implemented("unix_close");
         throw e;
       }
-      Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("unix_close");
       return outchan;
     }
     
     function open_process(cmd) {
-      var match = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+      var match = Caml_missing_polyfill.not_implemented("unix_pipe");
       var in_write = match[1];
       var in_read = match[0];
       var fds_to_close = /* :: */[
@@ -911,7 +911,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
         ]
       ];
       try {
-        var match$1 = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+        var match$1 = Caml_missing_polyfill.not_implemented("unix_pipe");
         var out_write = match$1[1];
         var out_read = match$1[0];
         fds_to_close = /* :: */[
@@ -939,8 +939,8 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
                 /* [] */0
               ]
             ]);
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("unix_close");
+        Caml_missing_polyfill.not_implemented("unix_close");
         return /* tuple */[
                 inchan,
                 outchan
@@ -948,7 +948,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
       }
       catch (e){
         List.iter((function () {
-                return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+                return Caml_missing_polyfill.not_implemented("unix_close");
               }), fds_to_close);
         throw e;
       }
@@ -956,23 +956,23 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     
     function open_proc_full(_, _$1, proc, _$2, _$3, _$4, toclose) {
       var cloexec = List.for_all(try_set_close_on_exec, toclose);
-      var id = Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+      var id = Caml_missing_polyfill.not_implemented("unix_fork");
       if (id !== 0) {
         return Hashtbl.add(popen_processes, proc, id);
       } else {
-        Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("unix_dup2");
+        Caml_missing_polyfill.not_implemented("unix_close");
+        Caml_missing_polyfill.not_implemented("unix_dup2");
+        Caml_missing_polyfill.not_implemented("unix_close");
+        Caml_missing_polyfill.not_implemented("unix_dup2");
+        Caml_missing_polyfill.not_implemented("unix_close");
         if (!cloexec) {
           List.iter((function () {
-                  return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+                  return Caml_missing_polyfill.not_implemented("unix_close");
                 }), toclose);
         }
         try {
-          return Caml_missing_polyfill.not_implemented("unix_execve not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_execve");
         }
         catch (exn){
           return Pervasives.exit(127);
@@ -981,7 +981,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function open_process_full(cmd, env) {
-      var match = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+      var match = Caml_missing_polyfill.not_implemented("unix_pipe");
       var in_write = match[1];
       var in_read = match[0];
       var fds_to_close = /* :: */[
@@ -992,7 +992,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
         ]
       ];
       try {
-        var match$1 = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+        var match$1 = Caml_missing_polyfill.not_implemented("unix_pipe");
         var out_write = match$1[1];
         var out_read = match$1[0];
         fds_to_close = /* :: */[
@@ -1002,7 +1002,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
             fds_to_close
           ]
         ];
-        var match$2 = Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+        var match$2 = Caml_missing_polyfill.not_implemented("unix_pipe");
         var err_write = match$2[1];
         var err_read = match$2[0];
         fds_to_close = /* :: */[
@@ -1029,9 +1029,9 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
                 ]
               ]
             ]);
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("unix_close");
+        Caml_missing_polyfill.not_implemented("unix_close");
+        Caml_missing_polyfill.not_implemented("unix_close");
         return /* tuple */[
                 inchan,
                 outchan,
@@ -1040,7 +1040,7 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
       }
       catch (e){
         List.iter((function () {
-                return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+                return Caml_missing_polyfill.not_implemented("unix_close");
               }), fds_to_close);
         throw e;
       }
@@ -1068,14 +1068,14 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     
     function close_process_in(inchan) {
       var pid = find_proc_id("close_process_in", /* Process_in */Block.__(1, [inchan]));
-      Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       return waitpid_non_intr(pid)[1];
     }
     
     function close_process_out(outchan) {
       var pid = find_proc_id("close_process_out", /* Process_out */Block.__(2, [outchan]));
       Caml_io.caml_ml_flush(outchan);
-      Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       return waitpid_non_intr(pid)[1];
     }
     
@@ -1086,10 +1086,10 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               inchan,
               outchan
             ]));
-      Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       try {
         Caml_io.caml_ml_flush(outchan);
-        Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -1110,10 +1110,10 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               outchan,
               errchan
             ]));
-      Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       try {
         Caml_io.caml_ml_flush(outchan);
-        Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       }
       catch (raw_exn){
         var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -1122,14 +1122,14 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
         }
         
       }
-      Caml_missing_polyfill.not_implemented("caml_ml_close_channel not implemented by bucklescript yet\n");
+      Caml_missing_polyfill.not_implemented("caml_ml_close_channel");
       return waitpid_non_intr(pid)[1];
     }
     
     function open_connection() {
-      var sock = Caml_missing_polyfill.not_implemented("unix_socket not implemented by bucklescript yet\n");
+      var sock = Caml_missing_polyfill.not_implemented("unix_socket");
       try {
-        Caml_missing_polyfill.not_implemented("unix_connect not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("unix_connect");
         try_set_close_on_exec(sock);
         return /* tuple */[
                 Caml_io.caml_ml_open_descriptor_in(sock),
@@ -1137,19 +1137,19 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
               ];
       }
       catch (exn){
-        Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+        Caml_missing_polyfill.not_implemented("unix_close");
         throw exn;
       }
     }
     
     function shutdown_connection() {
-      return Caml_missing_polyfill.not_implemented("unix_shutdown not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_shutdown");
     }
     
     function accept_non_intr() {
       while(true) {
         try {
-          return Caml_missing_polyfill.not_implemented("unix_accept not implemented by bucklescript yet\n");
+          return Caml_missing_polyfill.not_implemented("unix_accept");
         }
         catch (raw_exn){
           var exn = Js_exn.internalToOCamlException(raw_exn);
@@ -1172,22 +1172,22 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function establish_server(server_fun, _) {
-      var sock = Caml_missing_polyfill.not_implemented("unix_socket not implemented by bucklescript yet\n");
-      setsockopt(sock, /* SO_REUSEADDR */2, /* true */1);
-      Caml_missing_polyfill.not_implemented("unix_bind not implemented by bucklescript yet\n");
-      Caml_missing_polyfill.not_implemented("unix_listen not implemented by bucklescript yet\n");
+      var sock = Caml_missing_polyfill.not_implemented("unix_socket");
+      setsockopt(sock, /* SO_REUSEADDR */2, true);
+      Caml_missing_polyfill.not_implemented("unix_bind");
+      Caml_missing_polyfill.not_implemented("unix_listen");
       while(true) {
         var match = accept_non_intr(sock);
         var s = match[0];
-        var id = Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+        var id = Caml_missing_polyfill.not_implemented("unix_fork");
         if (id !== 0) {
-          Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+          Caml_missing_polyfill.not_implemented("unix_close");
           waitpid_non_intr(id);
         } else {
-          if (Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n") !== 0) {
+          if (Caml_missing_polyfill.not_implemented("unix_fork") !== 0) {
             Pervasives.exit(0);
           }
-          Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+          Caml_missing_polyfill.not_implemented("unix_close");
           try_set_close_on_exec(s);
           var inchan = Caml_io.caml_ml_open_descriptor_in(s);
           var outchan = Caml_io.caml_ml_open_descriptor_out(s);
@@ -1199,57 +1199,57 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     }
     
     function error_message() {
-      return Caml_missing_polyfill.not_implemented("unix_error_message not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_error_message");
     }
     
     function environment() {
-      return Caml_missing_polyfill.not_implemented("unix_environment not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_environment");
     }
     
     var getenv = Caml_sys.caml_sys_getenv;
     
     function putenv(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_putenv not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_putenv");
     }
     
     function execv(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_execv not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_execv");
     }
     
     function execve(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_execve not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_execve");
     }
     
     function execvp(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_execvp not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_execvp");
     }
     
     function execvpe(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_execvpe not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_execvpe");
     }
     
     function fork() {
-      return Caml_missing_polyfill.not_implemented("unix_fork not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_fork");
     }
     
     function wait() {
-      return Caml_missing_polyfill.not_implemented("unix_wait not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_wait");
     }
     
     function waitpid(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_waitpid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_waitpid");
     }
     
     function getpid() {
-      return Caml_missing_polyfill.not_implemented("unix_getpid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getpid");
     }
     
     function getppid() {
-      return Caml_missing_polyfill.not_implemented("unix_getppid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getppid");
     }
     
     function nice() {
-      return Caml_missing_polyfill.not_implemented("unix_nice not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_nice");
     }
     
     var stdin = 0;
@@ -1259,11 +1259,11 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     var stderr = 2;
     
     function openfile(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_open not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_open");
     }
     
     function close() {
-      return Caml_missing_polyfill.not_implemented("unix_close not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_close");
     }
     
     var in_channel_of_descr = Caml_io.caml_ml_open_descriptor_in;
@@ -1271,63 +1271,63 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     var out_channel_of_descr = Caml_io.caml_ml_open_descriptor_out;
     
     function descr_of_in_channel() {
-      return Caml_missing_polyfill.not_implemented("caml_channel_descriptor not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("caml_channel_descriptor");
     }
     
     function descr_of_out_channel() {
-      return Caml_missing_polyfill.not_implemented("caml_channel_descriptor not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("caml_channel_descriptor");
     }
     
     function lseek(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_lseek not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_lseek");
     }
     
     function truncate(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_truncate not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_truncate");
     }
     
     function ftruncate(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_ftruncate not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_ftruncate");
     }
     
     function stat() {
-      return Caml_missing_polyfill.not_implemented("unix_stat not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_stat");
     }
     
     function lstat() {
-      return Caml_missing_polyfill.not_implemented("unix_lstat not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_lstat");
     }
     
     function fstat() {
-      return Caml_missing_polyfill.not_implemented("unix_fstat not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_fstat");
     }
     
     function isatty() {
-      return Caml_missing_polyfill.not_implemented("unix_isatty not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_isatty");
     }
     
     function LargeFile_000(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_lseek_64 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_lseek_64");
     }
     
     function LargeFile_001(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_truncate_64 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_truncate_64");
     }
     
     function LargeFile_002(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_ftruncate_64 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_ftruncate_64");
     }
     
     function LargeFile_003() {
-      return Caml_missing_polyfill.not_implemented("unix_stat_64 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_stat_64");
     }
     
     function LargeFile_004() {
-      return Caml_missing_polyfill.not_implemented("unix_lstat_64 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_lstat_64");
     }
     
     function LargeFile_005() {
-      return Caml_missing_polyfill.not_implemented("unix_fstat_64 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_fstat_64");
     }
     
     var LargeFile = [
@@ -1340,339 +1340,339 @@ define(["exports", "./sys.js", "./list.js", "./array.js", "./block.js", "./curry
     ];
     
     function unlink() {
-      return Caml_missing_polyfill.not_implemented("unix_unlink not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_unlink");
     }
     
     function rename(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_rename not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_rename");
     }
     
     function link(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_link not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_link");
     }
     
     function chmod(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_chmod not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_chmod");
     }
     
     function fchmod(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_fchmod not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_fchmod");
     }
     
     function chown(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_chown not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_chown");
     }
     
     function fchown(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_fchown not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_fchown");
     }
     
     function umask() {
-      return Caml_missing_polyfill.not_implemented("unix_umask not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_umask");
     }
     
     function access(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_access not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_access");
     }
     
     function dup() {
-      return Caml_missing_polyfill.not_implemented("unix_dup not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_dup");
     }
     
     function dup2(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_dup2 not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_dup2");
     }
     
     function set_nonblock() {
-      return Caml_missing_polyfill.not_implemented("unix_set_nonblock not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_set_nonblock");
     }
     
     function clear_nonblock() {
-      return Caml_missing_polyfill.not_implemented("unix_clear_nonblock not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_clear_nonblock");
     }
     
     function set_close_on_exec() {
-      return Caml_missing_polyfill.not_implemented("unix_set_close_on_exec not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_set_close_on_exec");
     }
     
     function clear_close_on_exec() {
-      return Caml_missing_polyfill.not_implemented("unix_clear_close_on_exec not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_clear_close_on_exec");
     }
     
     function mkdir(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_mkdir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_mkdir");
     }
     
     function rmdir() {
-      return Caml_missing_polyfill.not_implemented("unix_rmdir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_rmdir");
     }
     
     function chdir() {
-      return Caml_missing_polyfill.not_implemented("unix_chdir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_chdir");
     }
     
     function getcwd() {
-      return Caml_missing_polyfill.not_implemented("unix_getcwd not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getcwd");
     }
     
     function chroot() {
-      return Caml_missing_polyfill.not_implemented("unix_chroot not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_chroot");
     }
     
     function opendir() {
-      return Caml_missing_polyfill.not_implemented("unix_opendir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_opendir");
     }
     
     function readdir() {
-      return Caml_missing_polyfill.not_implemented("unix_readdir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_readdir");
     }
     
     function rewinddir() {
-      return Caml_missing_polyfill.not_implemented("unix_rewinddir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_rewinddir");
     }
     
     function closedir() {
-      return Caml_missing_polyfill.not_implemented("unix_closedir not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_closedir");
     }
     
     function pipe() {
-      return Caml_missing_polyfill.not_implemented("unix_pipe not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_pipe");
     }
     
     function mkfifo(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_mkfifo not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_mkfifo");
     }
     
     function symlink(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_symlink not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_symlink");
     }
     
     function readlink() {
-      return Caml_missing_polyfill.not_implemented("unix_readlink not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_readlink");
     }
     
     function select(_, _$1, _$2, _$3) {
-      return Caml_missing_polyfill.not_implemented("unix_select not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_select");
     }
     
     function lockf(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_lockf not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_lockf");
     }
     
     function kill(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_kill not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_kill");
     }
     
     function sigprocmask(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_sigprocmask not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_sigprocmask");
     }
     
     function sigpending() {
-      return Caml_missing_polyfill.not_implemented("unix_sigpending not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_sigpending");
     }
     
     function sigsuspend() {
-      return Caml_missing_polyfill.not_implemented("unix_sigsuspend not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_sigsuspend");
     }
     
     function time() {
-      return Caml_missing_polyfill.not_implemented("unix_time not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_time");
     }
     
     function gettimeofday() {
-      return Caml_missing_polyfill.not_implemented("unix_gettimeofday not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_gettimeofday");
     }
     
     function gmtime() {
-      return Caml_missing_polyfill.not_implemented("unix_gmtime not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_gmtime");
     }
     
     function localtime() {
-      return Caml_missing_polyfill.not_implemented("unix_localtime not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_localtime");
     }
     
     function mktime() {
-      return Caml_missing_polyfill.not_implemented("unix_mktime not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_mktime");
     }
     
     function alarm() {
-      return Caml_missing_polyfill.not_implemented("unix_alarm not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_alarm");
     }
     
     function sleep() {
-      return Caml_missing_polyfill.not_implemented("unix_sleep not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_sleep");
     }
     
     function times() {
-      return Caml_missing_polyfill.not_implemented("unix_times not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_times");
     }
     
     function utimes(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_utimes not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_utimes");
     }
     
     function getitimer() {
-      return Caml_missing_polyfill.not_implemented("unix_getitimer not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getitimer");
     }
     
     function setitimer(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_setitimer not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_setitimer");
     }
     
     function getuid() {
-      return Caml_missing_polyfill.not_implemented("unix_getuid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getuid");
     }
     
     function geteuid() {
-      return Caml_missing_polyfill.not_implemented("unix_geteuid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_geteuid");
     }
     
     function setuid() {
-      return Caml_missing_polyfill.not_implemented("unix_setuid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_setuid");
     }
     
     function getgid() {
-      return Caml_missing_polyfill.not_implemented("unix_getgid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getgid");
     }
     
     function getegid() {
-      return Caml_missing_polyfill.not_implemented("unix_getegid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getegid");
     }
     
     function setgid() {
-      return Caml_missing_polyfill.not_implemented("unix_setgid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_setgid");
     }
     
     function getgroups() {
-      return Caml_missing_polyfill.not_implemented("unix_getgroups not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getgroups");
     }
     
     function setgroups() {
-      return Caml_missing_polyfill.not_implemented("unix_setgroups not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_setgroups");
     }
     
     function initgroups(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_initgroups not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_initgroups");
     }
     
     function getlogin() {
-      return Caml_missing_polyfill.not_implemented("unix_getlogin not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getlogin");
     }
     
     function getpwnam() {
-      return Caml_missing_polyfill.not_implemented("unix_getpwnam not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getpwnam");
     }
     
     function getgrnam() {
-      return Caml_missing_polyfill.not_implemented("unix_getgrnam not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getgrnam");
     }
     
     function getpwuid() {
-      return Caml_missing_polyfill.not_implemented("unix_getpwuid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getpwuid");
     }
     
     function getgrgid() {
-      return Caml_missing_polyfill.not_implemented("unix_getgrgid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getgrgid");
     }
     
     function inet_addr_of_string() {
-      return Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_inet_addr_of_string");
     }
     
     function string_of_inet_addr() {
-      return Caml_missing_polyfill.not_implemented("unix_string_of_inet_addr not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_string_of_inet_addr");
     }
     
     function socket(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_socket not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_socket");
     }
     
     function socketpair(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_socketpair not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_socketpair");
     }
     
     function accept() {
-      return Caml_missing_polyfill.not_implemented("unix_accept not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_accept");
     }
     
     function bind(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_bind not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_bind");
     }
     
     function connect(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_connect not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_connect");
     }
     
     function listen(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_listen not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_listen");
     }
     
     function shutdown(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_shutdown not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_shutdown");
     }
     
     function getsockname() {
-      return Caml_missing_polyfill.not_implemented("unix_getsockname not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getsockname");
     }
     
     function getpeername() {
-      return Caml_missing_polyfill.not_implemented("unix_getpeername not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getpeername");
     }
     
     function gethostname() {
-      return Caml_missing_polyfill.not_implemented("unix_gethostname not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_gethostname");
     }
     
     function gethostbyname() {
-      return Caml_missing_polyfill.not_implemented("unix_gethostbyname not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_gethostbyname");
     }
     
     function gethostbyaddr() {
-      return Caml_missing_polyfill.not_implemented("unix_gethostbyaddr not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_gethostbyaddr");
     }
     
     function getprotobyname() {
-      return Caml_missing_polyfill.not_implemented("unix_getprotobyname not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getprotobyname");
     }
     
     function getprotobynumber() {
-      return Caml_missing_polyfill.not_implemented("unix_getprotobynumber not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getprotobynumber");
     }
     
     function getservbyname(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_getservbyname not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getservbyname");
     }
     
     function getservbyport(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_getservbyport not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_getservbyport");
     }
     
     function tcgetattr() {
-      return Caml_missing_polyfill.not_implemented("unix_tcgetattr not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_tcgetattr");
     }
     
     function tcsetattr(_, _$1, _$2) {
-      return Caml_missing_polyfill.not_implemented("unix_tcsetattr not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_tcsetattr");
     }
     
     function tcsendbreak(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_tcsendbreak not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_tcsendbreak");
     }
     
     function tcdrain() {
-      return Caml_missing_polyfill.not_implemented("unix_tcdrain not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_tcdrain");
     }
     
     function tcflush(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_tcflush not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_tcflush");
     }
     
     function tcflow(_, _$1) {
-      return Caml_missing_polyfill.not_implemented("unix_tcflow not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_tcflow");
     }
     
     function setsid() {
-      return Caml_missing_polyfill.not_implemented("unix_setsid not implemented by bucklescript yet\n");
+      return Caml_missing_polyfill.not_implemented("unix_setsid");
     }
     
     exports.Unix_error = Unix_error;

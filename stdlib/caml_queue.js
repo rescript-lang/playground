@@ -44,7 +44,7 @@ define(["exports"],
     }
     
     function is_empty(q) {
-      return +(q[/* length */0] === 0);
+      return q[/* length */0] === 0;
     }
     
     exports.create = create;

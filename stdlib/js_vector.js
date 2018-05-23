@@ -28,7 +28,7 @@ define(["exports"],
     }
     
     function memByRef(x, xs) {
-      return +(xs.indexOf(x) >= 0);
+      return xs.indexOf(x) >= 0;
     }
     
     function iter(f, xs) {

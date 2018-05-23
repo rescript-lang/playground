@@ -77,34 +77,34 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
     var current_dir_name = ".";
     
     function is_dir_sep(s, i) {
-      return +(Caml_string.get(s, i) === /* "/" */47);
+      return Caml_string.get(s, i) === /* "/" */47;
     }
     
     function is_relative(n) {
       if (n.length < 1) {
-        return /* true */1;
+        return true;
       } else {
-        return +(Caml_string.get(n, 0) !== /* "/" */47);
+        return Caml_string.get(n, 0) !== /* "/" */47;
       }
     }
     
     function is_implicit(n) {
       if (is_relative(n) && (n.length < 2 || $$String.sub(n, 0, 2) !== "./")) {
         if (n.length < 3) {
-          return /* true */1;
+          return true;
         } else {
-          return +($$String.sub(n, 0, 3) !== "../");
+          return $$String.sub(n, 0, 3) !== "../";
         }
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
     function check_suffix(name, suff) {
       if (name.length >= suff.length) {
-        return +($$String.sub(name, name.length - suff.length | 0, suff.length) === suff);
+        return $$String.sub(name, name.length - suff.length | 0, suff.length) === suff;
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -251,7 +251,7 @@ define(["exports", "./block.js", "./curry.js", "./buffer.js", "./js_exn.js", "./
         var counter = _counter;
         var name = temp_file_name(temp_dir, prefix, suffix);
         try {
-          Caml_missing_polyfill.not_implemented("caml_sys_close not implemented by bucklescript yet\n");
+          Caml_missing_polyfill.not_implemented("caml_sys_close");
           return name;
         }
         catch (raw_e){

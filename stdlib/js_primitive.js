@@ -4,9 +4,9 @@ define(["exports"],
     'use strict';
     function is_nil_undef(x) {
       if (x === null) {
-        return /* true */1;
+        return true;
       } else {
-        return +(x === undefined);
+        return x === undefined;
       }
     }
     

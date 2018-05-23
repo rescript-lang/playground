@@ -26,7 +26,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     function is_in_char_set(char_set, c) {
       var str_ind = (c >>> 3);
       var mask = (1 << (c & 7));
-      return +((Caml_string.get(char_set, str_ind) & mask) !== 0);
+      return (Caml_string.get(char_set, str_ind) & mask) !== 0;
     }
     
     function pad_of_pad_opt(pad_opt) {
@@ -336,9 +336,9 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           var before = Char.chr(c - 1 | 0);
           var after = Char.chr(c + 1 | 0);
           if (is_in_char_set(set, c)) {
-            return 1 - (is_in_char_set(set, before) && is_in_char_set(set, after));
+            return !(is_in_char_set(set, before) && is_in_char_set(set, after));
           } else {
-            return /* false */0;
+            return false;
           }
         };
         if (is_alone(/* "]" */93)) {
@@ -623,7 +623,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     
     function bprint_fmt(buf, fmt) {
       var _fmt = fmt;
-      var _ign_flag = /* false */0;
+      var _ign_flag = false;
       while(true) {
         var ign_flag = _ign_flag;
         var fmt$1 = _fmt;
@@ -635,14 +635,14 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "c" */99);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 1 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "C" */67);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 2 : 
@@ -650,7 +650,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_padding(buf, fmt$1[0]);
                 buffer_add_char(buf, /* "s" */115);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[1];
                 continue ;
             case 3 : 
@@ -658,39 +658,39 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_padding(buf, fmt$1[0]);
                 buffer_add_char(buf, /* "S" */83);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[1];
                 continue ;
             case 4 : 
                 bprint_int_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2]);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[3];
                 continue ;
             case 5 : 
                 bprint_altint_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2], /* "l" */108);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[3];
                 continue ;
             case 6 : 
                 bprint_altint_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2], /* "n" */110);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[3];
                 continue ;
             case 7 : 
                 bprint_altint_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2], /* "L" */76);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[3];
                 continue ;
             case 8 : 
                 bprint_float_fmt(buf, ign_flag, fmt$1[0], fmt$1[1], fmt$1[2]);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[3];
                 continue ;
             case 9 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "B" */66);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 10 : 
@@ -713,7 +713,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 bprint_fmtty(buf, fmt$1[1]);
                 buffer_add_char(buf, /* "%" */37);
                 buffer_add_char(buf, /* "}" */125);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[2];
                 continue ;
             case 14 : 
@@ -724,21 +724,21 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 bprint_fmtty(buf, fmt$1[1]);
                 buffer_add_char(buf, /* "%" */37);
                 buffer_add_char(buf, /* ")" */41);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[2];
                 continue ;
             case 15 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "a" */97);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 16 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "t" */116);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 17 : 
@@ -754,7 +754,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, /* "r" */114);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 20 : 
@@ -762,26 +762,26 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_pad_opt(buf, fmt$1[0]);
                 bprint_char_set(buf, fmt$1[1]);
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[2];
                 continue ;
             case 21 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 buffer_add_char(buf, char_of_counter(fmt$1[0]));
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[1];
                 continue ;
             case 22 : 
                 buffer_add_char(buf, /* "%" */37);
                 bprint_ignored_flag(buf, ign_flag);
                 bprint_string_literal(buf, "0c");
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[0];
                 continue ;
             case 23 : 
                 var match = param_format_of_ignored_format(fmt$1[0], fmt$1[1]);
-                _ign_flag = /* true */1;
+                _ign_flag = true;
                 _fmt = match[0];
                 continue ;
             case 24 : 
@@ -790,7 +790,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   bprint_ignored_flag(buf, ign_flag);
                   buffer_add_char(buf, /* "?" */63);
                 }
-                _ign_flag = /* false */0;
+                _ign_flag = false;
                 _fmt = fmt$1[2];
                 continue ;
             
@@ -2919,7 +2919,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           while(true) {
             var i = _i;
             if (i === len) {
-              return /* false */0;
+              return false;
             } else {
               var match = Caml_string.get(str, i);
               var switcher = match - 46 | 0;
@@ -2928,10 +2928,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   _i = i + 1 | 0;
                   continue ;
                 } else {
-                  return /* true */1;
+                  return true;
                 }
               } else if (switcher > 22 || switcher < 1) {
-                return /* true */1;
+                return true;
               } else {
                 _i = i + 1 | 0;
                 continue ;
@@ -3963,7 +3963,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
     }
     
     function fmt_ebb_of_string(legacy_behavior, str) {
-      var legacy_behavior$1 = legacy_behavior ? legacy_behavior[0] : /* true */1;
+      var legacy_behavior$1 = legacy_behavior ? legacy_behavior[0] : true;
       var invalid_format_message = function (str_ind, msg) {
         return Curry._3(failwith_message(/* Format */[
                         /* String_literal */Block.__(11, [
@@ -4055,10 +4055,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           var plus = _plus;
           var exit = 0;
           var exit$1 = 0;
-          if (plus !== 0) {
-            if (sharp !== 0) {
+          if (plus) {
+            if (sharp) {
               exit$1 = 2;
-            } else if (space !== 0) {
+            } else if (space) {
               exit = 1;
             } else if (symb !== 100) {
               if (symb !== 105) {
@@ -4069,8 +4069,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else {
               return /* Int_pd */1;
             }
-          } else if (sharp !== 0) {
-            if (space !== 0) {
+          } else if (sharp) {
+            if (space) {
               exit$1 = 2;
             } else if (symb !== 88) {
               if (symb !== 111) {
@@ -4085,7 +4085,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else {
               return /* Int_CX */9;
             }
-          } else if (space !== 0) {
+          } else if (space) {
             if (symb !== 100) {
               if (symb !== 105) {
                 exit = 1;
@@ -4213,7 +4213,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             }
             if (exit$2 === 3) {
               if (legacy_behavior$1) {
-                _sharp = /* false */0;
+                _sharp = false;
                 continue ;
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "'#'");
@@ -4222,23 +4222,23 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             
           }
           if (exit === 1) {
-            if (plus !== 0) {
-              if (space !== 0) {
+            if (plus) {
+              if (space) {
                 if (legacy_behavior$1) {
-                  _space = /* false */0;
+                  _space = false;
                   continue ;
                 } else {
                   return incompatible_flag(pct_ind, str_ind, /* " " */32, "'+'");
                 }
               } else if (legacy_behavior$1) {
-                _plus = /* false */0;
+                _plus = false;
                 continue ;
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "'+'");
               }
-            } else if (space !== 0) {
+            } else if (space) {
               if (legacy_behavior$1) {
-                _space = /* false */0;
+                _space = false;
                 continue ;
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "' '");
@@ -4329,7 +4329,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             exit = 1;
           }
           if (exit === 1) {
-            if (minus !== 0) {
+            if (minus) {
               if (typeof prec === "number") {
                 return parse_conv(/* Arg_padding */Block.__(1, [/* Left */0]));
               } else {
@@ -4405,7 +4405,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           }
           if (exit$1 === 2) {
             if (legacy_behavior$1) {
-              return parse_literal(minus$1 || +(symb$1 === /* "-" */45), str_ind$1 + 1 | 0);
+              return parse_literal(minus$1 || symb$1 === /* "-" */45, str_ind$1 + 1 | 0);
             } else {
               exit = 1;
             }
@@ -4451,9 +4451,9 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         }
         var match = Caml_string.get(str, str_ind);
         if (match !== 95) {
-          return parse_flags(pct_ind$1, str_ind, end_ind$1, /* false */0);
+          return parse_flags(pct_ind$1, str_ind, end_ind$1, false);
         } else {
-          return parse_flags(pct_ind$1, str_ind + 1 | 0, end_ind$1, /* true */1);
+          return parse_flags(pct_ind$1, str_ind + 1 | 0, end_ind$1, true);
         }
       };
       var parse_after_at = function (str_ind, end_ind) {
@@ -4473,7 +4473,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else {
                 switch (switcher) {
                   case 0 : 
-                      return parse_tag(/* true */1, str_ind + 1 | 0, end_ind);
+                      return parse_tag(true, str_ind + 1 | 0, end_ind);
                   case 1 : 
                       exit = 1;
                       break;
@@ -4490,7 +4490,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             } else if (c >= 91) {
               switch (c - 91 | 0) {
                 case 0 : 
-                    return parse_tag(/* false */0, str_ind + 1 | 0, end_ind);
+                    return parse_tag(false, str_ind + 1 | 0, end_ind);
                 case 1 : 
                     exit = 1;
                     break;
@@ -4849,10 +4849,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         while(true) {
           var space = _space;
           var plus = _plus;
-          if (plus !== 0) {
-            if (space !== 0) {
+          if (plus) {
+            if (space) {
               if (legacy_behavior$1) {
-                _space = /* false */0;
+                _space = false;
                 continue ;
               } else {
                 return incompatible_flag(pct_ind, str_ind, /* " " */32, "'+'");
@@ -4890,7 +4890,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               }
               if (exit === 1) {
                 if (legacy_behavior$1) {
-                  _plus = /* false */0;
+                  _plus = false;
                   continue ;
                 } else {
                   return incompatible_flag(pct_ind, str_ind, symb, "'+'");
@@ -4898,7 +4898,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               }
               
             }
-          } else if (space !== 0) {
+          } else if (space) {
             var exit$1 = 0;
             if (symb >= 72) {
               var switcher$1 = symb - 101 | 0;
@@ -4931,7 +4931,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             }
             if (exit$1 === 1) {
               if (legacy_behavior$1) {
-                _space = /* false */0;
+                _space = false;
                 continue ;
               } else {
                 return incompatible_flag(pct_ind, str_ind, symb, "' '");
@@ -5085,12 +5085,12 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         };
       };
       var parse_conversion = function (pct_ind, str_ind, end_ind, plus, sharp, space, ign, pad, prec, padprec, symb) {
-        var plus_used = /* false */0;
-        var sharp_used = /* false */0;
-        var space_used = /* false */0;
-        var ign_used = [/* false */0];
-        var pad_used = /* false */0;
-        var prec_used = [/* false */0];
+        var plus_used = false;
+        var sharp_used = false;
+        var space_used = false;
+        var ign_used = [false];
+        var pad_used = false;
+        var prec_used = [false];
         var check_no_0 = function (symb, pad) {
           if (typeof pad === "number") {
             return pad;
@@ -5143,7 +5143,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           }
         };
         var get_prec_opt = function () {
-          prec_used[0] = /* true */1;
+          prec_used[0] = true;
           if (typeof prec === "number") {
             if (prec !== 0) {
               return incompatible_flag(pct_ind, str_ind, /* "_" */95, "'*'");
@@ -5173,8 +5173,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 var fmt_rest = match$1[0];
                 var match$2 = parse_literal(str_ind, str_ind, sub_end);
                 var sub_fmtty = fmtty_of_fmt(match$2[0]);
-                if (ign_used[0] = /* true */1, ign) {
-                  pad_used = /* true */1;
+                if (ign_used[0] = true, ign) {
+                  pad_used = true;
                   var ignored_000 = opt_of_pad(/* "_" */95, pad);
                   var ignored = /* Ignored_format_subst */Block.__(8, [
                       ignored_000,
@@ -5185,7 +5185,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         fmt_rest
                       ])];
                 } else {
-                  pad_used = /* true */1;
+                  pad_used = true;
                   fmt_result = /* Fmt_EBB */[/* Format_subst */Block.__(14, [
                         opt_of_pad(/* "(" */40, pad),
                         sub_fmtty,
@@ -5203,7 +5203,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 67 : 
                 var match$3 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$1 = match$3[0];
-                fmt_result = (ign_used[0] = /* true */1, ign) ? /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
+                fmt_result = (ign_used[0] = true, ign) ? /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                         /* Ignored_caml_char */1,
                         fmt_rest$1
                       ])] : /* Fmt_EBB */[/* Caml_char */Block.__(1, [fmt_rest$1])];
@@ -5211,7 +5211,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 78 : 
                 var match$4 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$2 = match$4[0];
-                if (ign_used[0] = /* true */1, ign) {
+                if (ign_used[0] = true, ign) {
                   var ignored$1 = /* Ignored_scan_get_counter */Block.__(10, [/* Token_counter */2]);
                   fmt_result = /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                         ignored$1,
@@ -5225,12 +5225,12 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 }
                 break;
             case 83 : 
-                pad_used = /* true */1;
+                pad_used = true;
                 var pad$1 = check_no_0(symb, padprec);
                 var match$5 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$3 = match$5[0];
-                if (ign_used[0] = /* true */1, ign) {
-                  pad_used = /* true */1;
+                if (ign_used[0] = true, ign) {
+                  pad_used = true;
                   var ignored$2 = /* Ignored_caml_string */Block.__(1, [opt_of_pad(/* "_" */95, padprec)]);
                   fmt_result = /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                         ignored$2,
@@ -5250,8 +5250,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 var next_ind = match$7[0];
                 var match$8 = parse_literal(next_ind, next_ind, end_ind);
                 var fmt_rest$4 = match$8[0];
-                if (ign_used[0] = /* true */1, ign) {
-                  pad_used = /* true */1;
+                if (ign_used[0] = true, ign) {
+                  pad_used = true;
                   var ignored_000$1 = opt_of_pad(/* "_" */95, pad);
                   var ignored$3 = /* Ignored_scan_char_set */Block.__(9, [
                       ignored_000$1,
@@ -5262,7 +5262,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         fmt_rest$4
                       ])];
                 } else {
-                  pad_used = /* true */1;
+                  pad_used = true;
                   fmt_result = /* Fmt_EBB */[/* Scan_char_set */Block.__(20, [
                         opt_of_pad(/* "[" */91, pad),
                         char_set,
@@ -5287,7 +5287,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 break;
             case 99 : 
                 var char_format = function (fmt_rest) {
-                  if (ign_used[0] = /* true */1, ign) {
+                  if (ign_used[0] = true, ign) {
                     return /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                                 /* Ignored_char */0,
                                 fmt_rest
@@ -5297,7 +5297,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                   }
                 };
                 var scan_format = function (fmt_rest) {
-                  if (ign_used[0] = /* true */1, ign) {
+                  if (ign_used[0] = true, ign) {
                     return /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                                 /* Ignored_scan_next_char */4,
                                 fmt_rest
@@ -5308,7 +5308,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 };
                 var match$10 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$5 = match$10[0];
-                pad_used = /* true */1;
+                pad_used = true;
                 var match$11 = opt_of_pad(/* "c" */99, pad);
                 fmt_result = match$11 ? (
                     match$11[0] !== 0 ? (
@@ -5332,18 +5332,18 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 114 : 
                 var match$12 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$6 = match$12[0];
-                fmt_result = (ign_used[0] = /* true */1, ign) ? /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
+                fmt_result = (ign_used[0] = true, ign) ? /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                         /* Ignored_reader */3,
                         fmt_rest$6
                       ])] : /* Fmt_EBB */[/* Reader */Block.__(19, [fmt_rest$6])];
                 break;
             case 115 : 
-                pad_used = /* true */1;
+                pad_used = true;
                 var pad$2 = check_no_0(symb, padprec);
                 var match$13 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$7 = match$13[0];
-                if (ign_used[0] = /* true */1, ign) {
-                  pad_used = /* true */1;
+                if (ign_used[0] = true, ign) {
+                  pad_used = true;
                   var ignored$4 = /* Ignored_string */Block.__(0, [opt_of_pad(/* "_" */95, padprec)]);
                   fmt_result = /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                         ignored$4,
@@ -5465,8 +5465,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 var match$17 = parse_literal(beg_ind$1, beg_ind$1, end_ind);
                 var fmt_rest$8 = match$17[0];
                 var sub_fmtty$1 = fmtty_of_fmt(match$16[0]);
-                if (ign_used[0] = /* true */1, ign) {
-                  pad_used = /* true */1;
+                if (ign_used[0] = true, ign) {
+                  pad_used = true;
                   var ignored_000$2 = opt_of_pad(/* "_" */95, pad);
                   var ignored$5 = /* Ignored_format_arg */Block.__(7, [
                       ignored_000$2,
@@ -5477,7 +5477,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         fmt_rest$8
                       ])];
                 } else {
-                  pad_used = /* true */1;
+                  pad_used = true;
                   fmt_result = /* Fmt_EBB */[/* Format_arg */Block.__(13, [
                         opt_of_pad(/* "{" */123, pad),
                         sub_fmtty$1,
@@ -5490,14 +5490,14 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         }
         switch (exit$2) {
           case 7 : 
-              plus_used = /* true */1;
-              sharp_used = /* true */1;
-              space_used = /* true */1;
+              plus_used = true;
+              sharp_used = true;
+              space_used = true;
               var iconv = compute_int_conv(pct_ind, str_ind, plus, sharp, space, symb);
               var match$18 = parse_literal(str_ind, str_ind, end_ind);
               var fmt_rest$9 = match$18[0];
-              if (ign_used[0] = /* true */1, ign) {
-                pad_used = /* true */1;
+              if (ign_used[0] = true, ign) {
+                pad_used = true;
                 var ignored_001 = opt_of_pad(/* "_" */95, pad);
                 var ignored$6 = /* Ignored_int */Block.__(2, [
                     iconv,
@@ -5508,8 +5508,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                       fmt_rest$9
                     ])];
               } else {
-                pad_used = /* true */1;
-                prec_used[0] = /* true */1;
+                pad_used = true;
+                prec_used[0] = true;
                 var pad$3;
                 var exit$3 = 0;
                 if (typeof prec === "number" && prec === 0) {
@@ -5533,7 +5533,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         )
                     );
                 }
-                var match$19 = make_padprec_fmt_ebb(pad$3, (prec_used[0] = /* true */1, prec), fmt_rest$9);
+                var match$19 = make_padprec_fmt_ebb(pad$3, (prec_used[0] = true, prec), fmt_rest$9);
                 fmt_result = /* Fmt_EBB */[/* Int */Block.__(4, [
                       iconv,
                       match$19[0],
@@ -5547,7 +5547,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 var match$20 = parse_literal(str_ind, str_ind, end_ind);
                 var fmt_rest$10 = match$20[0];
                 var counter = counter_of_char(symb);
-                if (ign_used[0] = /* true */1, ign) {
+                if (ign_used[0] = true, ign) {
                   var ignored$7 = /* Ignored_scan_get_counter */Block.__(10, [counter]);
                   fmt_result = /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                         ignored$7,
@@ -5567,13 +5567,13 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         }
         switch (exit$1) {
           case 2 : 
-              plus_used = /* true */1;
-              space_used = /* true */1;
+              plus_used = true;
+              space_used = true;
               var fconv = compute_float_conv(pct_ind, str_ind, plus, space, symb);
               var match$21 = parse_literal(str_ind, str_ind, end_ind);
               var fmt_rest$11 = match$21[0];
-              if (ign_used[0] = /* true */1, ign) {
-                pad_used = /* true */1;
+              if (ign_used[0] = true, ign) {
+                pad_used = true;
                 var ignored_000$3 = opt_of_pad(/* "_" */95, pad);
                 var ignored_001$1 = get_prec_opt(/* () */0);
                 var ignored$8 = /* Ignored_float */Block.__(6, [
@@ -5585,8 +5585,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                       fmt_rest$11
                     ])];
               } else {
-                pad_used = /* true */1;
-                var match$22 = make_padprec_fmt_ebb(pad, (prec_used[0] = /* true */1, prec), fmt_rest$11);
+                pad_used = true;
+                var match$22 = make_padprec_fmt_ebb(pad, (prec_used[0] = true, prec), fmt_rest$11);
                 fmt_result = /* Fmt_EBB */[/* Float */Block.__(8, [
                       fconv,
                       match$22[0],
@@ -5598,7 +5598,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
           case 3 : 
               var match$23 = parse_literal(str_ind, str_ind, end_ind);
               var fmt_rest$12 = match$23[0];
-              fmt_result = (ign_used[0] = /* true */1, ign) ? /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
+              fmt_result = (ign_used[0] = true, ign) ? /* Fmt_EBB */[/* Ignored_param */Block.__(23, [
                       /* Ignored_bool */2,
                       fmt_rest$12
                     ])] : /* Fmt_EBB */[/* Bool */Block.__(9, [fmt_rest$12])];
@@ -5649,15 +5649,15 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                 } else {
                   switch (symb - 108 | 0) {
                     case 0 : 
-                        plus_used = /* true */1;
-                        sharp_used = /* true */1;
-                        space_used = /* true */1;
+                        plus_used = true;
+                        sharp_used = true;
+                        space_used = true;
                         var iconv$1 = compute_int_conv(pct_ind, str_ind + 1 | 0, plus, sharp, space, Caml_string.get(str, str_ind));
                         var beg_ind$2 = str_ind + 1 | 0;
                         var match$25 = parse_literal(beg_ind$2, beg_ind$2, end_ind);
                         var fmt_rest$13 = match$25[0];
-                        if (ign_used[0] = /* true */1, ign) {
-                          pad_used = /* true */1;
+                        if (ign_used[0] = true, ign) {
+                          pad_used = true;
                           var ignored_001$2 = opt_of_pad(/* "_" */95, pad);
                           var ignored$9 = /* Ignored_int32 */Block.__(3, [
                               iconv$1,
@@ -5668,8 +5668,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                                 fmt_rest$13
                               ])];
                         } else {
-                          pad_used = /* true */1;
-                          var match$26 = make_padprec_fmt_ebb(pad, (prec_used[0] = /* true */1, prec), fmt_rest$13);
+                          pad_used = true;
+                          var match$26 = make_padprec_fmt_ebb(pad, (prec_used[0] = true, prec), fmt_rest$13);
                           fmt_result = /* Fmt_EBB */[/* Int32 */Block.__(5, [
                                 iconv$1,
                                 match$26[0],
@@ -5682,15 +5682,15 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         exit = 1;
                         break;
                     case 2 : 
-                        plus_used = /* true */1;
-                        sharp_used = /* true */1;
-                        space_used = /* true */1;
+                        plus_used = true;
+                        sharp_used = true;
+                        space_used = true;
                         var iconv$2 = compute_int_conv(pct_ind, str_ind + 1 | 0, plus, sharp, space, Caml_string.get(str, str_ind));
                         var beg_ind$3 = str_ind + 1 | 0;
                         var match$27 = parse_literal(beg_ind$3, beg_ind$3, end_ind);
                         var fmt_rest$14 = match$27[0];
-                        if (ign_used[0] = /* true */1, ign) {
-                          pad_used = /* true */1;
+                        if (ign_used[0] = true, ign) {
+                          pad_used = true;
                           var ignored_001$3 = opt_of_pad(/* "_" */95, pad);
                           var ignored$10 = /* Ignored_nativeint */Block.__(4, [
                               iconv$2,
@@ -5701,8 +5701,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                                 fmt_rest$14
                               ])];
                         } else {
-                          pad_used = /* true */1;
-                          var match$28 = make_padprec_fmt_ebb(pad, (prec_used[0] = /* true */1, prec), fmt_rest$14);
+                          pad_used = true;
+                          var match$28 = make_padprec_fmt_ebb(pad, (prec_used[0] = true, prec), fmt_rest$14);
                           fmt_result = /* Fmt_EBB */[/* Nativeint */Block.__(6, [
                                 iconv$2,
                                 match$28[0],
@@ -5717,15 +5717,15 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
               } else if (symb !== 76) {
                 exit = 1;
               } else {
-                plus_used = /* true */1;
-                sharp_used = /* true */1;
-                space_used = /* true */1;
+                plus_used = true;
+                sharp_used = true;
+                space_used = true;
                 var iconv$3 = compute_int_conv(pct_ind, str_ind + 1 | 0, plus, sharp, space, Caml_string.get(str, str_ind));
                 var beg_ind$4 = str_ind + 1 | 0;
                 var match$29 = parse_literal(beg_ind$4, beg_ind$4, end_ind);
                 var fmt_rest$15 = match$29[0];
-                if (ign_used[0] = /* true */1, ign) {
-                  pad_used = /* true */1;
+                if (ign_used[0] = true, ign) {
+                  pad_used = true;
                   var ignored_001$4 = opt_of_pad(/* "_" */95, pad);
                   var ignored$11 = /* Ignored_int64 */Block.__(5, [
                       iconv$3,
@@ -5736,8 +5736,8 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                         fmt_rest$15
                       ])];
                 } else {
-                  pad_used = /* true */1;
-                  var match$30 = make_padprec_fmt_ebb(pad, (prec_used[0] = /* true */1, prec), fmt_rest$15);
+                  pad_used = true;
+                  var match$30 = make_padprec_fmt_ebb(pad, (prec_used[0] = true, prec), fmt_rest$15);
                   fmt_result = /* Fmt_EBB */[/* Int64 */Block.__(7, [
                         iconv$3,
                         match$30[0],
@@ -5833,11 +5833,11 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         return fmt_result;
       };
       var parse_flags = function (pct_ind, str_ind, end_ind, ign) {
-        var zero = [/* false */0];
-        var minus = [/* false */0];
-        var plus = [/* false */0];
-        var space = [/* false */0];
-        var sharp = [/* false */0];
+        var zero = [false];
+        var minus = [false];
+        var plus = [false];
+        var space = [false];
+        var sharp = [false];
         var set_flag = function (str_ind, flag) {
           if (flag[0] && !legacy_behavior$1) {
             Curry._3(failwith_message(/* Format */[
@@ -5862,7 +5862,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
                       "invalid format %S: at character number %d, duplicate flag %C"
                     ]), str, str_ind, Caml_string.get(str, str_ind));
           }
-          flag[0] = /* true */1;
+          flag[0] = true;
           return /* () */0;
         };
         var _str_ind = str_ind;
@@ -5928,12 +5928,12 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             if (str_ind$2 === end_ind$1) {
               invalid_format_message(end_ind$1, "unexpected end of format");
             }
-            var padty = zero$1 !== 0 ? (
-                minus$1 !== 0 ? (
+            var padty = zero$1 ? (
+                minus$1 ? (
                     legacy_behavior$1 ? /* Left */0 : incompatible_flag(pct_ind$1, str_ind$2, /* "-" */45, "0")
                   ) : /* Zeros */2
               ) : (
-                minus$1 !== 0 ? /* Left */0 : /* Right */1
+                minus$1 ? /* Left */0 : /* Right */1
               );
             var match$1 = Caml_string.get(str, str_ind$2);
             var exit$1 = 0;
@@ -5977,7 +5977,7 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
       var is_int_base = function (symb) {
         var switcher = symb - 88 | 0;
         if (switcher > 32 || switcher < 0) {
-          return /* false */0;
+          return false;
         } else {
           switch (switcher) {
             case 1 : 
@@ -6007,14 +6007,14 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
             case 28 : 
             case 30 : 
             case 31 : 
-                return /* false */0;
+                return false;
             case 0 : 
             case 12 : 
             case 17 : 
             case 23 : 
             case 29 : 
             case 32 : 
-                return /* true */1;
+                return true;
             
           }
         }
@@ -6217,10 +6217,10 @@ define(["exports", "./char.js", "./block.js", "./bytes.js", "./curry.js", "./buf
         var match = Caml_string.get(str, str_ind);
         var match$1 = match !== 94 ? /* tuple */[
             str_ind,
-            /* false */0
+            false
           ] : /* tuple */[
             str_ind + 1 | 0,
-            /* true */1
+            true
           ];
         var next_ind = parse_char_set_start(match$1[0], end_ind);
         var char_set$1 = Bytes.to_string(char_set);

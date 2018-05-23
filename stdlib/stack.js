@@ -45,7 +45,7 @@ define(["exports", "./list.js", "./caml_exceptions.js"],
     }
     
     function is_empty(s) {
-      return +(s[/* c */0] === /* [] */0);
+      return s[/* c */0] === /* [] */0;
     }
     
     function length(s) {

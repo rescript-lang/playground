@@ -111,6 +111,11 @@ define(["exports", "./caml_builtin_exceptions.js"],
       }
     }
     
+    function caml_array_dup(prim) {
+      return prim.slice(0);
+    }
+    
+    exports.caml_array_dup = caml_array_dup;
     exports.caml_array_sub = caml_array_sub;
     exports.caml_array_concat = caml_array_concat;
     exports.caml_make_vect = caml_make_vect;

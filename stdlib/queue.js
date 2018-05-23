@@ -102,7 +102,7 @@ define(["exports", "./curry.js", "./caml_obj.js", "./caml_exceptions.js"],
     }
     
     function is_empty(q) {
-      return +(q[/* length */0] === 0);
+      return q[/* length */0] === 0;
     }
     
     function length(q) {

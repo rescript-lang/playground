@@ -26,7 +26,7 @@ define(["exports", "./js_vector.js"],
     }
     
     function isEmpty(x) {
-      return +(x === /* [] */0);
+      return x === /* [] */0;
     }
     
     function hd(param) {
@@ -216,7 +216,7 @@ define(["exports", "./js_vector.js"],
           var y = xs[0];
           var match = f(y);
           _xs = ys;
-          if (match !== 0) {
+          if (match) {
             _acc = /* :: */[
               y,
               acc
@@ -315,12 +315,12 @@ define(["exports", "./js_vector.js"],
             _xs = xs[1];
             continue ;
           } else {
-            return /* false */0;
+            return false;
           }
         } else if (ys) {
-          return /* false */0;
+          return false;
         } else {
-          return /* true */1;
+          return true;
         }
       };
     }

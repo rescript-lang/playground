@@ -65,7 +65,7 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     function isSortedU(a, cmp) {
       var len = a.length;
       if (len === 0) {
-        return /* true */1;
+        return true;
       } else {
         var a$1 = a;
         var _i = 0;
@@ -74,12 +74,12 @@ define(["exports", "./curry.js", "./belt_Array.js"],
         while(true) {
           var i = _i;
           if (i === last_bound) {
-            return /* true */1;
+            return true;
           } else if (cmp$1(a$1[i], a$1[i + 1 | 0]) <= 0) {
             _i = i + 1 | 0;
             continue ;
           } else {
-            return /* false */0;
+            return false;
           }
         };
       }
@@ -357,7 +357,7 @@ define(["exports", "./curry.js", "./belt_Array.js"],
     }
     
     function stableSortByU(a, cmp) {
-      var b = Belt_Array.copy(a);
+      var b = a.slice(0);
       stableSortInPlaceByU(b, cmp);
       return b;
     }

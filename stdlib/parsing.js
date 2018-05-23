@@ -51,7 +51,7 @@ define(["exports", "./array.js", "./curry.js", "./js_exn.js", "./lexing.js", "./
     }
     
     var current_lookahead_fun = [(function () {
-          return /* false */0;
+          return false;
         })];
     
     function yyparse(tables, start, lexer, lexbuf) {
@@ -137,9 +137,9 @@ define(["exports", "./array.js", "./curry.js", "./js_exn.js", "./lexing.js", "./
         } else {
           current_lookahead_fun[0] = (function (tok) {
               if (tok.length !== undefined) {
-                return +(Caml_array.caml_array_get(tables[/* transl_block */2], tok.tag | 0) === curr_char);
+                return Caml_array.caml_array_get(tables[/* transl_block */2], tok.tag | 0) === curr_char;
               } else {
-                return +(Caml_array.caml_array_get(tables[/* transl_const */1], tok) === curr_char);
+                return Caml_array.caml_array_get(tables[/* transl_const */1], tok) === curr_char;
               }
             });
           throw exn$1;

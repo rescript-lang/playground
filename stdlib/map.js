@@ -89,9 +89,9 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
       };
       var is_empty = function (param) {
         if (param) {
-          return /* false */0;
+          return false;
         } else {
-          return /* true */1;
+          return true;
         }
       };
       var add = function (x, data, param) {
@@ -146,13 +146,13 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
           if (param) {
             var c = Curry._2(funarg[/* compare */0], x, param[1]);
             if (c === 0) {
-              return /* true */1;
+              return true;
             } else {
               _param = c < 0 ? param[0] : param[3];
               continue ;
             }
           } else {
-            return /* false */0;
+            return false;
           }
         };
       };
@@ -305,10 +305,10 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
               _param = param[3];
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           } else {
-            return /* true */1;
+            return true;
           }
         };
       };
@@ -317,13 +317,13 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
           var param = _param;
           if (param) {
             if (Curry._2(p, param[1], param[2]) || exists(p, param[0])) {
-              return /* true */1;
+              return true;
             } else {
               _param = param[3];
               continue ;
             }
           } else {
-            return /* false */0;
+            return false;
           }
         };
       };
@@ -554,12 +554,12 @@ define(["exports", "./curry.js", "./caml_builtin_exceptions.js"],
               _e1 = cons_enum(e1[2], e1[3]);
               continue ;
             } else {
-              return /* false */0;
+              return false;
             }
           } else if (e2) {
-            return /* false */0;
+            return false;
           } else {
-            return /* true */1;
+            return true;
           }
         };
       };

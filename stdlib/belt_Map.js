@@ -302,8 +302,6 @@ define(["exports", "./curry.js", "./belt_MapDict.js"],
     
     var Dict = 0;
     
-    var ofArray = fromArray;
-    
     exports.Int = Int;
     exports.$$String = $$String;
     exports.Dict = Dict;
@@ -325,7 +323,6 @@ define(["exports", "./curry.js", "./belt_MapDict.js"],
     exports.size = size;
     exports.toArray = toArray;
     exports.toList = toList;
-    exports.ofArray = ofArray;
     exports.fromArray = fromArray;
     exports.keysToArray = keysToArray;
     exports.valuesToArray = valuesToArray;

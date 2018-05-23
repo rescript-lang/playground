@@ -339,10 +339,10 @@ define(["exports", "./sys.js", "./list.js", "./block.js", "./bytes.js", "./curry
                           ];
                     }
                 case 2 : 
-                    param[0][0] = /* true */1;
+                    param[0][0] = true;
                     return /* () */0;
                 case 3 : 
-                    param[0][0] = /* false */0;
+                    param[0][0] = false;
                     return /* () */0;
                 case 4 : 
                     if ((current$1[0] + 1 | 0) < l) {

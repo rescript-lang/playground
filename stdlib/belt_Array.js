@@ -20,9 +20,9 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
     function set(arr, i, v) {
       if (i >= 0 && i < arr.length) {
         arr[i] = v;
-        return /* true */1;
+        return true;
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -32,15 +32,6 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       }
       arr[i] = v;
       return /* () */0;
-    }
-    
-    function copy(a) {
-      var l = a.length;
-      var v = new Array(l);
-      for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
-        v[i] = a[i];
-      }
-      return v;
     }
     
     function swapUnsafe(xs, i, j) {
@@ -59,7 +50,7 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
     }
     
     function shuffle(xs) {
-      var result = copy(xs);
+      var result = xs.slice(0);
       shuffleInPlace(result);
       return result;
     }
@@ -125,7 +116,7 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
     function range(start, finish) {
       var cut = finish - start | 0;
       if (cut < 0) {
-        return /* int array */[];
+        return /* array */[];
       } else {
         var arr = new Array(cut + 1 | 0);
         for(var i = 0; i <= cut; ++i){
@@ -138,7 +129,7 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
     function rangeBy(start, finish, step) {
       var cut = finish - start | 0;
       if (cut < 0 || step <= 0) {
-        return /* int array */[];
+        return /* array */[];
       } else {
         var nb = (cut / step | 0) + 1 | 0;
         var arr = new Array(nb);
@@ -418,12 +409,12 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       while(true) {
         var i = _i;
         if (i === len$1) {
-          return /* true */1;
+          return true;
         } else if (b$1(arr$1[i])) {
           _i = i + 1 | 0;
           continue ;
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -441,9 +432,9 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       while(true) {
         var i = _i;
         if (i === len$1) {
-          return /* false */0;
+          return false;
         } else if (b$1(arr$1[i])) {
-          return /* true */1;
+          return true;
         } else {
           _i = i + 1 | 0;
           continue ;
@@ -459,12 +450,12 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       while(true) {
         var i = _i;
         if (i === len) {
-          return /* true */1;
+          return true;
         } else if (b(arr1[i], arr2[i])) {
           _i = i + 1 | 0;
           continue ;
         } else {
-          return /* false */0;
+          return false;
         }
       };
     }
@@ -486,9 +477,9 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       while(true) {
         var i = _i;
         if (i === len) {
-          return /* false */0;
+          return false;
         } else if (b$1(arr1[i], arr2[i])) {
-          return /* true */1;
+          return true;
         } else {
           _i = i + 1 | 0;
           continue ;
@@ -506,7 +497,7 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       if (lena === lenb) {
         return everyAux2(a, b, 0, p, lena);
       } else {
-        return /* false */0;
+        return false;
       }
     }
     
@@ -548,6 +539,21 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
       return cmpU(a, b, Curry.__2(p));
     }
     
+    function unzip(a) {
+      var l = a.length;
+      var a1 = new Array(l);
+      var a2 = new Array(l);
+      for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
+        var match = a[i];
+        a1[i] = match[0];
+        a2[i] = match[1];
+      }
+      return /* tuple */[
+              a1,
+              a2
+            ];
+    }
+    
     exports.get = get;
     exports.getExn = getExn;
     exports.set = set;
@@ -566,10 +572,10 @@ define(["exports", "./curry.js", "./js_math.js", "./caml_primitive.js"],
     exports.zip = zip;
     exports.zipByU = zipByU;
     exports.zipBy = zipBy;
+    exports.unzip = unzip;
     exports.concat = concat;
     exports.concatMany = concatMany;
     exports.slice = slice;
-    exports.copy = copy;
     exports.fill = fill;
     exports.blit = blit;
     exports.blitUnsafe = blitUnsafe;

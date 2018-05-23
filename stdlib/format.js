@@ -66,7 +66,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     
     function break_new_line(state, offset, width) {
       Curry._1(state[/* pp_out_newline */18], /* () */0);
-      state[/* pp_is_new_line */10] = /* true */1;
+      state[/* pp_is_new_line */10] = true;
       var indent = (state[/* pp_margin */5] - width | 0) + offset | 0;
       var real_indent = Caml_primitive.caml_int_min(state[/* pp_max_indent */7], indent);
       state[/* pp_current_indent */9] = real_indent;
@@ -178,7 +178,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
           case 0 : 
               state[/* pp_space_left */8] = state[/* pp_space_left */8] - size | 0;
               pp_output_string(state, param[0]);
-              state[/* pp_is_new_line */10] = /* false */0;
+              state[/* pp_is_new_line */10] = false;
               return /* () */0;
           case 1 : 
               var off = param[1];
@@ -401,7 +401,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     function scan_push(state, b, tok) {
       pp_enqueue(state, tok);
       if (b) {
-        set_size(state, /* true */1);
+        set_size(state, true);
       }
       state[/* pp_scan_stack */0] = /* :: */[
         /* Scan_elem */[
@@ -424,7 +424,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
             ]),
           /* length */0
         ];
-        return scan_push(state, /* false */0, elem);
+        return scan_push(state, false, elem);
       } else if (state[/* pp_curr_depth */13] === state[/* pp_max_boxes */14]) {
         var state$1 = state;
         var s = state[/* pp_ellipsis */15];
@@ -443,8 +443,8 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
                 /* token : Pp_end */1,
                 /* length */0
               ]);
-          set_size(state, /* true */1);
-          set_size(state, /* false */0);
+          set_size(state, true);
+          set_size(state, false);
         }
         state[/* pp_curr_depth */13] = state[/* pp_curr_depth */13] - 1 | 0;
         return /* () */0;
@@ -611,12 +611,12 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     }
     
     function pp_print_newline(state, _) {
-      pp_flush_queue(state, /* true */1);
+      pp_flush_queue(state, true);
       return Curry._1(state[/* pp_out_flush */17], /* () */0);
     }
     
     function pp_print_flush(state, _) {
-      pp_flush_queue(state, /* false */0);
+      pp_flush_queue(state, false);
       return Curry._1(state[/* pp_out_flush */17], /* () */0);
     }
     
@@ -654,7 +654,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
             ]),
           /* length */width
         ];
-        return scan_push(state, /* true */1, elem);
+        return scan_push(state, true, elem);
       } else {
         return 0;
       }
@@ -707,7 +707,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
             ]),
           /* length */width
         ];
-        return scan_push(state, /* true */1, elem);
+        return scan_push(state, true, elem);
       } else {
         return 0;
       }
@@ -798,7 +798,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     }
     
     function pp_over_max_boxes(state, _) {
-      return +(state[/* pp_curr_depth */13] === state[/* pp_max_boxes */14]);
+      return state[/* pp_curr_depth */13] === state[/* pp_max_boxes */14];
     }
     
     function pp_set_ellipsis_text(state, s) {
@@ -984,7 +984,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
               /* pp_max_indent */68,
               /* pp_space_left */78,
               /* pp_current_indent */0,
-              /* pp_is_new_line : true */1,
+              /* pp_is_new_line */true,
               /* pp_left_total */1,
               /* pp_right_total */1,
               /* pp_curr_depth */1,
@@ -994,8 +994,8 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
               /* pp_out_flush */g,
               /* pp_out_newline */h,
               /* pp_out_spaces */i,
-              /* pp_print_tags : false */0,
-              /* pp_mark_tags : false */0,
+              /* pp_print_tags */false,
+              /* pp_mark_tags */false,
               /* pp_mark_open_tag */default_pp_mark_open_tag,
               /* pp_mark_close_tag */default_pp_mark_close_tag,
               /* pp_print_open_tag */default_pp_print_open_tag,
@@ -1044,14 +1044,14 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     var str_formatter = formatter_of_buffer(stdbuf);
     
     function flush_str_formatter() {
-      pp_flush_queue(str_formatter, /* false */0);
+      pp_flush_queue(str_formatter, false);
       var s = $$Buffer.contents(stdbuf);
       $$Buffer.reset(stdbuf);
       return s;
     }
     
     function flush_buf_formatter(buf, ppf) {
-      pp_flush_queue(ppf, /* false */0);
+      pp_flush_queue(ppf, false);
       var s = $$Buffer.contents(buf);
       $$Buffer.reset(buf);
       return s;
@@ -1642,7 +1642,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
       var ppf = formatter_of_buffer(b);
       var k$prime = function (ppf, acc) {
         output_acc(ppf, acc);
-        pp_flush_queue(ppf, /* false */0);
+        pp_flush_queue(ppf, false);
         return flush_buf_formatter(b, ppf);
       };
       return CamlinternalFormat.make_printf(k$prime, ppf, /* End_of_acc */0, param[0]);
@@ -1651,7 +1651,7 @@ define(["exports", "./block.js", "./bytes.js", "./curry.js", "./buffer.js", "./s
     function bprintf(b, param) {
       var k = function (ppf, acc) {
         output_acc(ppf, acc);
-        return pp_flush_queue(ppf, /* false */0);
+        return pp_flush_queue(ppf, false);
       };
       return CamlinternalFormat.make_printf(k, formatter_of_buffer(b), /* End_of_acc */0, param[0]);
     }
