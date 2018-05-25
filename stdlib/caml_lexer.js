@@ -1,15 +1,15 @@
 'use strict';
-define(["exports", "./caml_builtin_exceptions.js"],
-  function(exports, Caml_builtin_exceptions){
-    'use strict';
-    function fail() {
-      throw [
-            Caml_builtin_exceptions.failure,
-            "lexing: empty token"
-          ];
-    }
-    
-     
+
+var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
+
+function fail() {
+  throw [
+        Caml_builtin_exceptions.failure,
+        "lexing: empty token"
+      ];
+}
+
+ 
 
 /***********************************************************************/
 /*                                                                     */
@@ -321,19 +321,17 @@ function $$caml_new_lex_engine(tbl, start_state, lexbuf) {
     }
 }
 
-    ;
-    
-    function caml_lex_engine(prim, prim$1, prim$2) {
-      return $$caml_lex_engine(prim, prim$1, prim$2);
-    }
-    
-    function caml_new_lex_engine(prim, prim$1, prim$2) {
-      return $$caml_new_lex_engine(prim, prim$1, prim$2);
-    }
-    
-    exports.fail = fail;
-    exports.caml_lex_engine = caml_lex_engine;
-    exports.caml_new_lex_engine = caml_new_lex_engine;
-    
-  })
+;
+
+function caml_lex_engine(prim, prim$1, prim$2) {
+  return $$caml_lex_engine(prim, prim$1, prim$2);
+}
+
+function caml_new_lex_engine(prim, prim$1, prim$2) {
+  return $$caml_new_lex_engine(prim, prim$1, prim$2);
+}
+
+exports.fail = fail;
+exports.caml_lex_engine = caml_lex_engine;
+exports.caml_new_lex_engine = caml_new_lex_engine;
 /*  Not a pure module */

@@ -1,8 +1,7 @@
 'use strict';
-define(["exports"],
-  function(exports){
-    'use strict';
-    var setupChromeDebugger = function (unit){
+
+
+var setupChromeDebugger = function (unit){
   // I don't know how to directly refer to the classes that chrome's built-in
   // formatters use. adding "class": "foo" doesn't seem to work
   // tree-outline
@@ -156,8 +155,6 @@ if (typeof window === "undefined"){
 return 0
 
 };
-    
-    exports.setupChromeDebugger = setupChromeDebugger;
-    
-  })
+
+exports.setupChromeDebugger = setupChromeDebugger;
 /* No side effect */

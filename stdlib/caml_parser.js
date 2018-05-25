@@ -1,9 +1,7 @@
 'use strict';
-define(["exports"],
-  function(exports){
-    'use strict';
-    
-    
+
+
+
 
 /***********************************************************************/
 /*                                                                     */
@@ -359,18 +357,16 @@ function $$caml_set_parser_trace(v) {
 }
 
 
-    ;
-    
-    function caml_parse_engine(prim, prim$1, prim$2, prim$3) {
-      return $$caml_parse_engine(prim, prim$1, prim$2, prim$3);
-    }
-    
-    function caml_set_parser_trace(prim) {
-      return $$caml_set_parser_trace(prim);
-    }
-    
-    exports.caml_parse_engine = caml_parse_engine;
-    exports.caml_set_parser_trace = caml_set_parser_trace;
-    
-  })
+;
+
+function caml_parse_engine(prim, prim$1, prim$2, prim$3) {
+  return $$caml_parse_engine(prim, prim$1, prim$2, prim$3);
+}
+
+function caml_set_parser_trace(prim) {
+  return $$caml_set_parser_trace(prim);
+}
+
+exports.caml_parse_engine = caml_parse_engine;
+exports.caml_set_parser_trace = caml_set_parser_trace;
 /*  Not a pure module */

@@ -1,8 +1,7 @@
 'use strict';
-define(["exports"],
-  function(exports){
-    'use strict';
-    var repeat = ( (String.prototype.repeat && function (count,self){return self.repeat(count)}) ||
+
+
+var repeat = ( (String.prototype.repeat && function (count,self){return self.repeat(count)}) ||
                                                   function(count , self) {
         if (self.length == 0 || count == 0) {
             return '';
@@ -27,8 +26,6 @@ define(["exports"],
         return rpt;
     }
 );
-    
-    exports.repeat = repeat;
-    
-  })
+
+exports.repeat = repeat;
 /* repeat Not a pure module */
