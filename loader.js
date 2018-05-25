@@ -11,13 +11,13 @@ var relativeElement = document.createElement("a");
 var baseElement = document.createElement("base");
 document.head.appendChild(baseElement);
 
-function getPath(id,parent){
+function getPath(id, parent) {
     var oldPath = baseElement.href
     baseElement.href = parent
     relativeElement.href = id
     var result = relativeElement.href
     baseElement.href = oldPath
-    return result    
+    return result
 }
 /**
  * 
@@ -187,13 +187,13 @@ function getDeps(text) {
 // http://www.davidflanagan.com/2010/12/global-eval-in.html
 var globalEval = eval;
 
-function parentURL(url) {
-    if (url.endsWith('/')) {
-        return url + '../'
-    } else {
-        return url + '/../'
-    }
-}
+// function parentURL(url) {
+//     if (url.endsWith('/')) {
+//         return url + '../'
+//     } else {
+//         return url + '/../'
+//     }
+// }
 
 
 
@@ -207,6 +207,8 @@ function parentURL(url) {
  * 
  * @param {string} id 
  * @param {string} parent 
+ * can return Promise <boolean | object>, false means
+ * this module can not be resolved
  */
 function getModulePromise(id, parent) {
     var done = getIdLocation(id, parent)
@@ -223,11 +225,11 @@ function getModulePromise(id, parent) {
                     if (text !== false) {
                         return { text, link }
                     } else {
-                        return getModulePromise(id, parentURL(parent))
+                        return getParentModulePromise(id, parent)
                     }
 
                 } else {
-                    return getModulePromise(id, parentURL(parent))
+                    return getParentModulePromise(id, parent)
                 }
             } else { // relative path, one shot resolve            
                 let link = getPathWithJsSuffix(id, parent)
@@ -243,16 +245,46 @@ function getModulePromise(id, parent) {
         return done
     }
 }
+/**
+ * 
+ * @param {string} id 
+ * @param {string} parent 
+ */
+function getParentModulePromise(id, parent) {
+    var parentLink = getPath('..', parent)
+    if (parentLink === parent) {
+        return falsePromise
+    }
+    return getModulePromise(id, parentLink)
+}
 
-async function getAll(id, parent) {
-    var { text, link } = await getModulePromise(id, parent)
-    var deps = getDeps(text)
-    await Promise.all(deps.map(x => getAll(x, link)))
+/**
+ * 
+ * @param {string} id 
+ * @param {string} parent 
+ * @returns {Promise<any>}
+ */
+function getAll(id, parent) {
+    return getModulePromise(id, parent)
+        .then(function (obj) {
+            if (obj) {
+                var deps = getDeps(obj.text)
+                return Promise.all(deps.map(x => getAll(x, obj.link)))
+            } else {
+                throw new Error(`${id}@${parent} was not resolved successfully`)
+            }
+        })
 };
 
-async function getAllFromText(text, parent) {
+/**
+ * 
+ * @param {string} text 
+ * @param {string} parent 
+ * @returns {Promise<any>}
+ */
+function getAllFromText(text, parent) {
     var deps = getDeps(text)
-    await Promise.all(deps.map(x => getAll(x, parent)))
+    return Promise.all(deps.map(x => getAll(x, parent)))
 }
 
 function loadSync(id, parent) {
@@ -270,13 +302,13 @@ function loadSync(id, parent) {
         }
         return baseOrModule.exports
     } else {
-        throw new Error( `${id} : ${parent} could not be resolved`)
+        throw new Error(`${id} : ${parent} could not be resolved`)
     }
 }
 
 
-function genEvalName(){
-    return "eval-" + ((""+ Math.random()).substr(2,5))
+function genEvalName() {
+    return "eval-" + (("" + Math.random()).substr(2, 5))
 }
 /**
  * 
@@ -284,9 +316,9 @@ function genEvalName(){
  * @param {string} link
  * In this case [text] evaluated result will not be cached
  */
-function loadTextSync(text,link) {
+function loadTextSync(text, link) {
     // var link = getPath(".", document.baseURI)
-    var baseOrModule = { exports: {}, text, link}
+    var baseOrModule = { exports: {}, text, link }
     globalEval(`(function(require,exports,module){${baseOrModule.text}\n})//# sourceURL=${baseOrModule.link}/${genEvalName()}.js`)(
         function require(id) {
             return loadSync(id, baseOrModule.link);
@@ -298,14 +330,21 @@ function loadTextSync(text,link) {
 
 
 
-async function load(id, parent) {
-    await getAll(id, parent);
-    return loadSync(id, parent)
+ function load(id, parent) {
+    return getAll(id, parent).then(function(){
+        loadSync(id, parent)
+    })
+    
 };
 
-async function BSloadText(text) {
+/**
+ * 
+ * @param {string} text 
+ */
+export function BSloadText(text) {
     var parent = getPath(".", document.baseURI)
-    await getAllFromText(text, parent)
-    return loadTextSync(text, parent)
+    return getAllFromText(text, parent).then(function(){
+        loadTextSync(text, parent)
+    })    
 }
 

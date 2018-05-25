@@ -1,3 +1,4 @@
+
 // http://localhost:8081/?gist=660571356ec5eb1da7fad67f1daef979
 function contentFromResponse(gist) {
     fetch( 'https://api.github.com/gists/' + gist)
@@ -33,29 +34,10 @@ function queryGist() {
     }
 
 }
-function loadGist(gist) {
+function loadGist() {
+    var gist = queryGist()
     if (gist) {
         contentFromResponse(gist)
     }
 }
 
-fetch("examples/examples.json").then(function(resp) {
-    return resp.json()
-}).then(function(response) {
-    examplesDataSet = response;
-    for (var k in examplesDataSet) {
-        examplesDropdown.appendChild(createExample(k))
-    }
-    if (location && location.hash) {
-        var id = location.hash.substr(1)
-        switchExample(id)
-    }
-})
-
-// var gist = '1ce559ca46157b9dc15649450bea46fa';
-var clientGist = queryGist();
-//
-
-if (clientGist) {
-      loadGist(clientGist)
-} 

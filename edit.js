@@ -1,4 +1,6 @@
-'use strict';
+
+import {BSloadText} from './loader.js'
+
 
 var codeMirrorDefaultHeight = 10000;
 var myCode1Mirror = CodeMirror.fromTextArea(document.getElementById('ocamlcode#1'), {
@@ -100,10 +102,6 @@ outputMirror.setValue(PROMPT + 'Hello BuckleScript!');
 errorMirror.setSize(null, 50);
 errorMirror.setValue(ERR_OUTPUT);
 
-var sourceLocation = ""
-if (typeof window.location !== "undefined") {
-    sourceLocation = "\n//# sourceURL=" + window.location.href + "/repl.js"
-}
 
 function evalCode(js) {
     console.log = redirect;
@@ -131,7 +129,21 @@ function createExample(name) {
 }
 
 var examplesDropdown = document.getElementById("examplesDropdown")
-var examplesDataSet;
+var examplesDataSet ;
+
+
+fetch("examples/examples.json").then(function(resp) {
+    return resp.json()
+}).then(function(response) {
+    examplesDataSet = response
+    for (var k in examplesDataSet) {
+        examplesDropdown.appendChild(createExample(k))
+    }
+    if (location && location.hash) {
+        var id = location.hash.substr(1)
+        switchExample(id)
+    }
+})
 
 //Event handler for examples dropdown
 $('#examplesDropdown').click(clickHandler);
