@@ -3,7 +3,7 @@ import {BSloadText} from './loader.js'
 
 
 var codeMirrorDefaultHeight = 10000;
-var myCode1Mirror = CodeMirror.fromTextArea(document.getElementById('ocamlcode#1'), {
+export var myCode1Mirror = CodeMirror.fromTextArea(document.getElementById('ocamlcode#1'), {
     mode: 'text/x-ocaml',
     lineNumbers: true,
     lineWrapping: true,

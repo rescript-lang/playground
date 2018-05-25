@@ -1,5 +1,6 @@
 
 // http://localhost:8081/?gist=660571356ec5eb1da7fad67f1daef979
+import {myCode1Mirror} from './edit.js'
 function contentFromResponse(gist) {
     fetch( 'https://api.github.com/gists/' + gist)
     .then(resp => resp.json())
@@ -40,4 +41,6 @@ function loadGist() {
         contentFromResponse(gist)
     }
 }
+
+loadGist()
 
