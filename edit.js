@@ -210,7 +210,7 @@ function changeEvalButton(bool) {
 
 //creates a gist from OCaml code
 $('#share').click(function (e) {
-  var state = $(this).button('loading');
+  // var state = $(this).button('loading');
   var request = {
     "description": "BuckleScript Gist",
     "public": true,
@@ -220,10 +220,15 @@ $('#share').click(function (e) {
       }
     }
   };
-  var url = BsGetPath('.', document.baseURI) + '/?code=' + btoa(myCode1Mirror.getValue())
-  state.button('reset');
+  try 
+  {
+  var url = BsGetPath('.', document.baseURI) + '/?code=' + btoa(encodeURIComponent((myCode1Mirror.getValue())))
+  // state.button('reset');
   $('#shareModal').modal('show');
   $('#shareModalBody').html('<a href=' + '"' + url + '"' + 'target="_blank"' + '>' + url + '</a>');
+  } catch(e){
+    console.error(e)
+  }
 
 });
 
