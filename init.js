@@ -16,31 +16,41 @@ function contentFromResponse(gist) {
     });
 }
 ;
-function queryGist() {
+function queryHash() {
     var qd = {};
     location.search.substr(1).split("&").forEach(function(item) {
-        var s = item.split("=")
-          , k = s[0]
-          , v = s[1] && decodeURIComponent(s[1]);
+        var sIndex = item.indexOf('=')
+        var k = item.substring(0,sIndex)
+        var v = decodeURIComponent(item.substring(sIndex + 1));
+        // var s = item.split("=")
+        //   , k = s[0]
+        //   , v = s[1] && decodeURIComponent(s[1]);
         (k in qd) ? qd[k].push(v) : qd[k] = [v]
     });
     if (qd.gist) {
         if (qd.gist[0]) {
-            return qd.gist[0].replace(/^\/+|\/+$/gm, '');
+            return contentFromResponse(qd.gist[0].replace(/^\/+|\/+$/gm, ''));
         } else {
-            return qd.gist.replace(/^\/+|\/+$/gm, '');
+            return contentFromResponse(qd.gist.replace(/^\/+|\/+$/gm, ''));
         }
-    } else {
-        return undefined
+    } else if(qd.code){
+        try{
+        myCode1Mirror.setValue(atob(qd.code))
+        } catch(e){
+            console.error(e)
+        }
+    }
+    else {
+        return 
     }
 
 }
-function loadGist() {
-    var gist = queryGist()
-    if (gist) {
-        contentFromResponse(gist)
-    }
-}
+// function loadGist() {
+//     var gist = queryHash()
+//     if (gist) {
+//         contentFromResponse(gist)
+//     }
+// }
 
-loadGist()
+queryHash()
 

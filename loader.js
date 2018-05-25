@@ -11,7 +11,7 @@ var relativeElement = document.createElement("a");
 var baseElement = document.createElement("base");
 document.head.appendChild(baseElement);
 
-function getPath(id, parent) {
+export function BsGetPath(id, parent) {
     var oldPath = baseElement.href
     baseElement.href = parent
     relativeElement.href = id
@@ -251,7 +251,7 @@ function getModulePromise(id, parent) {
  * @param {string} parent 
  */
 function getParentModulePromise(id, parent) {
-    var parentLink = getPath('..', parent)
+    var parentLink = BsGetPath('..', parent)
     if (parentLink === parent) {
         return falsePromise
     }
@@ -342,7 +342,7 @@ function loadTextSync(text, link) {
  * @param {string} text 
  */
 export function BSloadText(text) {
-    var parent = getPath(".", document.baseURI)
+    var parent = BsGetPath(".", document.baseURI)
     return getAllFromText(text, parent).then(function(){
         loadTextSync(text, parent)
     })    
