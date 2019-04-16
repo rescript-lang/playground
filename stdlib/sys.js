@@ -3,8 +3,6 @@
 var Caml_sys = require("./caml_sys.js");
 var Caml_exceptions = require("./caml_exceptions.js");
 
-var is_js = true;
-
 var match = Caml_sys.caml_sys_get_argv(/* () */0);
 
 var big_endian = false;
@@ -15,15 +13,15 @@ var win32 = false;
 
 var cygwin = false;
 
-var interactive = [false];
+var interactive = /* record */[/* contents */false];
 
-function set_signal(_, _$1) {
+function set_signal(sig_num, sig_beh) {
   return /* () */0;
 }
 
 var Break = Caml_exceptions.create("Sys.Break");
 
-function catch_break() {
+function catch_break(on) {
   return /* () */0;
 }
 
@@ -92,7 +90,6 @@ exports.win32 = win32;
 exports.cygwin = cygwin;
 exports.word_size = word_size;
 exports.big_endian = big_endian;
-exports.is_js = is_js;
 exports.max_string_length = max_string_length;
 exports.max_array_length = max_array_length;
 exports.set_signal = set_signal;

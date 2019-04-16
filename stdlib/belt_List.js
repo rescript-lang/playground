@@ -2,14 +2,14 @@
 
 var Curry = require("./curry.js");
 var Belt_Array = require("./belt_Array.js");
+var Caml_option = require("./caml_option.js");
 var Belt_SortArray = require("./belt_SortArray.js");
 
 function head(x) {
   if (x) {
-    return /* Some */[x[0]];
-  } else {
-    return /* None */0;
+    return Caml_option.some(x[0]);
   }
+  
 }
 
 function headExn(x) {
@@ -22,10 +22,9 @@ function headExn(x) {
 
 function tail(x) {
   if (x) {
-    return /* Some */[x[1]];
-  } else {
-    return /* None */0;
+    return x[1];
   }
+  
 }
 
 function tailExn(x) {
@@ -45,7 +44,7 @@ function add(xs, x) {
 
 function get(x, n) {
   if (n < 0) {
-    return /* None */0;
+    return undefined;
   } else {
     var _x = x;
     var _n = n;
@@ -54,14 +53,14 @@ function get(x, n) {
       var x$1 = _x;
       if (x$1) {
         if (n$1 === 0) {
-          return /* Some */[x$1[0]];
+          return Caml_option.some(x$1[0]);
         } else {
           _n = n$1 - 1 | 0;
           _x = x$1[1];
           continue ;
         }
       } else {
-        return /* None */0;
+        return undefined;
       }
     };
   }
@@ -192,6 +191,35 @@ function copyAuxWitFilter(f, _cellX, _prec) {
   };
 }
 
+function copyAuxWithFilterIndex(f, _cellX, _prec, _i) {
+  while(true) {
+    var i = _i;
+    var prec = _prec;
+    var cellX = _cellX;
+    if (cellX) {
+      var t = cellX[1];
+      var h = cellX[0];
+      if (f(h, i)) {
+        var next = /* :: */[
+          h,
+          /* [] */0
+        ];
+        prec[1] = next;
+        _i = i + 1 | 0;
+        _prec = next;
+        _cellX = t;
+        continue ;
+      } else {
+        _i = i + 1 | 0;
+        _cellX = t;
+        continue ;
+      }
+    } else {
+      return /* () */0;
+    }
+  };
+}
+
 function copyAuxWitFilterMap(f, _cellX, _prec) {
   while(true) {
     var prec = _prec;
@@ -199,9 +227,9 @@ function copyAuxWitFilterMap(f, _cellX, _prec) {
     if (cellX) {
       var t = cellX[1];
       var match = f(cellX[0]);
-      if (match) {
+      if (match !== undefined) {
         var next = /* :: */[
-          match[0],
+          Caml_option.valFromOption(match),
           /* [] */0
         ];
         prec[1] = next;
@@ -390,7 +418,7 @@ function splitAtAux(_n, _cell, _prec) {
     var cell = _cell;
     var n = _n;
     if (n === 0) {
-      return /* Some */[cell];
+      return cell;
     } else if (cell) {
       var cell$1 = /* :: */[
         cell[0],
@@ -402,16 +430,16 @@ function splitAtAux(_n, _cell, _prec) {
       _n = n - 1 | 0;
       continue ;
     } else {
-      return /* None */0;
+      return undefined;
     }
   };
 }
 
 function take(lst, n) {
   if (n < 0) {
-    return /* None */0;
+    return undefined;
   } else if (n === 0) {
-    return /* Some */[/* [] */0];
+    return /* [] */0;
   } else if (lst) {
     var cell = /* :: */[
       lst[0],
@@ -419,18 +447,18 @@ function take(lst, n) {
     ];
     var has = takeAux(n - 1 | 0, lst[1], cell);
     if (has) {
-      return /* Some */[cell];
+      return cell;
     } else {
-      return /* None */0;
+      return undefined;
     }
   } else {
-    return /* None */0;
+    return undefined;
   }
 }
 
 function drop(lst, n) {
   if (n < 0) {
-    return /* None */0;
+    return undefined;
   } else {
     var _l = lst;
     var _n = n;
@@ -438,13 +466,13 @@ function drop(lst, n) {
       var n$1 = _n;
       var l = _l;
       if (n$1 === 0) {
-        return /* Some */[l];
+        return l;
       } else if (l) {
         _n = n$1 - 1 | 0;
         _l = l[1];
         continue ;
       } else {
-        return /* None */0;
+        return undefined;
       }
     };
   }
@@ -452,28 +480,28 @@ function drop(lst, n) {
 
 function splitAt(lst, n) {
   if (n < 0) {
-    return /* None */0;
+    return undefined;
   } else if (n === 0) {
-    return /* Some */[/* tuple */[
-              /* [] */0,
-              lst
-            ]];
+    return /* tuple */[
+            /* [] */0,
+            lst
+          ];
   } else if (lst) {
     var cell = /* :: */[
       lst[0],
       /* [] */0
     ];
     var rest = splitAtAux(n - 1 | 0, lst[1], cell);
-    if (rest) {
-      return /* Some */[/* tuple */[
-                cell,
-                rest[0]
-              ]];
+    if (rest !== undefined) {
+      return /* tuple */[
+              cell,
+              rest
+            ];
     } else {
-      return /* None */0;
+      return undefined;
     }
   } else {
-    return /* None */0;
+    return undefined;
   }
 }
 
@@ -833,6 +861,30 @@ function reduceReverse(l, accu, f) {
   return reduceReverseU(l, accu, Curry.__2(f));
 }
 
+function reduceWithIndexU(l, acc, f) {
+  var _l = l;
+  var _acc = acc;
+  var f$1 = f;
+  var _i = 0;
+  while(true) {
+    var i = _i;
+    var acc$1 = _acc;
+    var l$1 = _l;
+    if (l$1) {
+      _i = i + 1 | 0;
+      _acc = f$1(acc$1, l$1[0], i);
+      _l = l$1[1];
+      continue ;
+    } else {
+      return acc$1;
+    }
+  };
+}
+
+function reduceWithIndex(l, acc, f) {
+  return reduceWithIndexU(l, acc, Curry.__3(f));
+}
+
 function mapReverse2U(l1, l2, f) {
   var _l1 = l1;
   var _l2 = l2;
@@ -1103,13 +1155,13 @@ function getAssocU(_xs, x, eq) {
     if (xs) {
       var match = xs[0];
       if (eq(match[0], x)) {
-        return /* Some */[match[1]];
+        return Caml_option.some(match[1]);
       } else {
         _xs = xs[1];
         continue ;
       }
     } else {
-      return /* None */0;
+      return undefined;
     }
   };
 }
@@ -1226,13 +1278,13 @@ function getByU(_xs, p) {
     if (xs) {
       var x = xs[0];
       if (p(x)) {
-        return /* Some */[x];
+        return Caml_option.some(x);
       } else {
         _xs = xs[1];
         continue ;
       }
     } else {
-      return /* None */0;
+      return undefined;
     }
   };
 }
@@ -1268,15 +1320,47 @@ function keep(xs, p) {
   return keepU(xs, Curry.__1(p));
 }
 
+function keepWithIndexU(xs, p) {
+  var _xs = xs;
+  var p$1 = p;
+  var _i = 0;
+  while(true) {
+    var i = _i;
+    var xs$1 = _xs;
+    if (xs$1) {
+      var t = xs$1[1];
+      var h = xs$1[0];
+      if (p$1(h, i)) {
+        var cell = /* :: */[
+          h,
+          /* [] */0
+        ];
+        copyAuxWithFilterIndex(p$1, t, cell, i + 1 | 0);
+        return cell;
+      } else {
+        _i = i + 1 | 0;
+        _xs = t;
+        continue ;
+      }
+    } else {
+      return /* [] */0;
+    }
+  };
+}
+
+function keepWithIndex(xs, p) {
+  return keepWithIndexU(xs, Curry.__2(p));
+}
+
 function keepMapU(_xs, p) {
   while(true) {
     var xs = _xs;
     if (xs) {
       var t = xs[1];
       var match = p(xs[0]);
-      if (match) {
+      if (match !== undefined) {
         var cell = /* :: */[
-          match[0],
+          Caml_option.valFromOption(match),
           /* [] */0
         ];
         copyAuxWitFilterMap(p, t, cell);
@@ -1373,6 +1457,10 @@ function zip(l1, l2) {
 
 var size = length;
 
+var filter = keep;
+
+var filterWithIndex = keepWithIndex;
+
 exports.length = length;
 exports.size = size;
 exports.head = head;
@@ -1411,6 +1499,8 @@ exports.forEachWithIndexU = forEachWithIndexU;
 exports.forEachWithIndex = forEachWithIndex;
 exports.reduceU = reduceU;
 exports.reduce = reduce;
+exports.reduceWithIndexU = reduceWithIndexU;
+exports.reduceWithIndex = reduceWithIndex;
 exports.reduceReverseU = reduceReverseU;
 exports.reduceReverse = reduceReverse;
 exports.mapReverse2U = mapReverse2U;
@@ -1440,6 +1530,10 @@ exports.getByU = getByU;
 exports.getBy = getBy;
 exports.keepU = keepU;
 exports.keep = keep;
+exports.filter = filter;
+exports.keepWithIndexU = keepWithIndexU;
+exports.keepWithIndex = keepWithIndex;
+exports.filterWithIndex = filterWithIndex;
 exports.keepMapU = keepMapU;
 exports.keepMap = keepMap;
 exports.partitionU = partitionU;

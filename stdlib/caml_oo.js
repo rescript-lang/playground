@@ -17,9 +17,9 @@ function caml_get_public_method(obj, tag, cacheid) {
         if (i < 3) {
           throw [
                 Caml_builtin_exceptions.assert_failure,
-                [
+                /* tuple */[
                   "caml_oo.ml",
-                  59,
+                  62,
                   20
                 ]
               ];

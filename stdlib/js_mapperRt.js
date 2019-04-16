@@ -10,7 +10,7 @@ function binarySearch(upper, id, array) {
     var upper$1 = _upper;
     var lower = _lower;
     if (lower >= upper$1) {
-      throw new Error("File \"js_mapperRt.ml\", line 35, characters 4-10");
+      throw new Error("binarySearchAux");
     }
     var mid = (lower + upper$1 | 0) / 2 | 0;
     var match = xs[mid];
@@ -35,11 +35,11 @@ function revSearch(len, array, x) {
   while(true) {
     var i = _i;
     if (i === len$1) {
-      return /* None */0;
+      return undefined;
     } else {
       var match = xs[i];
       if (match[1] === k) {
-        return /* Some */[match[0]];
+        return match[0];
       } else {
         _i = i + 1 | 0;
         continue ;
@@ -56,7 +56,7 @@ function revSearchAssert(len, array, x) {
   while(true) {
     var i = _i;
     if (i >= len$1) {
-      throw new Error("File \"js_mapperRt.ml\", line 64, characters 4-10");
+      throw new Error("File \"js_mapperRt.ml\", line 63, characters 4-10");
     }
     var match = xs[i];
     if (match[1] === k) {
@@ -80,11 +80,11 @@ function fromInt(len, xs, $$enum) {
   while(true) {
     var i = _i;
     if (i === len$1) {
-      return /* None */0;
+      return undefined;
     } else {
       var k = xs$1[i];
       if (k === $$enum$1) {
-        return /* Some */[i];
+        return i;
       } else {
         _i = i + 1 | 0;
         continue ;
@@ -101,7 +101,7 @@ function fromIntAssert(len, xs, $$enum) {
   while(true) {
     var i = _i;
     if (i >= len$1) {
-      throw new Error("File \"js_mapperRt.ml\", line 88, characters 4-10");
+      throw new Error("File \"js_mapperRt.ml\", line 87, characters 4-10");
     }
     var k = xs$1[i];
     if (k === $$enum$1) {

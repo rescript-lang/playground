@@ -6,7 +6,6 @@ var Caml_array = require("./caml_array.js");
 var Caml_bytes = require("./caml_bytes.js");
 var Caml_lexer = require("./caml_lexer.js");
 var Pervasives = require("./pervasives.js");
-var Caml_string = require("./caml_string.js");
 var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function engine(tbl, state, buf) {
@@ -47,7 +46,7 @@ var zero_pos = /* record */[
 ];
 
 function from_function(f) {
-  var partial_arg = Caml_string.caml_create_string(512);
+  var partial_arg = Caml_bytes.caml_create_bytes(512);
   return /* record */[
           /* refill_buff */(function (param) {
               var read_fun = f;
@@ -66,7 +65,7 @@ function from_function(f) {
                           "Lexing.lex_refill: cannot grow buffer"
                         ];
                   }
-                  var newbuf = Caml_string.caml_create_string(newlen);
+                  var newbuf = Caml_bytes.caml_create_bytes(newlen);
                   Bytes.blit(lexbuf[/* lex_buffer */1], lexbuf[/* lex_start_pos */4], newbuf, 0, lexbuf[/* lex_buffer_len */2] - lexbuf[/* lex_start_pos */4] | 0);
                   lexbuf[/* lex_buffer */1] = newbuf;
                 }
@@ -89,7 +88,7 @@ function from_function(f) {
               lexbuf[/* lex_buffer_len */2] = lexbuf[/* lex_buffer_len */2] + n | 0;
               return /* () */0;
             }),
-          /* lex_buffer */Caml_string.caml_create_string(1024),
+          /* lex_buffer */Caml_bytes.caml_create_bytes(1024),
           /* lex_buffer_len */0,
           /* lex_abs_pos */0,
           /* lex_start_pos */0,
@@ -142,10 +141,9 @@ function sub_lexeme(lexbuf, i1, i2) {
 function sub_lexeme_opt(lexbuf, i1, i2) {
   if (i1 >= 0) {
     var len = i2 - i1 | 0;
-    return /* Some */[Bytes.sub_string(lexbuf[/* lex_buffer */1], i1, len)];
-  } else {
-    return /* None */0;
+    return Bytes.sub_string(lexbuf[/* lex_buffer */1], i1, len);
   }
+  
 }
 
 function sub_lexeme_char(lexbuf, i) {
@@ -154,10 +152,9 @@ function sub_lexeme_char(lexbuf, i) {
 
 function sub_lexeme_char_opt(lexbuf, i) {
   if (i >= 0) {
-    return /* Some */[Caml_bytes.get(lexbuf[/* lex_buffer */1], i)];
-  } else {
-    return /* None */0;
+    return Caml_bytes.get(lexbuf[/* lex_buffer */1], i);
   }
+  
 }
 
 function lexeme_char(lexbuf, i) {

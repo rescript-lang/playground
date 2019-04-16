@@ -1,6 +1,7 @@
 'use strict';
 
 var Curry = require("./curry.js");
+var Caml_option = require("./caml_option.js");
 var Belt_SortArray = require("./belt_SortArray.js");
 
 function treeHeight(n) {
@@ -132,18 +133,16 @@ function minKey0Aux(_n) {
 
 function minKey(n) {
   if (n !== null) {
-    return /* Some */[minKey0Aux(n)];
-  } else {
-    return /* None */0;
+    return Caml_option.some(minKey0Aux(n));
   }
+  
 }
 
 function minKeyUndefined(n) {
   if (n !== null) {
     return minKey0Aux(n);
-  } else {
-    return undefined;
   }
+  
 }
 
 function maxKey0Aux(_n) {
@@ -161,18 +160,16 @@ function maxKey0Aux(_n) {
 
 function maxKey(n) {
   if (n !== null) {
-    return /* Some */[maxKey0Aux(n)];
-  } else {
-    return /* None */0;
+    return Caml_option.some(maxKey0Aux(n));
   }
+  
 }
 
 function maxKeyUndefined(n) {
   if (n !== null) {
     return maxKey0Aux(n);
-  } else {
-    return undefined;
   }
+  
 }
 
 function minKV0Aux(_n) {
@@ -193,18 +190,16 @@ function minKV0Aux(_n) {
 
 function minimum(n) {
   if (n !== null) {
-    return /* Some */[minKV0Aux(n)];
-  } else {
-    return /* None */0;
+    return minKV0Aux(n);
   }
+  
 }
 
 function minUndefined(n) {
   if (n !== null) {
     return minKV0Aux(n);
-  } else {
-    return undefined;
   }
+  
 }
 
 function maxKV0Aux(_n) {
@@ -225,18 +220,16 @@ function maxKV0Aux(_n) {
 
 function maximum(n) {
   if (n !== null) {
-    return /* Some */[maxKV0Aux(n)];
-  } else {
-    return /* None */0;
+    return maxKV0Aux(n);
   }
+  
 }
 
 function maxUndefined(n) {
   if (n !== null) {
     return maxKV0Aux(n);
-  } else {
-    return undefined;
   }
+  
 }
 
 function removeMinAuxWithRef(n, kr, vr) {
@@ -272,6 +265,37 @@ function stackAllLeft(_v, _s) {
       return s;
     }
   };
+}
+
+function findFirstByU(n, p) {
+  if (n !== null) {
+    var left = findFirstByU(n.left, p);
+    if (left !== undefined) {
+      return left;
+    } else {
+      var v = n.key;
+      var d = n.value;
+      var pvd = p(v, d);
+      if (pvd) {
+        return /* tuple */[
+                v,
+                d
+              ];
+      } else {
+        var right = findFirstByU(n.right, p);
+        if (right !== undefined) {
+          return right;
+        } else {
+          return undefined;
+        }
+      }
+    }
+  }
+  
+}
+
+function findFirstBy(n, p) {
+  return findFirstByU(n, Curry.__2(p));
 }
 
 function forEachU(_n, f) {
@@ -444,8 +468,8 @@ function join(ln, v, d, rn) {
 function concat(t1, t2) {
   if (t1 !== null) {
     if (t2 !== null) {
-      var kr = [t2.key];
-      var vr = [t2.value];
+      var kr = /* record */[/* contents */t2.key];
+      var vr = /* record */[/* contents */t2.value];
       var t2r = removeMinAuxWithRef(t2, kr, vr);
       return join(t1, kr[0], vr[0], t2r);
     } else {
@@ -457,8 +481,8 @@ function concat(t1, t2) {
 }
 
 function concatOrJoin(t1, v, d, t2) {
-  if (d) {
-    return join(t1, v, d[0], t2);
+  if (d !== undefined) {
+    return join(t1, v, Caml_option.valFromOption(d), t2);
   } else {
     return concat(t1, t2);
   }
@@ -492,8 +516,8 @@ function keepMapU(n, p) {
     var newLeft = keepMapU(n.left, p);
     var pvd = p(v, d);
     var newRight = keepMapU(n.right, p);
-    if (pvd) {
-      return join(newLeft, v, pvd[0], newRight);
+    if (pvd !== undefined) {
+      return join(newLeft, v, Caml_option.valFromOption(pvd), newRight);
     } else {
       return concat(newLeft, newRight);
     }
@@ -592,7 +616,7 @@ function checkInvariantInternal(_v) {
       var r = v.right;
       var diff = treeHeight(l) - treeHeight(r) | 0;
       if (!(diff <= 2 && diff >= -2)) {
-        throw new Error("File \"belt_internalAVLtree.ml\", line 369, characters 6-12");
+        throw new Error("File \"belt_internalAVLtree.ml\", line 385, characters 6-12");
       }
       checkInvariantInternal(l);
       _v = r;
@@ -699,92 +723,86 @@ function valuesToArray(n) {
 }
 
 function fromSortedArrayRevAux(arr, off, len) {
-  if (len > 3 || len < 0) {
-    var nl = len / 2 | 0;
-    var left = fromSortedArrayRevAux(arr, off, nl);
-    var match = arr[off - nl | 0];
-    var right = fromSortedArrayRevAux(arr, (off - nl | 0) - 1 | 0, (len - nl | 0) - 1 | 0);
-    return create(left, match[0], match[1], right);
-  } else {
-    switch (len) {
-      case 0 : 
-          return null;
-      case 1 : 
-          var match$1 = arr[off];
-          return singleton(match$1[0], match$1[1]);
-      case 2 : 
-          var match_000 = arr[off];
-          var match_001 = arr[off - 1 | 0];
-          var match$2 = match_001;
-          var match$3 = match_000;
-          return {
-                  key: match$2[0],
-                  value: match$2[1],
-                  height: 2,
-                  left: singleton(match$3[0], match$3[1]),
-                  right: null
-                };
-      case 3 : 
-          var match_000$1 = arr[off];
-          var match_001$1 = arr[off - 1 | 0];
-          var match_002 = arr[off - 2 | 0];
-          var match$4 = match_002;
-          var match$5 = match_001$1;
-          var match$6 = match_000$1;
-          return {
-                  key: match$5[0],
-                  value: match$5[1],
-                  height: 2,
-                  left: singleton(match$6[0], match$6[1]),
-                  right: singleton(match$4[0], match$4[1])
-                };
-      
-    }
+  switch (len) {
+    case 0 : 
+        return null;
+    case 1 : 
+        var match = arr[off];
+        return singleton(match[0], match[1]);
+    case 2 : 
+        var match_000 = arr[off];
+        var match_001 = arr[off - 1 | 0];
+        var match$1 = match_001;
+        var match$2 = match_000;
+        return {
+                key: match$1[0],
+                value: match$1[1],
+                height: 2,
+                left: singleton(match$2[0], match$2[1]),
+                right: null
+              };
+    case 3 : 
+        var match_000$1 = arr[off];
+        var match_001$1 = arr[off - 1 | 0];
+        var match_002 = arr[off - 2 | 0];
+        var match$3 = match_002;
+        var match$4 = match_001$1;
+        var match$5 = match_000$1;
+        return {
+                key: match$4[0],
+                value: match$4[1],
+                height: 2,
+                left: singleton(match$5[0], match$5[1]),
+                right: singleton(match$3[0], match$3[1])
+              };
+    default:
+      var nl = len / 2 | 0;
+      var left = fromSortedArrayRevAux(arr, off, nl);
+      var match$6 = arr[off - nl | 0];
+      var right = fromSortedArrayRevAux(arr, (off - nl | 0) - 1 | 0, (len - nl | 0) - 1 | 0);
+      return create(left, match$6[0], match$6[1], right);
   }
 }
 
 function fromSortedArrayAux(arr, off, len) {
-  if (len > 3 || len < 0) {
-    var nl = len / 2 | 0;
-    var left = fromSortedArrayAux(arr, off, nl);
-    var match = arr[off + nl | 0];
-    var right = fromSortedArrayAux(arr, (off + nl | 0) + 1 | 0, (len - nl | 0) - 1 | 0);
-    return create(left, match[0], match[1], right);
-  } else {
-    switch (len) {
-      case 0 : 
-          return null;
-      case 1 : 
-          var match$1 = arr[off];
-          return singleton(match$1[0], match$1[1]);
-      case 2 : 
-          var match_000 = arr[off];
-          var match_001 = arr[off + 1 | 0];
-          var match$2 = match_001;
-          var match$3 = match_000;
-          return {
-                  key: match$2[0],
-                  value: match$2[1],
-                  height: 2,
-                  left: singleton(match$3[0], match$3[1]),
-                  right: null
-                };
-      case 3 : 
-          var match_000$1 = arr[off];
-          var match_001$1 = arr[off + 1 | 0];
-          var match_002 = arr[off + 2 | 0];
-          var match$4 = match_002;
-          var match$5 = match_001$1;
-          var match$6 = match_000$1;
-          return {
-                  key: match$5[0],
-                  value: match$5[1],
-                  height: 2,
-                  left: singleton(match$6[0], match$6[1]),
-                  right: singleton(match$4[0], match$4[1])
-                };
-      
-    }
+  switch (len) {
+    case 0 : 
+        return null;
+    case 1 : 
+        var match = arr[off];
+        return singleton(match[0], match[1]);
+    case 2 : 
+        var match_000 = arr[off];
+        var match_001 = arr[off + 1 | 0];
+        var match$1 = match_001;
+        var match$2 = match_000;
+        return {
+                key: match$1[0],
+                value: match$1[1],
+                height: 2,
+                left: singleton(match$2[0], match$2[1]),
+                right: null
+              };
+    case 3 : 
+        var match_000$1 = arr[off];
+        var match_001$1 = arr[off + 1 | 0];
+        var match_002 = arr[off + 2 | 0];
+        var match$3 = match_002;
+        var match$4 = match_001$1;
+        var match$5 = match_000$1;
+        return {
+                key: match$4[0],
+                value: match$4[1],
+                height: 2,
+                left: singleton(match$5[0], match$5[1]),
+                right: singleton(match$3[0], match$3[1])
+              };
+    default:
+      var nl = len / 2 | 0;
+      var left = fromSortedArrayAux(arr, off, nl);
+      var match$6 = arr[off + nl | 0];
+      var right = fromSortedArrayAux(arr, (off + nl | 0) + 1 | 0, (len - nl | 0) - 1 | 0);
+      return create(left, match$6[0], match$6[1], right);
   }
 }
 
@@ -875,13 +893,13 @@ function get(_n, x, cmp) {
       var v = n.key;
       var c = cmp(x, v);
       if (c === 0) {
-        return /* Some */[n.value];
+        return Caml_option.some(n.value);
       } else {
         _n = c < 0 ? n.left : n.right;
         continue ;
       }
     } else {
-      return /* None */0;
+      return undefined;
     }
   };
 }
@@ -1119,6 +1137,8 @@ exports.removeMinAuxWithRef = removeMinAuxWithRef;
 exports.empty = empty;
 exports.isEmpty = isEmpty;
 exports.stackAllLeft = stackAllLeft;
+exports.findFirstByU = findFirstByU;
+exports.findFirstBy = findFirstBy;
 exports.forEachU = forEachU;
 exports.forEach = forEach;
 exports.mapU = mapU;

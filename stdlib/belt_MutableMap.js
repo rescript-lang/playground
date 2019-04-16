@@ -1,6 +1,7 @@
 'use strict';
 
 var Curry = require("./curry.js");
+var Caml_option = require("./caml_option.js");
 var Belt_internalAVLtree = require("./belt_internalAVLtree.js");
 
 function removeMutateAux(nt, x, cmp) {
@@ -96,9 +97,9 @@ function updateDone(t, x, f, cmp) {
     var k = t.key;
     var c = cmp(x, k);
     if (c === 0) {
-      var match = f(/* Some */[t.value]);
-      if (match) {
-        t.value = match[0];
+      var match = f(Caml_option.some(t.value));
+      if (match !== undefined) {
+        t.value = Caml_option.valFromOption(match);
         return t;
       } else {
         var l = t.left;
@@ -128,9 +129,9 @@ function updateDone(t, x, f, cmp) {
       return Belt_internalAVLtree.balMutate(t);
     }
   } else {
-    var match$1 = f(/* None */0);
-    if (match$1) {
-      return Belt_internalAVLtree.singleton(x, match$1[0]);
+    var match$1 = f(undefined);
+    if (match$1 !== undefined) {
+      return Belt_internalAVLtree.singleton(x, Caml_option.valFromOption(match$1));
     } else {
       return t;
     }

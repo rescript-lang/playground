@@ -2,7 +2,6 @@
 
 var Curry = require("./curry.js");
 var Belt_Array = require("./belt_Array.js");
-var Belt_internalBucketsType = require("./belt_internalBucketsType.js");
 
 function copyAuxCont(_c, _prec) {
   while(true) {
@@ -11,7 +10,7 @@ function copyAuxCont(_c, _prec) {
     if (c !== undefined) {
       var ncopy = {
         key: c.key,
-        next: Belt_internalBucketsType.emptyOpt
+        next: undefined
       };
       prec.next = ncopy;
       _prec = ncopy;
@@ -27,7 +26,7 @@ function copyBucket(c) {
   if (c !== undefined) {
     var head = {
       key: c.key,
-      next: Belt_internalBucketsType.emptyOpt
+      next: undefined
     };
     copyAuxCont(c.next, head);
     return head;
@@ -163,7 +162,7 @@ function getMaxBucketLength(h) {
 
 function getBucketHistogram(h) {
   var mbl = getMaxBucketLength(h);
-  var histo = Belt_Array.makeByU(mbl + 1 | 0, (function () {
+  var histo = Belt_Array.makeByU(mbl + 1 | 0, (function (param) {
           return 0;
         }));
   Belt_Array.forEachU(h.buckets, (function (b) {

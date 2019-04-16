@@ -2,14 +2,14 @@
 
 var Curry = require("./curry.js");
 var Js_math = require("./js_math.js");
+var Caml_option = require("./caml_option.js");
 var Caml_primitive = require("./caml_primitive.js");
 
 function get(arr, i) {
   if (i >= 0 && i < arr.length) {
-    return /* Some */[arr[i]];
-  } else {
-    return /* None */0;
+    return Caml_option.some(arr[i]);
   }
+  
 }
 
 function getExn(arr, i) {
@@ -224,6 +224,17 @@ function slice(a, offset, len) {
   }
 }
 
+function sliceToEnd(a, offset) {
+  var lena = a.length;
+  var ofs = offset < 0 ? Caml_primitive.caml_int_max(lena + offset | 0, 0) : offset;
+  var len = lena - ofs | 0;
+  var result = new Array(len);
+  for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
+    result[i] = a[ofs + i | 0];
+  }
+  return result;
+}
+
 function fill(a, offset, len, v) {
   if (len > 0) {
     var lena = a.length;
@@ -300,6 +311,42 @@ function map(a, f) {
   return mapU(a, Curry.__1(f));
 }
 
+function getByU(a, p) {
+  var l = a.length;
+  var i = 0;
+  var r = undefined;
+  while(r === undefined && i < l) {
+    var v = a[i];
+    if (p(v)) {
+      r = Caml_option.some(v);
+    }
+    i = i + 1 | 0;
+  };
+  return r;
+}
+
+function getBy(a, p) {
+  return getByU(a, Curry.__1(p));
+}
+
+function getIndexByU(a, p) {
+  var l = a.length;
+  var i = 0;
+  var r = undefined;
+  while(r === undefined && i < l) {
+    var v = a[i];
+    if (p(v)) {
+      r = i;
+    }
+    i = i + 1 | 0;
+  };
+  return r;
+}
+
+function getIndexBy(a, p) {
+  return getIndexByU(a, Curry.__1(p));
+}
+
 function keepU(a, f) {
   var l = a.length;
   var r = new Array(l);
@@ -320,6 +367,26 @@ function keep(a, f) {
   return keepU(a, Curry.__1(f));
 }
 
+function keepWithIndexU(a, f) {
+  var l = a.length;
+  var r = new Array(l);
+  var j = 0;
+  for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
+    var v = a[i];
+    if (f(v, i)) {
+      r[j] = v;
+      j = j + 1 | 0;
+    }
+    
+  }
+  r.length = j;
+  return r;
+}
+
+function keepWithIndex(a, f) {
+  return keepWithIndexU(a, Curry.__2(f));
+}
+
 function keepMapU(a, f) {
   var l = a.length;
   var r = new Array(l);
@@ -327,8 +394,8 @@ function keepMapU(a, f) {
   for(var i = 0 ,i_finish = l - 1 | 0; i <= i_finish; ++i){
     var v = a[i];
     var match = f(v);
-    if (match) {
-      r[j] = match[0];
+    if (match !== undefined) {
+      r[j] = Caml_option.valFromOption(match);
       j = j + 1 | 0;
     }
     
@@ -400,6 +467,18 @@ function reduceReverse2U(a, b, x, f) {
 
 function reduceReverse2(a, b, x, f) {
   return reduceReverse2U(a, b, x, Curry.__3(f));
+}
+
+function reduceWithIndexU(a, x, f) {
+  var r = x;
+  for(var i = 0 ,i_finish = a.length - 1 | 0; i <= i_finish; ++i){
+    r = f(r, a[i], i);
+  }
+  return r;
+}
+
+function reduceWithIndex(a, x, f) {
+  return reduceWithIndexU(a, x, Curry.__3(f));
 }
 
 function everyU(arr, b) {
@@ -606,6 +685,7 @@ exports.unzip = unzip;
 exports.concat = concat;
 exports.concatMany = concatMany;
 exports.slice = slice;
+exports.sliceToEnd = sliceToEnd;
 exports.fill = fill;
 exports.blit = blit;
 exports.blitUnsafe = blitUnsafe;
@@ -613,8 +693,14 @@ exports.forEachU = forEachU;
 exports.forEach = forEach;
 exports.mapU = mapU;
 exports.map = map;
+exports.getByU = getByU;
+exports.getBy = getBy;
+exports.getIndexByU = getIndexByU;
+exports.getIndexBy = getIndexBy;
 exports.keepU = keepU;
 exports.keep = keep;
+exports.keepWithIndexU = keepWithIndexU;
+exports.keepWithIndex = keepWithIndex;
 exports.keepMapU = keepMapU;
 exports.keepMap = keepMap;
 exports.forEachWithIndexU = forEachWithIndexU;
@@ -629,6 +715,8 @@ exports.reduceReverseU = reduceReverseU;
 exports.reduceReverse = reduceReverse;
 exports.reduceReverse2U = reduceReverse2U;
 exports.reduceReverse2 = reduceReverse2;
+exports.reduceWithIndexU = reduceWithIndexU;
+exports.reduceWithIndex = reduceWithIndex;
 exports.someU = someU;
 exports.some = some;
 exports.everyU = everyU;

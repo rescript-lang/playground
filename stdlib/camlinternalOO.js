@@ -50,7 +50,7 @@ var dummy_table = /* record */[
   /* initializers : [] */0
 ];
 
-var table_count = [0];
+var table_count = /* record */[/* contents */0];
 
 var dummy_met = [];
 
@@ -95,9 +95,9 @@ function resize(array, new_size) {
   }
 }
 
-var method_count = [0];
+var method_count = /* record */[/* contents */0];
 
-var inst_var_count = [0];
+var inst_var_count = /* record */[/* contents */0];
 
 function new_method(table) {
   var index = table[/* methods */1].length;
@@ -192,8 +192,8 @@ function narrow(table, vars, virt_meths, concr_meths) {
             return tvars;
           }
         }));
-  var by_name = [Belt_MapString.empty];
-  var by_label = [Belt_MapInt.empty];
+  var by_name = /* record */[/* contents */Belt_MapString.empty];
+  var by_label = /* record */[/* contents */Belt_MapInt.empty];
   List.iter2((function (met, label) {
           by_name[0] = Belt_MapString.set(by_name[0], met, label);
           by_label[0] = Belt_MapInt.set(by_label[0], label, Belt_MapInt.getWithDefault(table[/* methods_by_label */3], label, true));
@@ -484,7 +484,7 @@ function new_cache(table) {
 }
 
 function method_impl(table, i, arr) {
-  var next = function () {
+  var next = function (param) {
     i[0] = i[0] + 1 | 0;
     return Caml_array.caml_array_get(arr, i[0]);
   };
@@ -493,7 +493,7 @@ function method_impl(table, i, arr) {
     switch (clo) {
       case 0 : 
           var x = next(/* () */0);
-          return (function () {
+          return (function (obj) {
               return x;
             });
       case 1 : 
@@ -523,7 +523,7 @@ function method_impl(table, i, arr) {
       case 5 : 
           var f = next(/* () */0);
           var x$1 = next(/* () */0);
-          return (function () {
+          return (function (obj) {
               return Curry._1(f, x$1);
             });
       case 6 : 
@@ -554,7 +554,7 @@ function method_impl(table, i, arr) {
           var f$6 = next(/* () */0);
           var x$2 = next(/* () */0);
           var y = next(/* () */0);
-          return (function () {
+          return (function (obj) {
               return Curry._2(f$6, x$2, y);
             });
       case 10 : 
@@ -661,7 +661,7 @@ function method_impl(table, i, arr) {
           var m$7 = m$6;
           var x$18 = x$17;
           new_cache(table);
-          return (function () {
+          return (function (obj) {
               return Curry._1(Curry._3(Caml_oo.caml_get_public_method, x$18, m$7, 1), x$18);
             });
       case 21 : 
@@ -705,7 +705,7 @@ function method_impl(table, i, arr) {
 
 function set_methods(table, methods) {
   var len = methods.length;
-  var i = [0];
+  var i = /* record */[/* contents */0];
   while(i[0] < len) {
     var label = Caml_array.caml_array_get(methods, i[0]);
     var clo = method_impl(table, i, methods);
@@ -715,7 +715,7 @@ function set_methods(table, methods) {
   return /* () */0;
 }
 
-function stats() {
+function stats(param) {
   return /* record */[
           /* classes */table_count[0],
           /* methods */method_count[0],

@@ -1,5 +1,6 @@
 'use strict';
 
+var Caml_option = require("./caml_option.js");
 
 function bind(x, f) {
   if (x == null) {
@@ -18,11 +19,10 @@ function iter(x, f) {
 }
 
 function fromOption(x) {
-  if (x) {
-    return x[0];
-  } else {
-    return undefined;
+  if (x !== undefined) {
+    return Caml_option.valFromOption(x);
   }
+  
 }
 
 var from_opt = fromOption;

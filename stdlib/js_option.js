@@ -1,98 +1,88 @@
 'use strict';
 
+var Caml_option = require("./caml_option.js");
 
 function some(x) {
-  return /* Some */[x];
+  return Caml_option.some(x);
 }
 
 function isSome(param) {
-  if (param) {
-    return true;
-  } else {
-    return false;
-  }
+  return param !== undefined;
 }
 
 function isSomeValue(eq, v, x) {
-  if (x) {
-    return eq(v, x[0]);
+  if (x !== undefined) {
+    return eq(v, Caml_option.valFromOption(x));
   } else {
     return false;
   }
 }
 
 function isNone(param) {
-  if (param) {
-    return false;
-  } else {
-    return true;
-  }
+  return param === undefined;
 }
 
 function getExn(x) {
-  if (x) {
-    return x[0];
+  if (x !== undefined) {
+    return Caml_option.valFromOption(x);
   } else {
     throw new Error("getExn");
   }
 }
 
 function equal(eq, a, b) {
-  if (a) {
-    if (b) {
-      return eq(a[0], b[0]);
+  if (a !== undefined) {
+    if (b !== undefined) {
+      return eq(Caml_option.valFromOption(a), Caml_option.valFromOption(b));
     } else {
       return false;
     }
   } else {
-    return b === /* None */0;
+    return b === undefined;
   }
 }
 
 function andThen(f, x) {
-  if (x) {
-    return f(x[0]);
-  } else {
-    return /* None */0;
+  if (x !== undefined) {
+    return f(Caml_option.valFromOption(x));
   }
+  
 }
 
 function map(f, x) {
-  if (x) {
-    return /* Some */[f(x[0])];
-  } else {
-    return /* None */0;
+  if (x !== undefined) {
+    return Caml_option.some(f(Caml_option.valFromOption(x)));
   }
+  
 }
 
 function getWithDefault(a, x) {
-  if (x) {
-    return x[0];
+  if (x !== undefined) {
+    return Caml_option.valFromOption(x);
   } else {
     return a;
   }
 }
 
 function filter(f, x) {
-  if (x) {
-    var x$1 = x[0];
+  if (x !== undefined) {
+    var x$1 = Caml_option.valFromOption(x);
     if (f(x$1)) {
-      return /* Some */[x$1];
+      return Caml_option.some(x$1);
     } else {
-      return /* None */0;
+      return undefined;
     }
-  } else {
-    return /* None */0;
   }
+  
 }
 
 function firstSome(a, b) {
-  if (a) {
+  if (a !== undefined) {
     return a;
-  } else if (b) {
+  } else if (b !== undefined) {
     return b;
   } else {
-    return /* None */0;
+    return undefined;
   }
 }
 

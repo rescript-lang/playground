@@ -1,6 +1,7 @@
 'use strict';
 
 var Block = require("./block.js");
+var Caml_option = require("./caml_option.js");
 
 function classify(x) {
   var ty = typeof x;
@@ -47,50 +48,44 @@ function test(x, v) {
 
 function decodeString(json) {
   if (typeof json === "string") {
-    return /* Some */[json];
-  } else {
-    return /* None */0;
+    return json;
   }
+  
 }
 
 function decodeNumber(json) {
   if (typeof json === "number") {
-    return /* Some */[json];
-  } else {
-    return /* None */0;
+    return json;
   }
+  
 }
 
 function decodeObject(json) {
   if (typeof json === "object" && !Array.isArray(json) && json !== null) {
-    return /* Some */[json];
-  } else {
-    return /* None */0;
+    return Caml_option.some(json);
   }
+  
 }
 
 function decodeArray(json) {
   if (Array.isArray(json)) {
-    return /* Some */[json];
-  } else {
-    return /* None */0;
+    return json;
   }
+  
 }
 
 function decodeBoolean(json) {
   if (typeof json === "boolean") {
-    return /* Some */[json];
-  } else {
-    return /* None */0;
+    return json;
   }
+  
 }
 
 function decodeNull(json) {
   if (json === null) {
-    return /* Some */[null];
-  } else {
-    return /* None */0;
+    return null;
   }
+  
 }
 
 exports.classify = classify;
