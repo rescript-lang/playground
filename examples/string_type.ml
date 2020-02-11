@@ -2,7 +2,7 @@
 
 external readFileSync :
   name:string -> ([`utf8 | `my_name [@bs.as "ascii"] ] [@bs.string]) ->
-  string = ""
+  string = "readFileSync"
   [@@bs.module "fs"]
 
 let _ =

@@ -5,7 +5,7 @@ type readline
 external on : readline -> 
     ([`close of unit -> unit 
     | `line of string -> unit] [@bs.string])
-    -> unit = "" [@@bs.module "readline"]
+    -> unit = "readline" [@@bs.module "readline"]
 
 (* register event handlers *)
 let register rl =
