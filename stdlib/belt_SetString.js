@@ -50,9 +50,11 @@ function remove(t, x) {
     if (x === v) {
       if (l !== null) {
         if (r !== null) {
-          var v$1 = /* record */[/* contents */r.value];
+          var v$1 = {
+            contents: r.value
+          };
           var r$1 = Belt_internalAVLset.removeMinAuxWithRef(r, v$1);
-          return Belt_internalAVLset.bal(l, v$1[0], r$1);
+          return Belt_internalAVLset.bal(l, v$1.contents, r$1);
         } else {
           return l;
         }
@@ -107,7 +109,7 @@ function splitAuxNoPivot(n, x) {
             ];
     } else {
       return /* tuple */[
-              Belt_internalAVLset.empty,
+              null,
               n
             ];
     }
@@ -120,7 +122,7 @@ function splitAuxNoPivot(n, x) {
   } else {
     return /* tuple */[
             n,
-            Belt_internalAVLset.empty
+            null
           ];
   }
 }
@@ -130,7 +132,7 @@ function splitAuxPivot(n, x, pres) {
   var v = n.value;
   var r = n.right;
   if (x === v) {
-    pres[0] = true;
+    pres.contents = true;
     return /* tuple */[
             l,
             r
@@ -144,7 +146,7 @@ function splitAuxPivot(n, x, pres) {
             ];
     } else {
       return /* tuple */[
-              Belt_internalAVLset.empty,
+              null,
               n
             ];
     }
@@ -157,24 +159,26 @@ function splitAuxPivot(n, x, pres) {
   } else {
     return /* tuple */[
             n,
-            Belt_internalAVLset.empty
+            null
           ];
   }
 }
 
 function split(t, x) {
   if (t !== null) {
-    var pres = /* record */[/* contents */false];
+    var pres = {
+      contents: false
+    };
     var v = splitAuxPivot(t, x, pres);
     return /* tuple */[
             v,
-            pres[0]
+            pres.contents
           ];
   } else {
     return /* tuple */[
             /* tuple */[
-              Belt_internalAVLset.empty,
-              Belt_internalAVLset.empty
+              null,
+              null
             ],
             false
           ];
@@ -218,17 +222,19 @@ function intersect(s1, s2) {
     var l1 = s1.left;
     var v1 = s1.value;
     var r1 = s1.right;
-    var pres = /* record */[/* contents */false];
+    var pres = {
+      contents: false
+    };
     var match = splitAuxPivot(s2, v1, pres);
     var ll = intersect(l1, match[0]);
     var rr = intersect(r1, match[1]);
-    if (pres[0]) {
+    if (pres.contents) {
       return Belt_internalAVLset.joinShared(ll, v1, rr);
     } else {
       return Belt_internalAVLset.concatShared(ll, rr);
     }
   } else {
-    return Belt_internalAVLset.empty;
+    return null;
   }
 }
 
@@ -237,11 +243,13 @@ function diff(s1, s2) {
     var l1 = s1.left;
     var v1 = s1.value;
     var r1 = s1.right;
-    var pres = /* record */[/* contents */false];
+    var pres = {
+      contents: false
+    };
     var match = splitAuxPivot(s2, v1, pres);
     var ll = diff(l1, match[0]);
     var rr = diff(r1, match[1]);
-    if (pres[0]) {
+    if (pres.contents) {
       return Belt_internalAVLset.concatShared(ll, rr);
     } else {
       return Belt_internalAVLset.joinShared(ll, v1, rr);
@@ -251,7 +259,7 @@ function diff(s1, s2) {
   }
 }
 
-var empty = Belt_internalAVLset.empty;
+var empty = null;
 
 var fromArray = Belt_internalSetString.fromArray;
 

@@ -81,13 +81,13 @@ function subset(_s1, _s2) {
             return false;
           }
         } else if (v1 < v2) {
-          if (subset(Belt_internalAVLset.create(l1, v1, Belt_internalAVLset.empty), l2)) {
+          if (subset(Belt_internalAVLset.create(l1, v1, null), l2)) {
             _s1 = r1;
             continue ;
           } else {
             return false;
           }
-        } else if (subset(Belt_internalAVLset.create(Belt_internalAVLset.empty, v1, r1), r2)) {
+        } else if (subset(Belt_internalAVLset.create(null, v1, r1), r2)) {
           _s1 = l1;
           continue ;
         } else {
@@ -114,7 +114,7 @@ function get(_n, x) {
         continue ;
       }
     } else {
-      return undefined;
+      return ;
     }
   };
 }
@@ -131,7 +131,7 @@ function getUndefined(_n, x) {
         continue ;
       }
     } else {
-      return undefined;
+      return ;
     }
   };
 }
@@ -176,7 +176,7 @@ function addMutate(t, x) {
 function fromArray(xs) {
   var len = xs.length;
   if (len === 0) {
-    return Belt_internalAVLset.empty;
+    return null;
   } else {
     var next = Belt_SortArrayInt.strictlySortedLength(xs);
     var result;
@@ -193,11 +193,11 @@ function fromArray(xs) {
   }
 }
 
-var S = 0;
+var S = /* alias */0;
 
-var N = 0;
+var N = /* alias */0;
 
-var A = 0;
+var A = /* alias */0;
 
 exports.S = S;
 exports.N = N;

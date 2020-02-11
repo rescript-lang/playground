@@ -46,7 +46,7 @@ function tl(param) {
 
 function nth(l, n) {
   if (n < 0) {
-    return undefined;
+    return ;
   } else {
     var _l = l;
     var _n = n;
@@ -62,7 +62,7 @@ function nth(l, n) {
           continue ;
         }
       } else {
-        return undefined;
+        return ;
       }
     };
   }
@@ -213,15 +213,15 @@ function filterRevAux(f, _acc, _xs) {
     if (xs) {
       var ys = xs[1];
       var y = xs[0];
-      var match = f(y);
-      _xs = ys;
-      if (match) {
+      if (f(y)) {
+        _xs = ys;
         _acc = /* :: */[
           y,
           acc
         ];
         continue ;
       } else {
+        _xs = ys;
         continue ;
       }
     } else {
@@ -300,7 +300,7 @@ function toVector(xs) {
       }
     };
   } else {
-    return /* array */[];
+    return [];
   }
 }
 

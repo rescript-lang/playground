@@ -3,20 +3,19 @@
 var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function caml_sys_getenv(s) {
-  if (typeof process === "undefined" || (process.env) === undefined) {
+  if (typeof process === "undefined" || process.env === undefined) {
     throw Caml_builtin_exceptions.not_found;
+  }
+  var match = process.env[s];
+  if (match !== undefined) {
+    return match;
   } else {
-    var match = (process.env)[s];
-    if (match !== undefined) {
-      return match;
-    } else {
-      throw Caml_builtin_exceptions.not_found;
-    }
+    throw Caml_builtin_exceptions.not_found;
   }
 }
 
 function caml_sys_time(param) {
-  if (typeof process === "undefined" || (process.uptime) === undefined) {
+  if (typeof process === "undefined" || process.uptime === undefined) {
     return -1;
   } else {
     return process.uptime();
@@ -24,33 +23,32 @@ function caml_sys_time(param) {
 }
 
 function caml_sys_random_seed(param) {
-  return /* array */[((Date.now() | 0) ^ 4294967295) * Math.random() | 0];
+  return [((Date.now() | 0) ^ 4294967295) * Math.random() | 0];
 }
 
 function caml_sys_system_command(_cmd) {
   return 127;
 }
 
-function caml_sys_getcwd(param) {
-  if (typeof process === "undefined") {
-    return "/";
-  } else {
-    return process.cwd();
-  }
-}
+var caml_sys_getcwd = (function(param){
+    if (typeof process === "undefined" || process.cwd === undefined){
+      return "/"  
+    }
+    return process.cwd()
+  });
 
 function caml_sys_get_argv(param) {
   if (typeof process === "undefined") {
     return /* tuple */[
             "",
-            /* array */[""]
+            [""]
           ];
   } else {
-    var argv = (process.argv);
+    var argv = process.argv;
     if (argv == null) {
       return /* tuple */[
               "",
-              /* array */[""]
+              [""]
             ];
     } else {
       return /* tuple */[

@@ -36,7 +36,7 @@ function get(_n, x) {
         continue ;
       }
     } else {
-      return undefined;
+      return ;
     }
   };
 }
@@ -53,7 +53,7 @@ function getUndefined(_n, x) {
         continue ;
       }
     } else {
-      return undefined;
+      return ;
     }
   };
 }
@@ -117,10 +117,14 @@ function remove(n, x) {
     if (x === v) {
       if (l !== null) {
         if (r !== null) {
-          var kr = /* record */[/* contents */r.key];
-          var vr = /* record */[/* contents */r.value];
+          var kr = {
+            contents: r.key
+          };
+          var vr = {
+            contents: r.value
+          };
           var r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
-          return Belt_internalAVLtree.bal(l, kr[0], vr[0], r$1);
+          return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
         } else {
           return l;
         }
@@ -158,7 +162,7 @@ function splitAux(x, n) {
             ];
     } else {
       return /* tuple */[
-              Belt_internalAVLtree.empty,
+              null,
               undefined,
               n
             ];
@@ -174,7 +178,7 @@ function splitAux(x, n) {
     return /* tuple */[
             n,
             undefined,
-            Belt_internalAVLtree.empty
+            null
           ];
   }
 }
@@ -184,15 +188,14 @@ function split(x, n) {
     return splitAux(x, n);
   } else {
     return /* tuple */[
-            Belt_internalAVLtree.empty,
+            null,
             undefined,
-            Belt_internalAVLtree.empty
+            null
           ];
   }
 }
 
 function mergeU(s1, s2, f) {
-  var exit = 0;
   if (s1 !== null) {
     if (s1.height >= (
         s2 !== null ? s2.height : 0
@@ -203,27 +206,21 @@ function mergeU(s1, s2, f) {
       var r1 = s1.right;
       var match = split(v1, s2);
       return Belt_internalAVLtree.concatOrJoin(mergeU(l1, match[0], f), v1, f(v1, Caml_option.some(d1), match[1]), mergeU(r1, match[2], f));
-    } else {
-      exit = 1;
     }
-  } else if (s2 !== null) {
-    exit = 1;
+    
+  } else if (s2 === null) {
+    return null;
+  }
+  if (s2 !== null) {
+    var l2 = s2.left;
+    var v2 = s2.key;
+    var d2 = s2.value;
+    var r2 = s2.right;
+    var match$1 = split(v2, s1);
+    return Belt_internalAVLtree.concatOrJoin(mergeU(match$1[0], l2, f), v2, f(v2, match$1[1], Caml_option.some(d2)), mergeU(match$1[2], r2, f));
   } else {
-    return Belt_internalAVLtree.empty;
+    return /* assert false */0;
   }
-  if (exit === 1) {
-    if (s2 !== null) {
-      var l2 = s2.left;
-      var v2 = s2.key;
-      var d2 = s2.value;
-      var r2 = s2.right;
-      var match$1 = split(v2, s1);
-      return Belt_internalAVLtree.concatOrJoin(mergeU(match$1[0], l2, f), v2, f(v2, match$1[1], Caml_option.some(d2)), mergeU(match$1[2], r2, f));
-    } else {
-      return /* assert false */0;
-    }
-  }
-  
 }
 
 function merge(s1, s2, f) {
@@ -332,7 +329,7 @@ function addMutate(t, x, data) {
 function fromArray(xs) {
   var len = xs.length;
   if (len === 0) {
-    return Belt_internalAVLtree.empty;
+    return null;
   } else {
     var next = Belt_SortArray.strictlySortedLengthU(xs, (function (param, param$1) {
             return param[0] < param$1[0];
@@ -352,11 +349,11 @@ function fromArray(xs) {
   }
 }
 
-var N = 0;
+var N = /* alias */0;
 
-var A = 0;
+var A = /* alias */0;
 
-var S = 0;
+var S = /* alias */0;
 
 exports.N = N;
 exports.A = A;

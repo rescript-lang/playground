@@ -1,13 +1,13 @@
 'use strict';
 
 
-function caml_int32_float_of_bits (x){
+var caml_int32_float_of_bits = (function(x){
     return new Float32Array(new Int32Array([x]).buffer)[0] 
-};
+    });
 
-function caml_int32_bits_of_float (x){ 
+var caml_int32_bits_of_float = (function(x){
   return new Int32Array(new Float32Array([x]).buffer)[0] 
-};
+});
 
 function caml_modf_float(x) {
   if (isFinite(x)) {
@@ -43,15 +43,15 @@ function caml_ldexp_float(x, exp) {
   var x$prime = x;
   var exp$prime = exp;
   if (exp$prime > 1023) {
-    exp$prime -= 1023;
+    exp$prime = exp$prime - 1023;
     x$prime = x$prime * Math.pow(2, 1023);
     if (exp$prime > 1023) {
-      exp$prime -= 1023;
+      exp$prime = exp$prime - 1023;
       x$prime = x$prime * Math.pow(2, 1023);
     }
     
   } else if (exp$prime < -1023) {
-    exp$prime += 1023;
+    exp$prime = exp$prime + 1023;
     x$prime = x$prime * Math.pow(2, -1023);
   }
   return x$prime * Math.pow(2, exp$prime);
@@ -70,7 +70,7 @@ function caml_frexp_float(x) {
     x$prime = x$prime * Math.pow(2, -exp);
     if (x$prime < 0.5) {
       x$prime = x$prime * 2;
-      exp -= 1;
+      exp = exp - 1;
     }
     if (neg) {
       x$prime = -x$prime;

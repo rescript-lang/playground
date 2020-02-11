@@ -35,10 +35,14 @@ function updateU(t, x, f) {
         var r = t.right;
         if (l !== null) {
           if (r !== null) {
-            var kr = /* record */[/* contents */r.key];
-            var vr = /* record */[/* contents */r.value];
+            var kr = {
+              contents: r.key
+            };
+            var vr = {
+              contents: r.value
+            };
             var r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
-            return Belt_internalAVLtree.bal(l, kr[0], vr[0], r$1);
+            return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
           } else {
             return l;
           }
@@ -87,10 +91,14 @@ function removeAux(n, x) {
   if (x === v) {
     if (l !== null) {
       if (r !== null) {
-        var kr = /* record */[/* contents */r.key];
-        var vr = /* record */[/* contents */r.value];
+        var kr = {
+          contents: r.key
+        };
+        var vr = {
+          contents: r.value
+        };
         var r$1 = Belt_internalAVLtree.removeMinAuxWithRef(r, kr, vr);
-        return Belt_internalAVLtree.bal(l, kr[0], vr[0], r$1);
+        return Belt_internalAVLtree.bal(l, kr.contents, vr.contents, r$1);
       } else {
         return l;
       }
@@ -120,7 +128,7 @@ function remove(n, x) {
   if (n !== null) {
     return removeAux(n, x);
   } else {
-    return Belt_internalAVLtree.empty;
+    return null;
   }
 }
 
@@ -149,7 +157,7 @@ function removeMany(t, keys) {
       }
     };
   } else {
-    return Belt_internalAVLtree.empty;
+    return null;
   }
 }
 
@@ -163,7 +171,7 @@ function mergeMany(h, arr) {
   return v;
 }
 
-var empty = Belt_internalAVLtree.empty;
+var empty = null;
 
 var isEmpty = Belt_internalAVLtree.isEmpty;
 

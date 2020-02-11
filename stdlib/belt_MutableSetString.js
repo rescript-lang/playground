@@ -66,7 +66,7 @@ function removeMany0(_t, xs, _i, len) {
         _t = u;
         continue ;
       } else {
-        return Belt_internalAVLset.empty;
+        return null;
       }
     } else {
       return t;
@@ -88,7 +88,7 @@ function removeMany(d, xs) {
 function removeCheck0(nt, x, removed) {
   var k = nt.value;
   if (x === k) {
-    removed[0] = true;
+    removed.contents = true;
     var l = nt.left;
     var r = nt.right;
     if (l !== null) {
@@ -123,12 +123,14 @@ function removeCheck0(nt, x, removed) {
 function removeCheck(d, v) {
   var oldRoot = d.data;
   if (oldRoot !== null) {
-    var removed = /* record */[/* contents */false];
+    var removed = {
+      contents: false
+    };
     var newRoot = removeCheck0(oldRoot, v, removed);
     if (newRoot !== oldRoot) {
       d.data = newRoot;
     }
-    return removed[0];
+    return removed.contents;
   } else {
     return false;
   }
@@ -151,19 +153,21 @@ function addCheck0(t, x, added) {
       return Belt_internalAVLset.balMutate(t);
     }
   } else {
-    added[0] = true;
+    added.contents = true;
     return Belt_internalAVLset.singleton(x);
   }
 }
 
 function addCheck(m, e) {
   var oldRoot = m.data;
-  var added = /* record */[/* contents */false];
+  var added = {
+    contents: false
+  };
   var newRoot = addCheck0(oldRoot, e, added);
   if (newRoot !== oldRoot) {
     m.data = newRoot;
   }
-  return added[0];
+  return added.contents;
 }
 
 function add(d, k) {
@@ -192,7 +196,7 @@ function mergeMany(d, arr) {
 
 function make(param) {
   return {
-          data: Belt_internalAVLset.empty
+          data: null
         };
 }
 
@@ -372,7 +376,7 @@ function intersect(dataa, datab) {
       Belt_internalAVLset.fillArray(datab$1, sizea, tmp);
       if (tmp[sizea - 1 | 0] < tmp[sizea] || tmp[totalSize - 1 | 0] < tmp[0]) {
         return {
-                data: Belt_internalAVLset.empty
+                data: null
               };
       } else {
         var tmp2 = new Array(sizea < sizeb ? sizea : sizeb);
@@ -383,12 +387,12 @@ function intersect(dataa, datab) {
       }
     } else {
       return {
-              data: Belt_internalAVLset.empty
+              data: null
             };
     }
   } else {
     return {
-            data: Belt_internalAVLset.empty
+            data: null
           };
   }
 }
@@ -422,7 +426,7 @@ function diff(dataa, datab) {
     }
   } else {
     return {
-            data: Belt_internalAVLset.empty
+            data: null
           };
   }
 }
