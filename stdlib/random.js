@@ -15,7 +15,7 @@ var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 function assign(st1, st2) {
   $$Array.blit(st2.st, 0, st1.st, 0, 55);
   st1.idx = st2.idx;
-  return /* () */0;
+  
 }
 
 function full_init(s, seed) {
@@ -40,7 +40,7 @@ function full_init(s, seed) {
     Caml_array.caml_array_set(s.st, j, (Caml_array.caml_array_get(s.st, j) ^ extract(accu)) & 1073741823);
   }
   s.idx = 0;
-  return /* () */0;
+  
 }
 
 function make(seed) {
@@ -53,7 +53,7 @@ function make(seed) {
 }
 
 function make_self_init(param) {
-  return make(Caml_sys.caml_sys_random_seed(/* () */0));
+  return make(Caml_sys.caml_sys_random_seed(undefined));
 }
 
 function copy(s) {
@@ -81,16 +81,13 @@ function $$int(s, bound) {
           "Random.int"
         ];
   }
-  var s$1 = s;
-  var n = bound;
   while(true) {
-    var r = bits(s$1);
-    var v = r % n;
-    if ((r - v | 0) > ((1073741823 - n | 0) + 1 | 0)) {
-      continue ;
-    } else {
+    var r = bits(s);
+    var v = r % bound;
+    if ((r - v | 0) <= ((1073741823 - bound | 0) + 1 | 0)) {
       return v;
     }
+    continue ;
   };
 }
 
@@ -101,47 +98,35 @@ function int32(s, bound) {
           "Random.int32"
         ];
   }
-  var s$1 = s;
-  var n = bound;
   while(true) {
-    var b1 = bits(s$1);
-    var b2 = ((bits(s$1) & 1) << 30);
+    var b1 = bits(s);
+    var b2 = ((bits(s) & 1) << 30);
     var r = b1 | b2;
-    var v = r % n;
-    if ((r - v | 0) > ((Int32.max_int - n | 0) + 1 | 0)) {
-      continue ;
-    } else {
+    var v = r % bound;
+    if ((r - v | 0) <= ((Int32.max_int - bound | 0) + 1 | 0)) {
       return v;
     }
+    continue ;
   };
 }
 
 function int64(s, bound) {
-  if (Caml_int64.le(bound, /* int64 */[
-          /* hi */0,
-          /* lo */0
-        ])) {
+  if (Caml_int64.le(bound, Caml_int64.zero)) {
     throw [
           Caml_builtin_exceptions.invalid_argument,
           "Random.int64"
         ];
   }
-  var s$1 = s;
-  var n = bound;
   while(true) {
-    var b1 = Caml_int64.of_int32(bits(s$1));
-    var b2 = Caml_int64.lsl_(Caml_int64.of_int32(bits(s$1)), 30);
-    var b3 = Caml_int64.lsl_(Caml_int64.of_int32(bits(s$1) & 7), 60);
+    var b1 = Caml_int64.of_int32(bits(s));
+    var b2 = Caml_int64.lsl_(Caml_int64.of_int32(bits(s)), 30);
+    var b3 = Caml_int64.lsl_(Caml_int64.of_int32(bits(s) & 7), 60);
     var r = Caml_int64.or_(b1, Caml_int64.or_(b2, b3));
-    var v = Caml_int64.mod_(r, n);
-    if (Caml_int64.gt(Caml_int64.sub(r, v), Caml_int64.add(Caml_int64.sub(Int64.max_int, n), /* int64 */[
-                /* hi */0,
-                /* lo */1
-              ]))) {
-      continue ;
-    } else {
+    var v = Caml_int64.mod_(r, bound);
+    if (!Caml_int64.gt(Caml_int64.sub(r, v), Caml_int64.add(Caml_int64.sub(Int64.max_int, bound), Caml_int64.one))) {
       return v;
     }
+    continue ;
   };
 }
 
@@ -261,7 +246,7 @@ function init(seed) {
 }
 
 function self_init(param) {
-  return full_init$1(Caml_sys.caml_sys_random_seed(/* () */0));
+  return full_init$1(Caml_sys.caml_sys_random_seed(undefined));
 }
 
 function get_state(param) {

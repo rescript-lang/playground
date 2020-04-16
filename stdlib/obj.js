@@ -37,12 +37,11 @@ function extension_constructor(x) {
   }
   if (name.tag === 252) {
     return slot;
-  } else {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Obj.extension_constructor"
-        ];
   }
+  throw [
+        Caml_builtin_exceptions.invalid_argument,
+        "Obj.extension_constructor"
+      ];
 }
 
 function extension_name(slot) {

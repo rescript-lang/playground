@@ -118,7 +118,6 @@ if (typeof window === "undefined"){
 } else {
  window.devtoolsFormatters = [formatter]
 }
-return 0
 });
 
 var setup = {
@@ -126,16 +125,15 @@ var setup = {
 };
 
 function setupOnce(param) {
-  if (setup.contents) {
-    return 0;
-  } else {
+  if (!setup.contents) {
     setup.contents = true;
-    return setupChromeDebugger(/* () */0);
+    return setupChromeDebugger(undefined);
   }
+  
 }
 
 function variant(meta, tag, xs) {
-  setupOnce(/* () */0);
+  setupOnce(undefined);
   xs.tag = tag;
   return Object.defineProperty(xs, Symbol.for("BsVariant"), {
               value: meta
@@ -143,14 +141,14 @@ function variant(meta, tag, xs) {
 }
 
 function simpleVariant(meta, xs) {
-  setupOnce(/* () */0);
+  setupOnce(undefined);
   return Object.defineProperty(xs, Symbol.for("BsVariant"), {
               value: meta
             });
 }
 
 function polyVar(meta, xs) {
-  setupOnce(/* () */0);
+  setupOnce(undefined);
   return Object.defineProperty(xs, Symbol.for("BsPolyVar"), {
               value: meta
             });

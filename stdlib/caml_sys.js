@@ -6,13 +6,21 @@ function caml_sys_getenv(s) {
   if (typeof process === "undefined" || process.env === undefined) {
     throw Caml_builtin_exceptions.not_found;
   }
-  var match = process.env[s];
-  if (match !== undefined) {
-    return match;
-  } else {
-    throw Caml_builtin_exceptions.not_found;
+  var x = process.env[s];
+  if (x !== undefined) {
+    return x;
   }
+  throw Caml_builtin_exceptions.not_found;
 }
+
+var os_type = (function(_){
+  if(typeof process !== 'undefined' && process.platform === 'win32'){
+        return "Win32"    
+  }
+  else {
+    return "Unix"
+  }
+});
 
 function caml_sys_time(param) {
   if (typeof process === "undefined" || process.uptime === undefined) {
@@ -43,28 +51,26 @@ function caml_sys_get_argv(param) {
             "",
             [""]
           ];
+  }
+  var argv = process.argv;
+  if (argv == null) {
+    return /* tuple */[
+            "",
+            [""]
+          ];
   } else {
-    var argv = process.argv;
-    if (argv == null) {
-      return /* tuple */[
-              "",
-              [""]
-            ];
-    } else {
-      return /* tuple */[
-              argv[0],
-              argv
-            ];
-    }
+    return /* tuple */[
+            argv[0],
+            argv
+          ];
   }
 }
 
 function caml_sys_exit(exit_code) {
   if (typeof process !== "undefined") {
     return process.exit(exit_code);
-  } else {
-    return 0;
   }
+  
 }
 
 function caml_sys_is_directory(_s) {
@@ -83,6 +89,7 @@ function caml_sys_file_exists(_s) {
 
 exports.caml_sys_getenv = caml_sys_getenv;
 exports.caml_sys_time = caml_sys_time;
+exports.os_type = os_type;
 exports.caml_sys_random_seed = caml_sys_random_seed;
 exports.caml_sys_system_command = caml_sys_system_command;
 exports.caml_sys_getcwd = caml_sys_getcwd;
