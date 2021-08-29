@@ -1,7 +1,6 @@
 'use strict';
 
 var Curry = require("./curry.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function merge(order, l1, l2) {
   if (!l1) {
@@ -10,18 +9,18 @@ function merge(order, l1, l2) {
   if (!l2) {
     return l1;
   }
-  var h2 = l2[0];
-  var h1 = l1[0];
+  var h2 = l2.hd;
+  var h1 = l1.hd;
   if (Curry._2(order, h1, h2)) {
-    return /* :: */[
-            h1,
-            merge(order, l1[1], l2)
-          ];
+    return {
+            hd: h1,
+            tl: merge(order, l1.tl, l2)
+          };
   } else {
-    return /* :: */[
-            h2,
-            merge(order, l1, l2[1])
-          ];
+    return {
+            hd: h2,
+            tl: merge(order, l1, l2.tl)
+          };
   }
 }
 
@@ -30,45 +29,45 @@ function list(order, l) {
     if (!param) {
       return /* [] */0;
     }
-    var match = param[1];
-    var e = param[0];
+    var match = param.tl;
+    var e = param.hd;
     if (!match) {
-      return /* :: */[
-              /* :: */[
-                e,
-                /* [] */0
-              ],
-              /* [] */0
-            ];
+      return {
+              hd: {
+                hd: e,
+                tl: /* [] */0
+              },
+              tl: /* [] */0
+            };
     }
-    var e2 = match[0];
-    return /* :: */[
-            Curry._2(order, e, e2) ? /* :: */[
-                e,
-                /* :: */[
-                  e2,
-                  /* [] */0
-                ]
-              ] : /* :: */[
-                e2,
-                /* :: */[
-                  e,
-                  /* [] */0
-                ]
-              ],
-            initlist(match[1])
-          ];
+    var e2 = match.hd;
+    return {
+            hd: Curry._2(order, e, e2) ? ({
+                  hd: e,
+                  tl: {
+                    hd: e2,
+                    tl: /* [] */0
+                  }
+                }) : ({
+                  hd: e2,
+                  tl: {
+                    hd: e,
+                    tl: /* [] */0
+                  }
+                }),
+            tl: initlist(match.tl)
+          };
   };
   var merge2 = function (x) {
     if (!x) {
       return x;
     }
-    var match = x[1];
+    var match = x.tl;
     if (match) {
-      return /* :: */[
-              merge(order, x[0], match[0]),
-              merge2(match[1])
-            ];
+      return {
+              hd: merge(order, x.hd, match.hd),
+              tl: merge2(match.tl)
+            };
     } else {
       return x;
     }
@@ -79,8 +78,8 @@ function list(order, l) {
     if (!llist) {
       return /* [] */0;
     }
-    if (!llist[1]) {
-      return llist[0];
+    if (!llist.tl) {
+      return llist.hd;
     }
     _llist = merge2(llist);
     continue ;
@@ -117,10 +116,11 @@ function array(cmp, arr) {
       var i = lo + 1 | 0;
       var j = hi - 1 | 0;
       if (!Curry._2(cmp, pivot, arr[hi]) || !Curry._2(cmp, arr[lo], pivot)) {
-        throw [
-              Caml_builtin_exceptions.invalid_argument,
-              "Sort.array"
-            ];
+        throw {
+              RE_EXN_ID: "Invalid_argument",
+              _1: "Sort.array",
+              Error: new Error()
+            };
       }
       while(i < j) {
         while(!Curry._2(cmp, pivot, arr[i])) {

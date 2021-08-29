@@ -3,7 +3,7 @@
 var List = require("./list.js");
 var Caml_exceptions = require("./caml_exceptions.js");
 
-var Empty = Caml_exceptions.create("Stack.Empty");
+var Empty = /* @__PURE__ */Caml_exceptions.create("Stack.Empty");
 
 function create(param) {
   return {
@@ -26,10 +26,10 @@ function copy(s) {
 }
 
 function push(x, s) {
-  s.c = /* :: */[
-    x,
-    s.c
-  ];
+  s.c = {
+    hd: x,
+    tl: s.c
+  };
   s.len = s.len + 1 | 0;
   
 }
@@ -37,19 +37,25 @@ function push(x, s) {
 function pop(s) {
   var match = s.c;
   if (match) {
-    s.c = match[1];
+    s.c = match.tl;
     s.len = s.len - 1 | 0;
-    return match[0];
+    return match.hd;
   }
-  throw Empty;
+  throw {
+        RE_EXN_ID: Empty,
+        Error: new Error()
+      };
 }
 
 function top(s) {
   var match = s.c;
   if (match) {
-    return match[0];
+    return match.hd;
   }
-  throw Empty;
+  throw {
+        RE_EXN_ID: Empty,
+        Error: new Error()
+      };
 }
 
 function is_empty(s) {

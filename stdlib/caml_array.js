@@ -1,8 +1,7 @@
 'use strict';
 
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
-function caml_array_sub(x, offset, len) {
+function sub(x, offset, len) {
   var result = new Array(len);
   var j = 0;
   var i = offset;
@@ -21,8 +20,8 @@ function len(_acc, _l) {
     if (!l) {
       return acc;
     }
-    _l = l[1];
-    _acc = l[0].length + acc | 0;
+    _l = l.tl;
+    _acc = l.hd.length + acc | 0;
     continue ;
   };
 }
@@ -34,7 +33,7 @@ function fill(arr, _i, _l) {
     if (!l) {
       return ;
     }
-    var x = l[0];
+    var x = l.hd;
     var l$1 = x.length;
     var k = i;
     var j = 0;
@@ -43,41 +42,43 @@ function fill(arr, _i, _l) {
       k = k + 1 | 0;
       j = j + 1 | 0;
     };
-    _l = l[1];
+    _l = l.tl;
     _i = k;
     continue ;
   };
 }
 
-function caml_array_concat(l) {
+function concat(l) {
   var v = len(0, l);
   var result = new Array(v);
   fill(result, 0, l);
   return result;
 }
 
-function caml_array_set(xs, index, newval) {
+function set(xs, index, newval) {
   if (index < 0 || index >= xs.length) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "index out of bounds"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "index out of bounds",
+          Error: new Error()
+        };
   }
   xs[index] = newval;
   
 }
 
-function caml_array_get(xs, index) {
+function get(xs, index) {
   if (index < 0 || index >= xs.length) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "index out of bounds"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "index out of bounds",
+          Error: new Error()
+        };
   }
   return xs[index];
 }
 
-function caml_make_vect(len, init) {
+function make(len, init) {
   var b = new Array(len);
   for(var i = 0; i < len; ++i){
     b[i] = init;
@@ -85,7 +86,7 @@ function caml_make_vect(len, init) {
   return b;
 }
 
-function caml_make_float_vect(len) {
+function make_float(len) {
   var b = new Array(len);
   for(var i = 0; i < len; ++i){
     b[i] = 0;
@@ -93,7 +94,7 @@ function caml_make_float_vect(len) {
   return b;
 }
 
-function caml_array_blit(a1, i1, a2, i2, len) {
+function blit(a1, i1, a2, i2, len) {
   if (i2 <= i1) {
     for(var j = 0; j < len; ++j){
       a2[j + i2 | 0] = a1[j + i1 | 0];
@@ -106,16 +107,16 @@ function caml_array_blit(a1, i1, a2, i2, len) {
   
 }
 
-function caml_array_dup(prim) {
+function dup(prim) {
   return prim.slice(0);
 }
 
-exports.caml_array_dup = caml_array_dup;
-exports.caml_array_sub = caml_array_sub;
-exports.caml_array_concat = caml_array_concat;
-exports.caml_make_vect = caml_make_vect;
-exports.caml_make_float_vect = caml_make_float_vect;
-exports.caml_array_blit = caml_array_blit;
-exports.caml_array_get = caml_array_get;
-exports.caml_array_set = caml_array_set;
+exports.dup = dup;
+exports.sub = sub;
+exports.concat = concat;
+exports.make = make;
+exports.make_float = make_float;
+exports.blit = blit;
+exports.get = get;
+exports.set = set;
 /* No side effect */

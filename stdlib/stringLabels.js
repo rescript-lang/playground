@@ -1,82 +1,313 @@
 'use strict';
 
-var $$String = require("./string.js");
+var Caml = require("./caml.js");
+var Bytes = require("./bytes.js");
+var Curry = require("./curry.js");
+var Belt_List = require("./belt_List.js");
+var Caml_string = require("./caml_string.js");
+var Caml_js_exceptions = require("./caml_js_exceptions.js");
 
-var make = $$String.make;
+function init(n, f) {
+  return Bytes.unsafe_to_string(Bytes.init(n, f));
+}
 
-var init = $$String.init;
+function sub(s, ofs, len) {
+  return Bytes.unsafe_to_string(Bytes.sub(Bytes.unsafe_of_string(s), ofs, len));
+}
 
-var copy = $$String.copy;
+var blit = Bytes.blit_string;
 
-var sub = $$String.sub;
+function concat(sep, xs) {
+  return Belt_List.toArray(xs).join(sep);
+}
 
-var fill = $$String.fill;
+function iter(f, s) {
+  for(var i = 0 ,i_finish = s.length; i < i_finish; ++i){
+    Curry._1(f, s.codePointAt(i));
+  }
+  
+}
 
-var blit = $$String.blit;
+function iteri(f, s) {
+  for(var i = 0 ,i_finish = s.length; i < i_finish; ++i){
+    Curry._2(f, i, s.codePointAt(i));
+  }
+  
+}
 
-var concat = $$String.concat;
+function map(f, s) {
+  return Bytes.unsafe_to_string(Bytes.map(f, Bytes.unsafe_of_string(s)));
+}
 
-var iter = $$String.iter;
+function mapi(f, s) {
+  return Bytes.unsafe_to_string(Bytes.mapi(f, Bytes.unsafe_of_string(s)));
+}
 
-var iteri = $$String.iteri;
+function is_space(param) {
+  if (param > 13 || param < 9) {
+    return param === 32;
+  } else {
+    return param !== 11;
+  }
+}
 
-var map = $$String.map;
+function trim(s) {
+  if (s === "" || !(is_space(s.codePointAt(0)) || is_space(s.codePointAt(s.length - 1 | 0)))) {
+    return s;
+  } else {
+    return Bytes.unsafe_to_string(Bytes.trim(Bytes.unsafe_of_string(s)));
+  }
+}
 
-var mapi = $$String.mapi;
+function escaped(s) {
+  var needs_escape = function (_i) {
+    while(true) {
+      var i = _i;
+      if (i >= s.length) {
+        return false;
+      }
+      var match = s.codePointAt(i);
+      if (match < 32) {
+        return true;
+      }
+      if (match > 92 || match < 34) {
+        if (match >= 127) {
+          return true;
+        }
+        _i = i + 1 | 0;
+        continue ;
+      }
+      if (match > 91 || match < 35) {
+        return true;
+      }
+      _i = i + 1 | 0;
+      continue ;
+    };
+  };
+  if (needs_escape(0)) {
+    return Bytes.unsafe_to_string(Bytes.escaped(Bytes.unsafe_of_string(s)));
+  } else {
+    return s;
+  }
+}
 
-var trim = $$String.trim;
+function index_rec(s, lim, _i, c) {
+  while(true) {
+    var i = _i;
+    if (i >= lim) {
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
+    }
+    if (s.codePointAt(i) === c) {
+      return i;
+    }
+    _i = i + 1 | 0;
+    continue ;
+  };
+}
 
-var escaped = $$String.escaped;
+function index(s, c) {
+  return index_rec(s, s.length, 0, c);
+}
 
-var index = $$String.index;
+function index_rec_opt(s, lim, _i, c) {
+  while(true) {
+    var i = _i;
+    if (i >= lim) {
+      return ;
+    }
+    if (s.codePointAt(i) === c) {
+      return i;
+    }
+    _i = i + 1 | 0;
+    continue ;
+  };
+}
 
-var index_opt = $$String.index_opt;
+function index_opt(s, c) {
+  return index_rec_opt(s, s.length, 0, c);
+}
 
-var rindex = $$String.rindex;
+function index_from(s, i, c) {
+  var l = s.length;
+  if (i < 0 || i > l) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.index_from / Bytes.index_from",
+          Error: new Error()
+        };
+  }
+  return index_rec(s, l, i, c);
+}
 
-var rindex_opt = $$String.rindex_opt;
+function index_from_opt(s, i, c) {
+  var l = s.length;
+  if (i < 0 || i > l) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.index_from_opt / Bytes.index_from_opt",
+          Error: new Error()
+        };
+  }
+  return index_rec_opt(s, l, i, c);
+}
 
-var index_from = $$String.index_from;
+function rindex_rec(s, _i, c) {
+  while(true) {
+    var i = _i;
+    if (i < 0) {
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
+    }
+    if (s.codePointAt(i) === c) {
+      return i;
+    }
+    _i = i - 1 | 0;
+    continue ;
+  };
+}
 
-var index_from_opt = $$String.index_from_opt;
+function rindex(s, c) {
+  return rindex_rec(s, s.length - 1 | 0, c);
+}
 
-var rindex_from = $$String.rindex_from;
+function rindex_from(s, i, c) {
+  if (i < -1 || i >= s.length) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.rindex_from / Bytes.rindex_from",
+          Error: new Error()
+        };
+  }
+  return rindex_rec(s, i, c);
+}
 
-var rindex_from_opt = $$String.rindex_from_opt;
+function rindex_rec_opt(s, _i, c) {
+  while(true) {
+    var i = _i;
+    if (i < 0) {
+      return ;
+    }
+    if (s.codePointAt(i) === c) {
+      return i;
+    }
+    _i = i - 1 | 0;
+    continue ;
+  };
+}
 
-var contains = $$String.contains;
+function rindex_opt(s, c) {
+  return rindex_rec_opt(s, s.length - 1 | 0, c);
+}
 
-var contains_from = $$String.contains_from;
+function rindex_from_opt(s, i, c) {
+  if (i < -1 || i >= s.length) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.rindex_from_opt / Bytes.rindex_from_opt",
+          Error: new Error()
+        };
+  }
+  return rindex_rec_opt(s, i, c);
+}
 
-var rcontains_from = $$String.rcontains_from;
+function contains_from(s, i, c) {
+  var l = s.length;
+  if (i < 0 || i > l) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.contains_from / Bytes.contains_from",
+          Error: new Error()
+        };
+  }
+  try {
+    index_rec(s, l, i, c);
+    return true;
+  }
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "Not_found") {
+      return false;
+    }
+    throw exn;
+  }
+}
 
-var uppercase = $$String.uppercase;
+function contains(s, c) {
+  return contains_from(s, 0, c);
+}
 
-var lowercase = $$String.lowercase;
+function rcontains_from(s, i, c) {
+  if (i < 0 || i >= s.length) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.rcontains_from / Bytes.rcontains_from",
+          Error: new Error()
+        };
+  }
+  try {
+    rindex_rec(s, i, c);
+    return true;
+  }
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "Not_found") {
+      return false;
+    }
+    throw exn;
+  }
+}
 
-var capitalize = $$String.capitalize;
+function uppercase_ascii(s) {
+  return Bytes.unsafe_to_string(Bytes.uppercase_ascii(Bytes.unsafe_of_string(s)));
+}
 
-var uncapitalize = $$String.uncapitalize;
+function lowercase_ascii(s) {
+  return Bytes.unsafe_to_string(Bytes.lowercase_ascii(Bytes.unsafe_of_string(s)));
+}
 
-var uppercase_ascii = $$String.uppercase_ascii;
+function capitalize_ascii(s) {
+  return Bytes.unsafe_to_string(Bytes.capitalize_ascii(Bytes.unsafe_of_string(s)));
+}
 
-var lowercase_ascii = $$String.lowercase_ascii;
+function uncapitalize_ascii(s) {
+  return Bytes.unsafe_to_string(Bytes.uncapitalize_ascii(Bytes.unsafe_of_string(s)));
+}
 
-var capitalize_ascii = $$String.capitalize_ascii;
+var compare = Caml.string_compare;
 
-var uncapitalize_ascii = $$String.uncapitalize_ascii;
+function equal(a, b) {
+  return a === b;
+}
 
-var compare = $$String.compare;
+function split_on_char(sep, s) {
+  var r = /* [] */0;
+  var j = s.length;
+  for(var i = s.length - 1 | 0; i >= 0; --i){
+    if (s.codePointAt(i) === sep) {
+      r = {
+        hd: sub(s, i + 1 | 0, (j - i | 0) - 1 | 0),
+        tl: r
+      };
+      j = i;
+    }
+    
+  }
+  return {
+          hd: sub(s, 0, j),
+          tl: r
+        };
+}
 
-var equal = $$String.equal;
-
-var split_on_char = $$String.split_on_char;
+var make = Caml_string.make;
 
 exports.make = make;
 exports.init = init;
-exports.copy = copy;
 exports.sub = sub;
-exports.fill = fill;
 exports.blit = blit;
 exports.concat = concat;
 exports.iter = iter;
@@ -96,10 +327,6 @@ exports.rindex_from_opt = rindex_from_opt;
 exports.contains = contains;
 exports.contains_from = contains_from;
 exports.rcontains_from = rcontains_from;
-exports.uppercase = uppercase;
-exports.lowercase = lowercase;
-exports.capitalize = capitalize;
-exports.uncapitalize = uncapitalize;
 exports.uppercase_ascii = uppercase_ascii;
 exports.lowercase_ascii = lowercase_ascii;
 exports.capitalize_ascii = capitalize_ascii;

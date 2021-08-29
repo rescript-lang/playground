@@ -1,23 +1,23 @@
 'use strict';
 
 
-var caml_int32_float_of_bits = (function(x){
+var int_float_of_bits = (function(x){
     return new Float32Array(new Int32Array([x]).buffer)[0] 
     });
 
-var caml_int32_bits_of_float = (function(x){
+var int_bits_of_float = (function(x){
   return new Int32Array(new Float32Array([x]).buffer)[0] 
 });
 
-function caml_modf_float(x) {
+function modf_float(x) {
   if (!isFinite(x)) {
     if (isNaN(x)) {
-      return /* tuple */[
+      return [
               NaN,
               NaN
             ];
     } else {
-      return /* tuple */[
+      return [
               1 / x,
               x
             ];
@@ -28,61 +28,61 @@ function caml_modf_float(x) {
   var i = Math.floor(x$1);
   var f = x$1 - i;
   if (neg) {
-    return /* tuple */[
+    return [
             -f,
             -i
           ];
   } else {
-    return /* tuple */[
+    return [
             f,
             i
           ];
   }
 }
 
-function caml_ldexp_float(x, exp) {
-  var x$prime = x;
-  var exp$prime = exp;
-  if (exp$prime > 1023) {
-    exp$prime = exp$prime - 1023;
-    x$prime = x$prime * Math.pow(2, 1023);
-    if (exp$prime > 1023) {
-      exp$prime = exp$prime - 1023;
-      x$prime = x$prime * Math.pow(2, 1023);
+function ldexp_float(x, exp) {
+  var x$p = x;
+  var exp$p = exp;
+  if (exp$p > 1023) {
+    exp$p = exp$p - 1023;
+    x$p = x$p * Math.pow(2, 1023);
+    if (exp$p > 1023) {
+      exp$p = exp$p - 1023;
+      x$p = x$p * Math.pow(2, 1023);
     }
     
-  } else if (exp$prime < -1023) {
-    exp$prime = exp$prime + 1023;
-    x$prime = x$prime * Math.pow(2, -1023);
+  } else if (exp$p < -1023) {
+    exp$p = exp$p + 1023;
+    x$p = x$p * Math.pow(2, -1023);
   }
-  return x$prime * Math.pow(2, exp$prime);
+  return x$p * Math.pow(2, exp$p);
 }
 
-function caml_frexp_float(x) {
+function frexp_float(x) {
   if (x === 0 || !isFinite(x)) {
-    return /* tuple */[
+    return [
             x,
             0
           ];
   }
   var neg = x < 0;
-  var x$prime = Math.abs(x);
-  var exp = Math.floor(Math.LOG2E * Math.log(x$prime)) + 1;
-  x$prime = x$prime * Math.pow(2, -exp);
-  if (x$prime < 0.5) {
-    x$prime = x$prime * 2;
+  var x$p = Math.abs(x);
+  var exp = Math.floor(Math.LOG2E * Math.log(x$p)) + 1;
+  x$p = x$p * Math.pow(2, -exp);
+  if (x$p < 0.5) {
+    x$p = x$p * 2;
     exp = exp - 1;
   }
   if (neg) {
-    x$prime = -x$prime;
+    x$p = -x$p;
   }
-  return /* tuple */[
-          x$prime,
+  return [
+          x$p,
           exp | 0
         ];
 }
 
-function caml_copysign_float(x, y) {
+function copysign_float(x, y) {
   var x$1 = Math.abs(x);
   var y$1 = y === 0 ? 1 / y : y;
   if (y$1 < 0) {
@@ -92,7 +92,7 @@ function caml_copysign_float(x, y) {
   }
 }
 
-function caml_expm1_float(x) {
+function expm1_float(x) {
   var y = Math.exp(x);
   var z = y - 1;
   if (Math.abs(x) > 1) {
@@ -104,7 +104,7 @@ function caml_expm1_float(x) {
   }
 }
 
-function caml_hypot_float(x, y) {
+function hypot_float(x, y) {
   var x0 = Math.abs(x);
   var y0 = Math.abs(y);
   var a = x0 > y0 ? x0 : y0;
@@ -116,17 +116,12 @@ function caml_hypot_float(x, y) {
   return a * Math.sqrt(1 + b * b);
 }
 
-function caml_log10_float(x) {
-  return Math.LOG10E * Math.log(x);
-}
-
-exports.caml_int32_float_of_bits = caml_int32_float_of_bits;
-exports.caml_int32_bits_of_float = caml_int32_bits_of_float;
-exports.caml_modf_float = caml_modf_float;
-exports.caml_ldexp_float = caml_ldexp_float;
-exports.caml_frexp_float = caml_frexp_float;
-exports.caml_copysign_float = caml_copysign_float;
-exports.caml_expm1_float = caml_expm1_float;
-exports.caml_hypot_float = caml_hypot_float;
-exports.caml_log10_float = caml_log10_float;
+exports.int_float_of_bits = int_float_of_bits;
+exports.int_bits_of_float = int_bits_of_float;
+exports.modf_float = modf_float;
+exports.ldexp_float = ldexp_float;
+exports.frexp_float = frexp_float;
+exports.copysign_float = copysign_float;
+exports.expm1_float = expm1_float;
+exports.hypot_float = hypot_float;
 /* No side effect */

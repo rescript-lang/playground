@@ -5,11 +5,9 @@ var Curry = require("./curry.js");
 var Caml_array = require("./caml_array.js");
 var Caml_bytes = require("./caml_bytes.js");
 var Caml_lexer = require("./caml_lexer.js");
-var Pervasives = require("./pervasives.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function engine(tbl, state, buf) {
-  var result = Caml_lexer.caml_lex_engine(tbl, state, buf);
+  var result = Caml_lexer.lex_engine(tbl, state, buf);
   if (result >= 0) {
     buf.lex_start_p = buf.lex_curr_p;
     var init = buf.lex_curr_p;
@@ -24,7 +22,7 @@ function engine(tbl, state, buf) {
 }
 
 function new_engine(tbl, state, buf) {
-  var result = Caml_lexer.caml_new_lex_engine(tbl, state, buf);
+  var result = Caml_lexer.new_lex_engine(tbl, state, buf);
   if (result >= 0) {
     buf.lex_start_p = buf.lex_curr_p;
     var init = buf.lex_curr_p;
@@ -46,7 +44,7 @@ var zero_pos = {
 };
 
 function from_function(f) {
-  var partial_arg = Caml_bytes.caml_create_bytes(512);
+  var partial_arg = Caml_bytes.create(512);
   return {
           refill_buff: (function (param) {
               var read = Curry._2(f, partial_arg, partial_arg.length);
@@ -57,12 +55,13 @@ function from_function(f) {
                 } else {
                   var newlen = (param.lex_buffer.length << 1);
                   if (((param.lex_buffer_len - param.lex_start_pos | 0) + n | 0) > newlen) {
-                    throw [
-                          Caml_builtin_exceptions.failure,
-                          "Lexing.lex_refill: cannot grow buffer"
-                        ];
+                    throw {
+                          RE_EXN_ID: "Failure",
+                          _1: "Lexing.lex_refill: cannot grow buffer",
+                          Error: new Error()
+                        };
                   }
-                  var newbuf = Caml_bytes.caml_create_bytes(newlen);
+                  var newbuf = Caml_bytes.create(newlen);
                   Bytes.blit(param.lex_buffer, param.lex_start_pos, newbuf, 0, param.lex_buffer_len - param.lex_start_pos | 0);
                   param.lex_buffer = newbuf;
                 }
@@ -74,9 +73,9 @@ function from_function(f) {
                 param.lex_buffer_len = param.lex_buffer_len - s | 0;
                 var t = param.lex_mem;
                 for(var i = 0 ,i_finish = t.length; i < i_finish; ++i){
-                  var v = Caml_array.caml_array_get(t, i);
+                  var v = Caml_array.get(t, i);
                   if (v >= 0) {
-                    Caml_array.caml_array_set(t, i, v - s | 0);
+                    Caml_array.set(t, i, v - s | 0);
                   }
                   
                 }
@@ -85,7 +84,7 @@ function from_function(f) {
               param.lex_buffer_len = param.lex_buffer_len + n | 0;
               
             }),
-          lex_buffer: Caml_bytes.caml_create_bytes(1024),
+          lex_buffer: Caml_bytes.create(1024),
           lex_buffer_len: 0,
           lex_abs_pos: 0,
           lex_start_pos: 0,
@@ -97,12 +96,6 @@ function from_function(f) {
           lex_start_p: zero_pos,
           lex_curr_p: zero_pos
         };
-}
-
-function from_channel(ic) {
-  return from_function((function (buf, n) {
-                return Pervasives.input(ic, buf, 0, n);
-              }));
 }
 
 function from_string(s) {
@@ -207,7 +200,6 @@ var dummy_pos = {
 };
 
 exports.dummy_pos = dummy_pos;
-exports.from_channel = from_channel;
 exports.from_string = from_string;
 exports.from_function = from_function;
 exports.lexeme = lexeme;

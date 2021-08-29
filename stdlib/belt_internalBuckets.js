@@ -176,11 +176,10 @@ function filterMapInplaceBucket(f, h, i, _prec, _cell) {
     if (n === undefined) {
       if (prec !== undefined) {
         prec.next = n;
-        return ;
       } else {
         h.buckets[i] = prec;
-        return ;
       }
+      return ;
     }
     _cell = n;
     continue ;
@@ -207,7 +206,7 @@ function fillArray(_i, arr, _cell) {
   while(true) {
     var cell = _cell;
     var i = _i;
-    arr[i] = /* tuple */[
+    arr[i] = [
       cell.key,
       cell.value
     ];
@@ -264,7 +263,7 @@ function valuesToArray(h) {
 
 function toArray(h) {
   return linear(h, (function (x) {
-                return /* tuple */[
+                return [
                         x.key,
                         x.value
                       ];

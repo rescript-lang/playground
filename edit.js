@@ -99,7 +99,7 @@ function redirect_err() {
 ;
 myCode1Mirror.setSize(null, codeMirrorDefaultHeight);
 outputMirror.setSize(null, 50);
-outputMirror.setValue(PROMPT + 'Hello BuckleScript!');
+outputMirror.setValue(PROMPT + 'Hello ReScript!');
 errorMirror.setSize(null, 50);
 errorMirror.setValue(ERR_OUTPUT);
 

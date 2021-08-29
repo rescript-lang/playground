@@ -1,20 +1,16 @@
 'use strict';
 
 var List = require("./list.js");
-var Block = require("./block.js");
 var Curry = require("./curry.js");
-var Caml_obj = require("./caml_obj.js");
 var Caml_bytes = require("./caml_bytes.js");
-var Pervasives = require("./pervasives.js");
 var Caml_option = require("./caml_option.js");
 var Caml_string = require("./caml_string.js");
 var Caml_exceptions = require("./caml_exceptions.js");
 var CamlinternalLazy = require("./camlinternalLazy.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
-var Failure = Caml_exceptions.create("Stream.Failure");
+var Failure = /* @__PURE__ */Caml_exceptions.create("Stream.Failure");
 
-var $$Error = Caml_exceptions.create("Stream.Error");
+var $$Error = /* @__PURE__ */Caml_exceptions.create("Stream.Error");
 
 function count(param) {
   if (param !== undefined) {
@@ -32,87 +28,72 @@ function data(param) {
   }
 }
 
-function fill_buff(b) {
-  b.len = Pervasives.input(b.ic, b.buff, 0, b.buff.length);
-  b.ind = 0;
-  
-}
-
 function get_data(count, _d) {
   while(true) {
     var d = _d;
     if (typeof d === "number") {
       return d;
     }
-    switch (d.tag | 0) {
+    switch (d.TAG | 0) {
       case /* Scons */0 :
           return d;
       case /* Sapp */1 :
-          var d2 = d[1];
-          var match = get_data(count, d[0]);
+          var d2 = d._1;
+          var match = get_data(count, d._0);
           if (typeof match === "number") {
             _d = d2;
             continue ;
           }
-          if (!match.tag) {
-            return /* Scons */Block.__(0, [
-                      match[0],
-                      /* Sapp */Block.__(1, [
-                          match[1],
-                          d2
-                        ])
-                    ]);
+          if (match.TAG === /* Scons */0) {
+            return {
+                    TAG: /* Scons */0,
+                    _0: match._0,
+                    _1: {
+                      TAG: /* Sapp */1,
+                      _0: match._1,
+                      _1: d2
+                    }
+                  };
           }
-          throw [
-                Caml_builtin_exceptions.assert_failure,
-                /* tuple */[
+          throw {
+                RE_EXN_ID: "Assert_failure",
+                _1: [
                   "stream.ml",
-                  53,
+                  48,
                   12
-                ]
-              ];
+                ],
+                Error: new Error()
+              };
       case /* Slazy */2 :
-          _d = CamlinternalLazy.force(d[0]);
+          _d = CamlinternalLazy.force(d._0);
           continue ;
       case /* Sgen */3 :
-          var g = d[0];
+          var g = d._0;
           var match$1 = g.curr;
           if (match$1 !== undefined) {
             var a = Caml_option.valFromOption(match$1);
             if (a !== undefined) {
               g.curr = undefined;
-              return /* Scons */Block.__(0, [
-                        Caml_option.valFromOption(a),
-                        d
-                      ]);
+              return {
+                      TAG: /* Scons */0,
+                      _0: Caml_option.valFromOption(a),
+                      _1: d
+                    };
             } else {
               return /* Sempty */0;
             }
           }
           var a$1 = Curry._1(g.func, count);
           if (a$1 !== undefined) {
-            return /* Scons */Block.__(0, [
-                      Caml_option.valFromOption(a$1),
-                      d
-                    ]);
+            return {
+                    TAG: /* Scons */0,
+                    _0: Caml_option.valFromOption(a$1),
+                    _1: d
+                  };
           } else {
             g.curr = Caml_option.some(undefined);
             return /* Sempty */0;
           }
-      case /* Sbuffio */4 :
-          var b = d[0];
-          if (b.ind >= b.len) {
-            fill_buff(b);
-          }
-          if (b.len === 0) {
-            return /* Sempty */0;
-          }
-          var r = b.buff[b.ind];
-          b.ind = b.ind + 1 | 0;
-          return /* Scons */Block.__(0, [
-                    r,
-                    d
-                  ]);
       
     }
   };
@@ -124,31 +105,32 @@ function peek_data(s) {
     if (typeof f === "number") {
       return ;
     }
-    switch (f.tag | 0) {
+    switch (f.TAG | 0) {
       case /* Scons */0 :
-          return Caml_option.some(f[0]);
+          return Caml_option.some(f._0);
       case /* Sapp */1 :
           var d = get_data(s.count, s.data);
           if (typeof d === "number") {
             return ;
           }
-          if (d.tag) {
-            throw [
-                  Caml_builtin_exceptions.assert_failure,
-                  /* tuple */[
-                    "stream.ml",
-                    82,
-                    12
-                  ]
-                ];
+          if (d.TAG === /* Scons */0) {
+            s.data = d;
+            return Caml_option.some(d._0);
           }
-          s.data = d;
-          return Caml_option.some(d[0]);
+          throw {
+                RE_EXN_ID: "Assert_failure",
+                _1: [
+                  "stream.ml",
+                  71,
+                  12
+                ],
+                Error: new Error()
+              };
       case /* Slazy */2 :
-          s.data = CamlinternalLazy.force(f[0]);
+          s.data = CamlinternalLazy.force(f._0);
           continue ;
       case /* Sgen */3 :
-          var g = f[0];
+          var g = f._0;
           var a = g.curr;
           if (a !== undefined) {
             return Caml_option.valFromOption(a);
@@ -156,17 +138,6 @@ function peek_data(s) {
           var x = Curry._1(g.func, s.count);
           g.curr = Caml_option.some(x);
           return x;
-      case /* Sbuffio */4 :
-          var b = f[0];
-          if (b.ind >= b.len) {
-            fill_buff(b);
-          }
-          if (b.len === 0) {
-            s.data = /* Sempty */0;
-            return ;
-          } else {
-            return b.buff[b.ind];
-          }
       
     }
   };
@@ -183,13 +154,13 @@ function junk_data(s) {
   while(true) {
     var g = s.data;
     if (typeof g !== "number") {
-      switch (g.tag | 0) {
+      switch (g.TAG | 0) {
         case /* Scons */0 :
             s.count = s.count + 1 | 0;
-            s.data = g[1];
+            s.data = g._1;
             return ;
         case /* Sgen */3 :
-            var g$1 = g[0];
+            var g$1 = g._0;
             var match = g$1.curr;
             if (match !== undefined) {
               s.count = s.count + 1 | 0;
@@ -197,11 +168,6 @@ function junk_data(s) {
               return ;
             }
             break;
-        case /* Sbuffio */4 :
-            var b = g[0];
-            s.count = s.count + 1 | 0;
-            b.ind = b.ind + 1 | 0;
-            return ;
         default:
           
       }
@@ -223,7 +189,7 @@ function junk(data) {
 
 function nget_data(n, s) {
   if (n <= 0) {
-    return /* tuple */[
+    return [
             /* [] */0,
             s.data,
             0
@@ -231,7 +197,7 @@ function nget_data(n, s) {
   }
   var a = peek_data(s);
   if (a === undefined) {
-    return /* tuple */[
+    return [
             /* [] */0,
             s.data,
             0
@@ -240,15 +206,16 @@ function nget_data(n, s) {
   var a$1 = Caml_option.valFromOption(a);
   junk_data(s);
   var match = nget_data(n - 1 | 0, s);
-  return /* tuple */[
-          /* :: */[
-            a$1,
-            match[0]
-          ],
-          /* Scons */Block.__(0, [
-              a$1,
-              match[1]
-            ]),
+  return [
+          {
+            hd: a$1,
+            tl: match[0]
+          },
+          {
+            TAG: /* Scons */0,
+            _0: a$1,
+            _1: match[1]
+          },
           match[2] + 1 | 0
         ];
 }
@@ -270,7 +237,10 @@ function next(s) {
     junk(s);
     return Caml_option.valFromOption(a);
   }
-  throw Failure;
+  throw {
+        RE_EXN_ID: Failure,
+        Error: new Error()
+      };
 }
 
 function empty(s) {
@@ -278,7 +248,10 @@ function empty(s) {
   if (match === undefined) {
     return ;
   }
-  throw Failure;
+  throw {
+        RE_EXN_ID: Failure,
+        Error: new Error()
+      };
 }
 
 function iter(f, strm) {
@@ -298,10 +271,13 @@ function iter(f, strm) {
 function from(f) {
   return {
           count: 0,
-          data: /* Sgen */Block.__(3, [{
-                curr: undefined,
-                func: f
-              }])
+          data: {
+            TAG: /* Sgen */3,
+            _0: {
+              curr: undefined,
+              func: f
+            }
+          }
         };
 }
 
@@ -309,10 +285,11 @@ function of_list(l) {
   return {
           count: 0,
           data: List.fold_right((function (x, l) {
-                  return /* Scons */Block.__(0, [
-                            x,
-                            l
-                          ]);
+                  return {
+                          TAG: /* Scons */0,
+                          _0: x,
+                          _1: l
+                        };
                 }), l, /* Sempty */0)
         };
 }
@@ -321,151 +298,174 @@ function of_string(s) {
   var count = {
     contents: 0
   };
-  return from((function (param) {
-                var c = count.contents;
-                if (c < s.length) {
-                  count.contents = count.contents + 1 | 0;
-                  return Caml_string.get(s, c);
-                }
-                
-              }));
+  return from(function (param) {
+              var c = count.contents;
+              if (c < s.length) {
+                count.contents = count.contents + 1 | 0;
+                return Caml_string.get(s, c);
+              }
+              
+            });
 }
 
 function of_bytes(s) {
   var count = {
     contents: 0
   };
-  return from((function (param) {
-                var c = count.contents;
-                if (c < s.length) {
-                  count.contents = count.contents + 1 | 0;
-                  return Caml_bytes.get(s, c);
-                }
-                
-              }));
-}
-
-function of_channel(ic) {
-  return {
-          count: 0,
-          data: /* Sbuffio */Block.__(4, [{
-                ic: ic,
-                buff: Caml_bytes.caml_create_bytes(4096),
-                len: 0,
-                ind: 0
-              }])
-        };
+  return from(function (param) {
+              var c = count.contents;
+              if (c < s.length) {
+                count.contents = count.contents + 1 | 0;
+                return Caml_bytes.get(s, c);
+              }
+              
+            });
 }
 
 function iapp(i, s) {
   return {
           count: 0,
-          data: /* Sapp */Block.__(1, [
-              data(i),
-              data(s)
-            ])
+          data: {
+            TAG: /* Sapp */1,
+            _0: data(i),
+            _1: data(s)
+          }
         };
 }
 
 function icons(i, s) {
   return {
           count: 0,
-          data: /* Scons */Block.__(0, [
-              i,
-              data(s)
-            ])
+          data: {
+            TAG: /* Scons */0,
+            _0: i,
+            _1: data(s)
+          }
         };
 }
 
 function ising(i) {
   return {
           count: 0,
-          data: /* Scons */Block.__(0, [
-              i,
-              /* Sempty */0
-            ])
+          data: {
+            TAG: /* Scons */0,
+            _0: i,
+            _1: /* Sempty */0
+          }
         };
 }
 
 function lapp(f, s) {
   return {
           count: 0,
-          data: /* Slazy */Block.__(2, [Caml_obj.caml_lazy_make((function (param) {
-                      return /* Sapp */Block.__(1, [
-                                data(Curry._1(f, undefined)),
-                                data(s)
-                              ]);
-                    }))])
+          data: {
+            TAG: /* Slazy */2,
+            _0: {
+              LAZY_DONE: false,
+              VAL: (function () {
+                  return {
+                          TAG: /* Sapp */1,
+                          _0: data(Curry._1(f, undefined)),
+                          _1: data(s)
+                        };
+                })
+            }
+          }
         };
 }
 
 function lcons(f, s) {
   return {
           count: 0,
-          data: /* Slazy */Block.__(2, [Caml_obj.caml_lazy_make((function (param) {
-                      return /* Scons */Block.__(0, [
-                                Curry._1(f, undefined),
-                                data(s)
-                              ]);
-                    }))])
+          data: {
+            TAG: /* Slazy */2,
+            _0: {
+              LAZY_DONE: false,
+              VAL: (function () {
+                  return {
+                          TAG: /* Scons */0,
+                          _0: Curry._1(f, undefined),
+                          _1: data(s)
+                        };
+                })
+            }
+          }
         };
 }
 
 function lsing(f) {
   return {
           count: 0,
-          data: /* Slazy */Block.__(2, [Caml_obj.caml_lazy_make((function (param) {
-                      return /* Scons */Block.__(0, [
-                                Curry._1(f, undefined),
-                                /* Sempty */0
-                              ]);
-                    }))])
+          data: {
+            TAG: /* Slazy */2,
+            _0: {
+              LAZY_DONE: false,
+              VAL: (function () {
+                  return {
+                          TAG: /* Scons */0,
+                          _0: Curry._1(f, undefined),
+                          _1: /* Sempty */0
+                        };
+                })
+            }
+          }
         };
 }
 
 function slazy(f) {
   return {
           count: 0,
-          data: /* Slazy */Block.__(2, [Caml_obj.caml_lazy_make((function (param) {
-                      return data(Curry._1(f, undefined));
-                    }))])
+          data: {
+            TAG: /* Slazy */2,
+            _0: {
+              LAZY_DONE: false,
+              VAL: (function () {
+                  return data(Curry._1(f, undefined));
+                })
+            }
+          }
         };
 }
 
 function dump_data(f, param) {
   if (typeof param === "number") {
-    return Pervasives.print_string("Sempty");
+    console.log("Sempty");
+    return ;
   }
-  switch (param.tag | 0) {
+  switch (param.TAG | 0) {
     case /* Scons */0 :
-        Pervasives.print_string("Scons (");
-        Curry._1(f, param[0]);
-        Pervasives.print_string(", ");
-        dump_data(f, param[1]);
-        return Pervasives.print_string(")");
+        console.log("Scons (");
+        Curry._1(f, param._0);
+        console.log(", ");
+        dump_data(f, param._1);
+        console.log(")");
+        return ;
     case /* Sapp */1 :
-        Pervasives.print_string("Sapp (");
-        dump_data(f, param[0]);
-        Pervasives.print_string(", ");
-        dump_data(f, param[1]);
-        return Pervasives.print_string(")");
+        console.log("Sapp (");
+        dump_data(f, param._0);
+        console.log(", ");
+        dump_data(f, param._1);
+        console.log(")");
+        return ;
     case /* Slazy */2 :
-        return Pervasives.print_string("Slazy");
+        console.log("Slazy");
+        return ;
     case /* Sgen */3 :
-        return Pervasives.print_string("Sgen");
-    case /* Sbuffio */4 :
-        return Pervasives.print_string("Sbuffio");
+        console.log("Sgen");
+        return ;
     
   }
 }
 
 function dump(f, s) {
-  Pervasives.print_string("{count = ");
-  Pervasives.print_int(count(s));
-  Pervasives.print_string("; data = ");
+  console.log("{count = ");
+  var i = count(s);
+  console.log(String(i));
+  console.log("; data = ");
   dump_data(f, data(s));
-  Pervasives.print_string("}");
-  return Pervasives.print_newline(undefined);
+  console.log("}");
+  console.log("");
+  
 }
 
 var sempty;
@@ -476,7 +476,6 @@ exports.from = from;
 exports.of_list = of_list;
 exports.of_string = of_string;
 exports.of_bytes = of_bytes;
-exports.of_channel = of_channel;
 exports.iter = iter;
 exports.next = next;
 exports.empty = empty;

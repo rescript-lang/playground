@@ -1,9 +1,9 @@
 'use strict';
 
+var Caml = require("./caml.js");
 var Curry = require("./curry.js");
 var Js_math = require("./js_math.js");
 var Caml_option = require("./caml_option.js");
-var Caml_primitive = require("./caml_primitive.js");
 
 function get(arr, i) {
   if (i >= 0 && i < arr.length) {
@@ -14,7 +14,15 @@ function get(arr, i) {
 
 function getExn(arr, i) {
   if (!(i >= 0 && i < arr.length)) {
-    throw new Error("File \"belt_Array.ml\", line 25, characters 6-12");
+    throw {
+          RE_EXN_ID: "Assert_failure",
+          _1: [
+            "belt_Array.ml",
+            27,
+            4
+          ],
+          Error: new Error()
+        };
   }
   return arr[i];
 }
@@ -30,7 +38,15 @@ function set(arr, i, v) {
 
 function setExn(arr, i, v) {
   if (!(i >= 0 && i < arr.length)) {
-    throw new Error("File \"belt_Array.ml\", line 31, characters 4-10");
+    throw {
+          RE_EXN_ID: "Assert_failure",
+          _1: [
+            "belt_Array.ml",
+            33,
+            2
+          ],
+          Error: new Error()
+        };
   }
   arr[i] = v;
   
@@ -144,7 +160,7 @@ function zip(xs, ys) {
   var len = lenx < leny ? lenx : leny;
   var s = new Array(len);
   for(var i = 0; i < len; ++i){
-    s[i] = /* tuple */[
+    s[i] = [
       xs[i],
       ys[i]
     ];
@@ -203,7 +219,7 @@ function slice(a, offset, len) {
     return [];
   }
   var lena = a.length;
-  var ofs = offset < 0 ? Caml_primitive.caml_int_max(lena + offset | 0, 0) : offset;
+  var ofs = offset < 0 ? Caml.int_max(lena + offset | 0, 0) : offset;
   var hasLen = lena - ofs | 0;
   var copyLength = hasLen < len ? hasLen : len;
   if (copyLength <= 0) {
@@ -218,7 +234,7 @@ function slice(a, offset, len) {
 
 function sliceToEnd(a, offset) {
   var lena = a.length;
-  var ofs = offset < 0 ? Caml_primitive.caml_int_max(lena + offset | 0, 0) : offset;
+  var ofs = offset < 0 ? Caml.int_max(lena + offset | 0, 0) : offset;
   var len = lena - ofs | 0;
   var result = new Array(len);
   for(var i = 0; i < len; ++i){
@@ -232,7 +248,7 @@ function fill(a, offset, len, v) {
     return ;
   }
   var lena = a.length;
-  var ofs = offset < 0 ? Caml_primitive.caml_int_max(lena + offset | 0, 0) : offset;
+  var ofs = offset < 0 ? Caml.int_max(lena + offset | 0, 0) : offset;
   var hasLen = lena - ofs | 0;
   var fillLength = hasLen < len ? hasLen : len;
   if (fillLength <= 0) {
@@ -260,9 +276,9 @@ function blitUnsafe(a1, srcofs1, a2, srcofs2, blitLength) {
 function blit(a1, ofs1, a2, ofs2, len) {
   var lena1 = a1.length;
   var lena2 = a2.length;
-  var srcofs1 = ofs1 < 0 ? Caml_primitive.caml_int_max(lena1 + ofs1 | 0, 0) : ofs1;
-  var srcofs2 = ofs2 < 0 ? Caml_primitive.caml_int_max(lena2 + ofs2 | 0, 0) : ofs2;
-  var blitLength = Caml_primitive.caml_int_min(len, Caml_primitive.caml_int_min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
+  var srcofs1 = ofs1 < 0 ? Caml.int_max(lena1 + ofs1 | 0, 0) : ofs1;
+  var srcofs2 = ofs2 < 0 ? Caml.int_max(lena2 + ofs2 | 0, 0) : ofs2;
+  var blitLength = Caml.int_min(len, Caml.int_min(lena1 - srcofs1 | 0, lena2 - srcofs2 | 0));
   if (srcofs2 <= srcofs1) {
     for(var j = 0; j < blitLength; ++j){
       a2[j + srcofs2 | 0] = a1[j + srcofs1 | 0];
@@ -297,6 +313,14 @@ function mapU(a, f) {
 
 function map(a, f) {
   return mapU(a, Curry.__1(f));
+}
+
+function flatMapU(a, f) {
+  return concatMany(mapU(a, f));
+}
+
+function flatMap(a, f) {
+  return concatMany(mapU(a, Curry.__1(f)));
 }
 
 function getByU(a, p) {
@@ -446,7 +470,7 @@ function reduceReverse(a, x, f) {
 
 function reduceReverse2U(a, b, x, f) {
   var r = x;
-  var len = Caml_primitive.caml_int_min(a.length, b.length);
+  var len = Caml.int_min(a.length, b.length);
   for(var i = len - 1 | 0; i >= 0; --i){
     r = f(r, a[i], b[i]);
   }
@@ -524,7 +548,7 @@ function everyAux2(arr1, arr2, _i, b, len) {
 }
 
 function every2U(a, b, p) {
-  return everyAux2(a, b, 0, p, Caml_primitive.caml_int_min(a.length, b.length));
+  return everyAux2(a, b, 0, p, Caml.int_min(a.length, b.length));
 }
 
 function every2(a, b, p) {
@@ -533,7 +557,7 @@ function every2(a, b, p) {
 
 function some2U(a, b, p) {
   var _i = 0;
-  var len = Caml_primitive.caml_int_min(a.length, b.length);
+  var len = Caml.int_min(a.length, b.length);
   while(true) {
     var i = _i;
     if (i === len) {
@@ -611,7 +635,7 @@ function partitionU(a, f) {
   }
   a1.length = i;
   a2.length = j;
-  return /* tuple */[
+  return [
           a1,
           a2
         ];
@@ -630,10 +654,46 @@ function unzip(a) {
     a1[i] = match[0];
     a2[i] = match[1];
   }
-  return /* tuple */[
+  return [
           a1,
           a2
         ];
+}
+
+function joinWithU(a, sep, toString) {
+  var l = a.length;
+  if (l === 0) {
+    return "";
+  }
+  var lastIndex = l - 1 | 0;
+  var _i = 0;
+  var _res = "";
+  while(true) {
+    var res = _res;
+    var i = _i;
+    if (i === lastIndex) {
+      return res + toString(a[i]);
+    }
+    _res = res + (toString(a[i]) + sep);
+    _i = i + 1 | 0;
+    continue ;
+  };
+}
+
+function joinWith(a, sep, toString) {
+  return joinWithU(a, sep, Curry.__1(toString));
+}
+
+function initU(n, f) {
+  var v = new Array(n);
+  for(var i = 0; i < n; ++i){
+    v[i] = f(i);
+  }
+  return v;
+}
+
+function init(n, f) {
+  return initU(n, Curry.__1(f));
 }
 
 exports.get = get;
@@ -666,6 +726,8 @@ exports.forEachU = forEachU;
 exports.forEach = forEach;
 exports.mapU = mapU;
 exports.map = map;
+exports.flatMapU = flatMapU;
+exports.flatMap = flatMap;
 exports.getByU = getByU;
 exports.getBy = getBy;
 exports.getIndexByU = getIndexByU;
@@ -690,6 +752,8 @@ exports.reduceReverse2U = reduceReverse2U;
 exports.reduceReverse2 = reduceReverse2;
 exports.reduceWithIndexU = reduceWithIndexU;
 exports.reduceWithIndex = reduceWithIndex;
+exports.joinWithU = joinWithU;
+exports.joinWith = joinWith;
 exports.someU = someU;
 exports.some = some;
 exports.everyU = everyU;
@@ -702,4 +766,6 @@ exports.cmpU = cmpU;
 exports.cmp = cmp;
 exports.eqU = eqU;
 exports.eq = eq;
+exports.initU = initU;
+exports.init = init;
 /* No side effect */

@@ -1,19 +1,70 @@
 'use strict';
 
+var Caml = require("./caml.js");
 var Char = require("./char.js");
 var Curry = require("./curry.js");
 var Caml_bytes = require("./caml_bytes.js");
-var Caml_primitive = require("./caml_primitive.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
+var Caml_js_exceptions = require("./caml_js_exceptions.js");
+
+function unsafe_fill(s, i, l, c) {
+  if (l <= 0) {
+    return ;
+  }
+  for(var k = i ,k_finish = l + i | 0; k < k_finish; ++k){
+    s[k] = c;
+  }
+  
+}
+
+function unsafe_blit(s1, i1, s2, i2, len) {
+  if (len <= 0) {
+    return ;
+  }
+  if (s1 === s2) {
+    if (i1 < i2) {
+      var range_a = (s1.length - i2 | 0) - 1 | 0;
+      var range_b = len - 1 | 0;
+      var range = range_a > range_b ? range_b : range_a;
+      for(var j = range; j >= 0; --j){
+        s1[i2 + j | 0] = s1[i1 + j | 0];
+      }
+      return ;
+    }
+    if (i1 <= i2) {
+      return ;
+    }
+    var range_a$1 = (s1.length - i1 | 0) - 1 | 0;
+    var range_b$1 = len - 1 | 0;
+    var range$1 = range_a$1 > range_b$1 ? range_b$1 : range_a$1;
+    for(var k = 0; k <= range$1; ++k){
+      s1[i2 + k | 0] = s1[i1 + k | 0];
+    }
+    return ;
+  }
+  var off1 = s1.length - i1 | 0;
+  if (len <= off1) {
+    for(var i = 0; i < len; ++i){
+      s2[i2 + i | 0] = s1[i1 + i | 0];
+    }
+    return ;
+  }
+  for(var i$1 = 0; i$1 < off1; ++i$1){
+    s2[i2 + i$1 | 0] = s1[i1 + i$1 | 0];
+  }
+  for(var i$2 = off1; i$2 < len; ++i$2){
+    s2[i2 + i$2 | 0] = /* '\000' */0;
+  }
+  
+}
 
 function make(n, c) {
-  var s = Caml_bytes.caml_create_bytes(n);
-  Caml_bytes.caml_fill_bytes(s, 0, n, c);
+  var s = Caml_bytes.create(n);
+  unsafe_fill(s, 0, n, c);
   return s;
 }
 
 function init(n, f) {
-  var s = Caml_bytes.caml_create_bytes(n);
+  var s = Caml_bytes.create(n);
   for(var i = 0; i < n; ++i){
     s[i] = Curry._1(f, i);
   }
@@ -24,33 +75,57 @@ var empty = [];
 
 function copy(s) {
   var len = s.length;
-  var r = Caml_bytes.caml_create_bytes(len);
-  Caml_bytes.caml_blit_bytes(s, 0, r, 0, len);
+  var r = Caml_bytes.create(len);
+  unsafe_blit(s, 0, r, 0, len);
   return r;
 }
 
-function to_string(b) {
-  return Caml_bytes.bytes_to_string(copy(b));
+function to_string(a) {
+  var i = 0;
+  var len = a.length;
+  var s = "";
+  var s_len = len;
+  if (i === 0 && len <= 4096 && len === a.length) {
+    return String.fromCharCode.apply(null, a);
+  }
+  var offset = 0;
+  while(s_len > 0) {
+    var next = s_len < 1024 ? s_len : 1024;
+    var tmp_bytes = new Array(next);
+    for(var k = 0; k < next; ++k){
+      tmp_bytes[k] = a[k + offset | 0];
+    }
+    s = s + String.fromCharCode.apply(null, tmp_bytes);
+    s_len = s_len - next | 0;
+    offset = offset + next | 0;
+  };
+  return s;
 }
 
 function of_string(s) {
-  return copy(Caml_bytes.bytes_of_string(s));
+  var len = s.length;
+  var res = new Array(len);
+  for(var i = 0; i < len; ++i){
+    res[i] = s.codePointAt(i);
+  }
+  return res;
 }
 
 function sub(s, ofs, len) {
   if (ofs < 0 || len < 0 || ofs > (s.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.sub / Bytes.sub"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.sub / Bytes.sub",
+          Error: new Error()
+        };
   }
-  var r = Caml_bytes.caml_create_bytes(len);
-  Caml_bytes.caml_blit_bytes(s, ofs, r, 0, len);
+  var r = Caml_bytes.create(len);
+  unsafe_blit(s, ofs, r, 0, len);
   return r;
 }
 
 function sub_string(b, ofs, len) {
-  return Caml_bytes.bytes_to_string(sub(b, ofs, len));
+  return to_string(sub(b, ofs, len));
 }
 
 function $plus$plus(a, b) {
@@ -65,70 +140,91 @@ function $plus$plus(a, b) {
     if (match$2) {
       return c;
     }
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Bytes.extend"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Bytes.extend",
+          Error: new Error()
+        };
   }
   if (match$1) {
     return c;
   }
   if (match$2) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Bytes.extend"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Bytes.extend",
+          Error: new Error()
+        };
   }
   return c;
 }
 
 function extend(s, left, right) {
   var len = $plus$plus($plus$plus(s.length, left), right);
-  var r = Caml_bytes.caml_create_bytes(len);
-  var match = left < 0 ? /* tuple */[
+  var r = Caml_bytes.create(len);
+  var match = left < 0 ? [
       -left | 0,
       0
-    ] : /* tuple */[
+    ] : [
       0,
       left
     ];
   var dstoff = match[1];
   var srcoff = match[0];
-  var cpylen = Caml_primitive.caml_int_min(s.length - srcoff | 0, len - dstoff | 0);
+  var cpylen = Caml.int_min(s.length - srcoff | 0, len - dstoff | 0);
   if (cpylen > 0) {
-    Caml_bytes.caml_blit_bytes(s, srcoff, r, dstoff, cpylen);
+    unsafe_blit(s, srcoff, r, dstoff, cpylen);
   }
   return r;
 }
 
 function fill(s, ofs, len, c) {
   if (ofs < 0 || len < 0 || ofs > (s.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.fill / Bytes.fill"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.fill / Bytes.fill",
+          Error: new Error()
+        };
   }
-  return Caml_bytes.caml_fill_bytes(s, ofs, len, c);
+  return unsafe_fill(s, ofs, len, c);
 }
 
 function blit(s1, ofs1, s2, ofs2, len) {
   if (len < 0 || ofs1 < 0 || ofs1 > (s1.length - len | 0) || ofs2 < 0 || ofs2 > (s2.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Bytes.blit"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Bytes.blit",
+          Error: new Error()
+        };
   }
-  return Caml_bytes.caml_blit_bytes(s1, ofs1, s2, ofs2, len);
+  return unsafe_blit(s1, ofs1, s2, ofs2, len);
 }
 
 function blit_string(s1, ofs1, s2, ofs2, len) {
   if (len < 0 || ofs1 < 0 || ofs1 > (s1.length - len | 0) || ofs2 < 0 || ofs2 > (s2.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.blit / Bytes.blit_string"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.blit / Bytes.blit_string",
+          Error: new Error()
+        };
   }
-  return Caml_bytes.caml_blit_string(s1, ofs1, s2, ofs2, len);
+  if (len <= 0) {
+    return ;
+  }
+  var off1 = s1.length - ofs1 | 0;
+  if (len <= off1) {
+    for(var i = 0; i < len; ++i){
+      s2[ofs2 + i | 0] = s1.codePointAt(ofs1 + i | 0);
+    }
+    return ;
+  }
+  for(var i$1 = 0; i$1 < off1; ++i$1){
+    s2[ofs2 + i$1 | 0] = s1.codePointAt(ofs1 + i$1 | 0);
+  }
+  for(var i$2 = off1; i$2 < len; ++i$2){
+    s2[ofs2 + i$2 | 0] = /* '\000' */0;
+  }
+  
 }
 
 function iter(f, a) {
@@ -149,10 +245,11 @@ function ensure_ge(x, y) {
   if (x >= y) {
     return x;
   }
-  throw [
-        Caml_builtin_exceptions.invalid_argument,
-        "Bytes.concat"
-      ];
+  throw {
+        RE_EXN_ID: "Invalid_argument",
+        _1: "Bytes.concat",
+        Error: new Error()
+      };
 }
 
 function sum_lengths(_acc, seplen, _param) {
@@ -162,8 +259,8 @@ function sum_lengths(_acc, seplen, _param) {
     if (!param) {
       return acc;
     }
-    var tl = param[1];
-    var hd = param[0];
+    var tl = param.tl;
+    var hd = param.hd;
     if (!tl) {
       return hd.length + acc | 0;
     }
@@ -178,7 +275,7 @@ function concat(sep, l) {
     return empty;
   }
   var seplen = sep.length;
-  var dst = Caml_bytes.caml_create_bytes(sum_lengths(0, seplen, l));
+  var dst = Caml_bytes.create(sum_lengths(0, seplen, l));
   var _pos = 0;
   var _param = l;
   while(true) {
@@ -187,16 +284,16 @@ function concat(sep, l) {
     if (!param) {
       return dst;
     }
-    var tl = param[1];
-    var hd = param[0];
+    var tl = param.tl;
+    var hd = param.hd;
     if (tl) {
-      Caml_bytes.caml_blit_bytes(hd, 0, dst, pos, hd.length);
-      Caml_bytes.caml_blit_bytes(sep, 0, dst, pos + hd.length | 0, seplen);
+      unsafe_blit(hd, 0, dst, pos, hd.length);
+      unsafe_blit(sep, 0, dst, pos + hd.length | 0, seplen);
       _param = tl;
       _pos = (pos + hd.length | 0) + seplen | 0;
       continue ;
     }
-    Caml_bytes.caml_blit_bytes(hd, 0, dst, pos, hd.length);
+    unsafe_blit(hd, 0, dst, pos, hd.length);
     return dst;
   };
 }
@@ -204,18 +301,17 @@ function concat(sep, l) {
 function cat(s1, s2) {
   var l1 = s1.length;
   var l2 = s2.length;
-  var r = Caml_bytes.caml_create_bytes(l1 + l2 | 0);
-  Caml_bytes.caml_blit_bytes(s1, 0, r, 0, l1);
-  Caml_bytes.caml_blit_bytes(s2, 0, r, l1, l2);
+  var r = Caml_bytes.create(l1 + l2 | 0);
+  unsafe_blit(s1, 0, r, 0, l1);
+  unsafe_blit(s2, 0, r, l1, l2);
   return r;
 }
 
 function is_space(param) {
-  var switcher = param - 9 | 0;
-  if (switcher > 4 || switcher < 0) {
-    return switcher === 23;
+  if (param > 13 || param < 9) {
+    return param === 32;
   } else {
-    return switcher !== 2;
+    return param !== 11;
   }
 }
 
@@ -240,27 +336,26 @@ function escaped(s) {
   var n = 0;
   for(var i = 0 ,i_finish = s.length; i < i_finish; ++i){
     var match = s[i];
-    var tmp;
-    if (match >= 32) {
-      var switcher = match - 34 | 0;
-      tmp = switcher > 58 || switcher < 0 ? (
-          switcher >= 93 ? 4 : 1
+    n = n + (
+      match >= 32 ? (
+          match > 92 || match < 34 ? (
+              match >= 127 ? 4 : 1
+            ) : (
+              match > 91 || match < 35 ? 2 : 1
+            )
         ) : (
-          switcher > 57 || switcher < 1 ? 2 : 1
-        );
-    } else {
-      tmp = match >= 11 ? (
-          match !== 13 ? 4 : 2
-        ) : (
-          match >= 8 ? 2 : 4
-        );
-    }
-    n = n + tmp | 0;
+          match >= 11 ? (
+              match !== 13 ? 4 : 2
+            ) : (
+              match >= 8 ? 2 : 4
+            )
+        )
+    ) | 0;
   }
   if (n === s.length) {
     return copy(s);
   }
-  var s$prime = Caml_bytes.caml_create_bytes(n);
+  var s$p = Caml_bytes.create(n);
   n = 0;
   for(var i$1 = 0 ,i_finish$1 = s.length; i$1 < i_finish$1; ++i$1){
     var c = s[i$1];
@@ -270,7 +365,7 @@ function escaped(s) {
         if (c >= 127) {
           exit = 1;
         } else {
-          s$prime[n] = c;
+          s$p[n] = c;
         }
       } else {
         exit = 2;
@@ -279,26 +374,26 @@ function escaped(s) {
       if (c >= 34) {
         exit = 2;
       } else {
-        s$prime[n] = c;
+        s$p[n] = c;
       }
     } else if (c >= 14) {
       exit = 1;
     } else {
       switch (c) {
         case 8 :
-            s$prime[n] = /* "\\" */92;
+            s$p[n] = /* '\\' */92;
             n = n + 1 | 0;
-            s$prime[n] = /* "b" */98;
+            s$p[n] = /* 'b' */98;
             break;
         case 9 :
-            s$prime[n] = /* "\\" */92;
+            s$p[n] = /* '\\' */92;
             n = n + 1 | 0;
-            s$prime[n] = /* "t" */116;
+            s$p[n] = /* 't' */116;
             break;
         case 10 :
-            s$prime[n] = /* "\\" */92;
+            s$p[n] = /* '\\' */92;
             n = n + 1 | 0;
-            s$prime[n] = /* "n" */110;
+            s$p[n] = /* 'n' */110;
             break;
         case 0 :
         case 1 :
@@ -313,33 +408,33 @@ function escaped(s) {
             exit = 1;
             break;
         case 13 :
-            s$prime[n] = /* "\\" */92;
+            s$p[n] = /* '\\' */92;
             n = n + 1 | 0;
-            s$prime[n] = /* "r" */114;
+            s$p[n] = /* 'r' */114;
             break;
         
       }
     }
     switch (exit) {
       case 1 :
-          s$prime[n] = /* "\\" */92;
+          s$p[n] = /* '\\' */92;
           n = n + 1 | 0;
-          s$prime[n] = 48 + (c / 100 | 0) | 0;
+          s$p[n] = 48 + (c / 100 | 0) | 0;
           n = n + 1 | 0;
-          s$prime[n] = 48 + (c / 10 | 0) % 10 | 0;
+          s$p[n] = 48 + (c / 10 | 0) % 10 | 0;
           n = n + 1 | 0;
-          s$prime[n] = 48 + c % 10 | 0;
+          s$p[n] = 48 + c % 10 | 0;
           break;
       case 2 :
-          s$prime[n] = /* "\\" */92;
+          s$p[n] = /* '\\' */92;
           n = n + 1 | 0;
-          s$prime[n] = c;
+          s$p[n] = c;
           break;
       
     }
     n = n + 1 | 0;
   }
-  return s$prime;
+  return s$p;
 }
 
 function map(f, s) {
@@ -347,7 +442,7 @@ function map(f, s) {
   if (l === 0) {
     return s;
   }
-  var r = Caml_bytes.caml_create_bytes(l);
+  var r = Caml_bytes.create(l);
   for(var i = 0; i < l; ++i){
     r[i] = Curry._1(f, s[i]);
   }
@@ -359,7 +454,7 @@ function mapi(f, s) {
   if (l === 0) {
     return s;
   }
-  var r = Caml_bytes.caml_create_bytes(l);
+  var r = Caml_bytes.create(l);
   for(var i = 0; i < l; ++i){
     r[i] = Curry._2(f, i, s[i]);
   }
@@ -395,7 +490,10 @@ function index_rec(s, lim, _i, c) {
   while(true) {
     var i = _i;
     if (i >= lim) {
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     }
     if (s[i] === c) {
       return i;
@@ -430,10 +528,11 @@ function index_opt(s, c) {
 function index_from(s, i, c) {
   var l = s.length;
   if (i < 0 || i > l) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.index_from / Bytes.index_from"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.index_from / Bytes.index_from",
+          Error: new Error()
+        };
   }
   return index_rec(s, l, i, c);
 }
@@ -441,10 +540,11 @@ function index_from(s, i, c) {
 function index_from_opt(s, i, c) {
   var l = s.length;
   if (i < 0 || i > l) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.index_from_opt / Bytes.index_from_opt"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.index_from_opt / Bytes.index_from_opt",
+          Error: new Error()
+        };
   }
   return index_rec_opt(s, l, i, c);
 }
@@ -453,7 +553,10 @@ function rindex_rec(s, _i, c) {
   while(true) {
     var i = _i;
     if (i < 0) {
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     }
     if (s[i] === c) {
       return i;
@@ -469,10 +572,11 @@ function rindex(s, c) {
 
 function rindex_from(s, i, c) {
   if (i < -1 || i >= s.length) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.rindex_from / Bytes.rindex_from"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.rindex_from / Bytes.rindex_from",
+          Error: new Error()
+        };
   }
   return rindex_rec(s, i, c);
 }
@@ -497,10 +601,11 @@ function rindex_opt(s, c) {
 
 function rindex_from_opt(s, i, c) {
   if (i < -1 || i >= s.length) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.rindex_from_opt / Bytes.rindex_from_opt"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.rindex_from_opt / Bytes.rindex_from_opt",
+          Error: new Error()
+        };
   }
   return rindex_rec_opt(s, i, c);
 }
@@ -508,17 +613,19 @@ function rindex_from_opt(s, i, c) {
 function contains_from(s, i, c) {
   var l = s.length;
   if (i < 0 || i > l) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.contains_from / Bytes.contains_from"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.contains_from / Bytes.contains_from",
+          Error: new Error()
+        };
   }
   try {
     index_rec(s, l, i, c);
     return true;
   }
-  catch (exn){
-    if (exn === Caml_builtin_exceptions.not_found) {
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "Not_found") {
       return false;
     }
     throw exn;
@@ -531,46 +638,32 @@ function contains(s, c) {
 
 function rcontains_from(s, i, c) {
   if (i < 0 || i >= s.length) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "String.rcontains_from / Bytes.rcontains_from"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "String.rcontains_from / Bytes.rcontains_from",
+          Error: new Error()
+        };
   }
   try {
     rindex_rec(s, i, c);
     return true;
   }
-  catch (exn){
-    if (exn === Caml_builtin_exceptions.not_found) {
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "Not_found") {
       return false;
     }
     throw exn;
   }
 }
 
-var compare = Caml_primitive.caml_bytes_compare;
+var compare = Caml_bytes.bytes_compare;
 
-function uppercase(s) {
-  return map(Char.uppercase, s);
-}
+var equal = Caml_bytes.bytes_equal;
 
-function lowercase(s) {
-  return map(Char.lowercase, s);
-}
+var unsafe_to_string = to_string;
 
-function capitalize(s) {
-  return apply1(Char.uppercase, s);
-}
-
-function uncapitalize(s) {
-  return apply1(Char.lowercase, s);
-}
-
-var equal = Caml_primitive.caml_bytes_equal;
-
-var unsafe_to_string = Caml_bytes.bytes_to_string;
-
-var unsafe_of_string = Caml_bytes.bytes_of_string;
+var unsafe_of_string = of_string;
 
 exports.make = make;
 exports.init = init;
@@ -603,10 +696,6 @@ exports.rindex_from_opt = rindex_from_opt;
 exports.contains = contains;
 exports.contains_from = contains_from;
 exports.rcontains_from = rcontains_from;
-exports.uppercase = uppercase;
-exports.lowercase = lowercase;
-exports.capitalize = capitalize;
-exports.uncapitalize = uncapitalize;
 exports.uppercase_ascii = uppercase_ascii;
 exports.lowercase_ascii = lowercase_ascii;
 exports.capitalize_ascii = capitalize_ascii;

@@ -1,16 +1,21 @@
 'use strict';
 
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function get(s, i) {
   if (i >= s.length || i < 0) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "index out of bounds"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "index out of bounds",
+          Error: new Error()
+        };
   }
-  return s.charCodeAt(i);
+  return s.codePointAt(i);
+}
+
+function make(n, ch) {
+  return String.fromCharCode(ch).repeat(n);
 }
 
 exports.get = get;
+exports.make = make;
 /* No side effect */

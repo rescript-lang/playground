@@ -5,23 +5,23 @@ var Caml_obj = require("./caml_obj.js");
 var Caml_array = require("./caml_array.js");
 var Caml_exceptions = require("./caml_exceptions.js");
 var Caml_js_exceptions = require("./caml_js_exceptions.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
-var make_float = Caml_array.caml_make_float_vect;
+var make_float = Caml_array.make_float;
 
-var Floatarray = { };
+var Floatarray = {};
 
 function init(l, f) {
   if (l === 0) {
     return [];
   }
   if (l < 0) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Array.init"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Array.init",
+          Error: new Error()
+        };
   }
-  var res = Caml_array.caml_make_vect(l, Curry._1(f, 0));
+  var res = Caml_array.make(l, Curry._1(f, 0));
   for(var i = 1; i < l; ++i){
     res[i] = Curry._1(f, i);
   }
@@ -29,9 +29,9 @@ function init(l, f) {
 }
 
 function make_matrix(sx, sy, init) {
-  var res = Caml_array.caml_make_vect(sx, []);
+  var res = Caml_array.make(sx, []);
   for(var x = 0; x < sx; ++x){
-    res[x] = Caml_array.caml_make_vect(sy, init);
+    res[x] = Caml_array.make(sy, init);
   }
   return res;
 }
@@ -41,7 +41,7 @@ function copy(a) {
   if (l === 0) {
     return [];
   } else {
-    return Caml_array.caml_array_sub(a, 0, l);
+    return Caml_array.sub(a, 0, l);
   }
 }
 
@@ -50,7 +50,7 @@ function append(a1, a2) {
   if (l1 === 0) {
     return copy(a2);
   } else if (a2.length === 0) {
-    return Caml_array.caml_array_sub(a1, 0, l1);
+    return Caml_array.sub(a1, 0, l1);
   } else {
     return a1.concat(a2);
   }
@@ -58,20 +58,22 @@ function append(a1, a2) {
 
 function sub(a, ofs, len) {
   if (ofs < 0 || len < 0 || ofs > (a.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Array.sub"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Array.sub",
+          Error: new Error()
+        };
   }
-  return Caml_array.caml_array_sub(a, ofs, len);
+  return Caml_array.sub(a, ofs, len);
 }
 
 function fill(a, ofs, len, v) {
   if (ofs < 0 || len < 0 || ofs > (a.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Array.fill"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Array.fill",
+          Error: new Error()
+        };
   }
   for(var i = ofs ,i_finish = ofs + len | 0; i < i_finish; ++i){
     a[i] = v;
@@ -81,12 +83,13 @@ function fill(a, ofs, len, v) {
 
 function blit(a1, ofs1, a2, ofs2, len) {
   if (len < 0 || ofs1 < 0 || ofs1 > (a1.length - len | 0) || ofs2 < 0 || ofs2 > (a2.length - len | 0)) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Array.blit"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Array.blit",
+          Error: new Error()
+        };
   }
-  return Caml_array.caml_array_blit(a1, ofs1, a2, ofs2, len);
+  return Caml_array.blit(a1, ofs1, a2, ofs2, len);
 }
 
 function iter(f, a) {
@@ -98,10 +101,11 @@ function iter(f, a) {
 
 function iter2(f, a, b) {
   if (a.length !== b.length) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Array.iter2: arrays must have the same length"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Array.iter2: arrays must have the same length",
+          Error: new Error()
+        };
   }
   for(var i = 0 ,i_finish = a.length; i < i_finish; ++i){
     Curry._2(f, a[i], b[i]);
@@ -114,7 +118,7 @@ function map(f, a) {
   if (l === 0) {
     return [];
   }
-  var r = Caml_array.caml_make_vect(l, Curry._1(f, a[0]));
+  var r = Caml_array.make(l, Curry._1(f, a[0]));
   for(var i = 1; i < l; ++i){
     r[i] = Curry._1(f, a[i]);
   }
@@ -125,15 +129,16 @@ function map2(f, a, b) {
   var la = a.length;
   var lb = b.length;
   if (la !== lb) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Array.map2: arrays must have the same length"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Array.map2: arrays must have the same length",
+          Error: new Error()
+        };
   }
   if (la === 0) {
     return [];
   }
-  var r = Caml_array.caml_make_vect(la, Curry._2(f, a[0], b[0]));
+  var r = Caml_array.make(la, Curry._2(f, a[0], b[0]));
   for(var i = 1; i < la; ++i){
     r[i] = Curry._2(f, a[i], b[i]);
   }
@@ -152,7 +157,7 @@ function mapi(f, a) {
   if (l === 0) {
     return [];
   }
-  var r = Caml_array.caml_make_vect(l, Curry._2(f, 0, a[0]));
+  var r = Caml_array.make(l, Curry._2(f, 0, a[0]));
   for(var i = 1; i < l; ++i){
     r[i] = Curry._2(f, i, a[i]);
   }
@@ -168,10 +173,10 @@ function to_list(a) {
     if (i < 0) {
       return res;
     }
-    _res = /* :: */[
-      a[i],
-      res
-    ];
+    _res = {
+      hd: a[i],
+      tl: res
+    };
     _i = i - 1 | 0;
     continue ;
   };
@@ -184,7 +189,7 @@ function list_length(_accu, _param) {
     if (!param) {
       return accu;
     }
-    _param = param[1];
+    _param = param.tl;
     _accu = accu + 1 | 0;
     continue ;
   };
@@ -194,17 +199,17 @@ function of_list(l) {
   if (!l) {
     return [];
   }
-  var a = Caml_array.caml_make_vect(list_length(0, l), l[0]);
+  var a = Caml_array.make(list_length(0, l), l.hd);
   var _i = 1;
-  var _param = l[1];
+  var _param = l.tl;
   while(true) {
     var param = _param;
     var i = _i;
     if (!param) {
       return a;
     }
-    a[i] = param[0];
-    _param = param[1];
+    a[i] = param.hd;
+    _param = param.tl;
     _i = i + 1 | 0;
     continue ;
   };
@@ -266,7 +271,7 @@ function mem(x, a) {
     if (i === n) {
       return false;
     }
-    if (Caml_obj.caml_equal(a[i], x)) {
+    if (Caml_obj.equal(a[i], x)) {
       return true;
     }
     _i = i + 1 | 0;
@@ -290,31 +295,32 @@ function memq(x, a) {
   };
 }
 
-var Bottom = Caml_exceptions.create("Array.Bottom");
+var Bottom = /* @__PURE__ */Caml_exceptions.create("Array.Bottom");
 
 function sort(cmp, a) {
   var maxson = function (l, i) {
     var i31 = ((i + i | 0) + i | 0) + 1 | 0;
     var x = i31;
     if ((i31 + 2 | 0) < l) {
-      if (Curry._2(cmp, Caml_array.caml_array_get(a, i31), Caml_array.caml_array_get(a, i31 + 1 | 0)) < 0) {
+      if (Curry._2(cmp, Caml_array.get(a, i31), Caml_array.get(a, i31 + 1 | 0)) < 0) {
         x = i31 + 1 | 0;
       }
-      if (Curry._2(cmp, Caml_array.caml_array_get(a, x), Caml_array.caml_array_get(a, i31 + 2 | 0)) < 0) {
+      if (Curry._2(cmp, Caml_array.get(a, x), Caml_array.get(a, i31 + 2 | 0)) < 0) {
         x = i31 + 2 | 0;
       }
       return x;
     }
-    if ((i31 + 1 | 0) < l && Curry._2(cmp, Caml_array.caml_array_get(a, i31), Caml_array.caml_array_get(a, i31 + 1 | 0)) < 0) {
+    if ((i31 + 1 | 0) < l && Curry._2(cmp, Caml_array.get(a, i31), Caml_array.get(a, i31 + 1 | 0)) < 0) {
       return i31 + 1 | 0;
     }
     if (i31 < l) {
       return i31;
     }
-    throw [
-          Bottom,
-          i
-        ];
+    throw {
+          RE_EXN_ID: Bottom,
+          _1: i,
+          Error: new Error()
+        };
   };
   var trickle = function (l, i, e) {
     try {
@@ -322,18 +328,18 @@ function sort(cmp, a) {
       while(true) {
         var i$1 = _i;
         var j = maxson(l, i$1);
-        if (Curry._2(cmp, Caml_array.caml_array_get(a, j), e) <= 0) {
-          return Caml_array.caml_array_set(a, i$1, e);
+        if (Curry._2(cmp, Caml_array.get(a, j), e) <= 0) {
+          return Caml_array.set(a, i$1, e);
         }
-        Caml_array.caml_array_set(a, i$1, Caml_array.caml_array_get(a, j));
+        Caml_array.set(a, i$1, Caml_array.get(a, j));
         _i = j;
         continue ;
       };
     }
     catch (raw_i){
       var i$2 = Caml_js_exceptions.internalToOCamlException(raw_i);
-      if (i$2[0] === Bottom) {
-        return Caml_array.caml_array_set(a, i$2[1], e);
+      if (i$2.RE_EXN_ID === Bottom) {
+        return Caml_array.set(a, i$2._1, e);
       }
       throw i$2;
     }
@@ -344,15 +350,15 @@ function sort(cmp, a) {
       while(true) {
         var i$1 = _i;
         var j = maxson(l, i$1);
-        Caml_array.caml_array_set(a, i$1, Caml_array.caml_array_get(a, j));
+        Caml_array.set(a, i$1, Caml_array.get(a, j));
         _i = j;
         continue ;
       };
     }
     catch (raw_i){
       var i$2 = Caml_js_exceptions.internalToOCamlException(raw_i);
-      if (i$2[0] === Bottom) {
-        return i$2[1];
+      if (i$2.RE_EXN_ID === Bottom) {
+        return i$2._1;
       }
       throw i$2;
     }
@@ -362,21 +368,22 @@ function sort(cmp, a) {
       var i = _i;
       var father = (i - 1 | 0) / 3 | 0;
       if (i === father) {
-        throw [
-              Caml_builtin_exceptions.assert_failure,
-              /* tuple */[
+        throw {
+              RE_EXN_ID: "Assert_failure",
+              _1: [
                 "array.ml",
                 238,
                 4
-              ]
-            ];
+              ],
+              Error: new Error()
+            };
       }
-      if (Curry._2(cmp, Caml_array.caml_array_get(a, father), e) >= 0) {
-        return Caml_array.caml_array_set(a, i, e);
+      if (Curry._2(cmp, Caml_array.get(a, father), e) >= 0) {
+        return Caml_array.set(a, i, e);
       }
-      Caml_array.caml_array_set(a, i, Caml_array.caml_array_get(a, father));
+      Caml_array.set(a, i, Caml_array.get(a, father));
       if (father <= 0) {
-        return Caml_array.caml_array_set(a, 0, e);
+        return Caml_array.set(a, 0, e);
       }
       _i = father;
       continue ;
@@ -384,19 +391,19 @@ function sort(cmp, a) {
   };
   var l = a.length;
   for(var i = ((l + 1 | 0) / 3 | 0) - 1 | 0; i >= 0; --i){
-    trickle(l, i, Caml_array.caml_array_get(a, i));
+    trickle(l, i, Caml_array.get(a, i));
   }
   for(var i$1 = l - 1 | 0; i$1 >= 2; --i$1){
-    var e = Caml_array.caml_array_get(a, i$1);
-    Caml_array.caml_array_set(a, i$1, Caml_array.caml_array_get(a, 0));
+    var e = Caml_array.get(a, i$1);
+    Caml_array.set(a, i$1, Caml_array.get(a, 0));
     trickleup(bubble(i$1, 0), e);
   }
   if (l <= 1) {
     return ;
   }
-  var e$1 = Caml_array.caml_array_get(a, 1);
-  Caml_array.caml_array_set(a, 1, Caml_array.caml_array_get(a, 0));
-  return Caml_array.caml_array_set(a, 0, e$1);
+  var e$1 = Caml_array.get(a, 1);
+  Caml_array.set(a, 1, Caml_array.get(a, 0));
+  return Caml_array.set(a, 0, e$1);
 }
 
 function stable_sort(cmp, a) {
@@ -404,9 +411,9 @@ function stable_sort(cmp, a) {
     var src1r = src1ofs + src1len | 0;
     var src2r = src2ofs + src2len | 0;
     var _i1 = src1ofs;
-    var _s1 = Caml_array.caml_array_get(a, src1ofs);
+    var _s1 = Caml_array.get(a, src1ofs);
     var _i2 = src2ofs;
-    var _s2 = Caml_array.caml_array_get(src2, src2ofs);
+    var _s2 = Caml_array.get(src2, src2ofs);
     var _d = dstofs;
     while(true) {
       var d = _d;
@@ -415,36 +422,36 @@ function stable_sort(cmp, a) {
       var s1 = _s1;
       var i1 = _i1;
       if (Curry._2(cmp, s1, s2) <= 0) {
-        Caml_array.caml_array_set(dst, d, s1);
+        Caml_array.set(dst, d, s1);
         var i1$1 = i1 + 1 | 0;
         if (i1$1 >= src1r) {
           return blit(src2, i2, dst, d + 1 | 0, src2r - i2 | 0);
         }
         _d = d + 1 | 0;
-        _s1 = Caml_array.caml_array_get(a, i1$1);
+        _s1 = Caml_array.get(a, i1$1);
         _i1 = i1$1;
         continue ;
       }
-      Caml_array.caml_array_set(dst, d, s2);
+      Caml_array.set(dst, d, s2);
       var i2$1 = i2 + 1 | 0;
       if (i2$1 >= src2r) {
         return blit(a, i1, dst, d + 1 | 0, src1r - i1 | 0);
       }
       _d = d + 1 | 0;
-      _s2 = Caml_array.caml_array_get(src2, i2$1);
+      _s2 = Caml_array.get(src2, i2$1);
       _i2 = i2$1;
       continue ;
     };
   };
   var isortto = function (srcofs, dst, dstofs, len) {
     for(var i = 0; i < len; ++i){
-      var e = Caml_array.caml_array_get(a, srcofs + i | 0);
+      var e = Caml_array.get(a, srcofs + i | 0);
       var j = (dstofs + i | 0) - 1 | 0;
-      while(j >= dstofs && Curry._2(cmp, Caml_array.caml_array_get(dst, j), e) > 0) {
-        Caml_array.caml_array_set(dst, j + 1 | 0, Caml_array.caml_array_get(dst, j));
+      while(j >= dstofs && Curry._2(cmp, Caml_array.get(dst, j), e) > 0) {
+        Caml_array.set(dst, j + 1 | 0, Caml_array.get(dst, j));
         j = j - 1 | 0;
       };
-      Caml_array.caml_array_set(dst, j + 1 | 0, e);
+      Caml_array.set(dst, j + 1 | 0, e);
     }
     
   };
@@ -464,7 +471,7 @@ function stable_sort(cmp, a) {
   }
   var l1 = l / 2 | 0;
   var l2 = l - l1 | 0;
-  var t = Caml_array.caml_make_vect(l2, Caml_array.caml_array_get(a, 0));
+  var t = Caml_array.make(l2, Caml_array.get(a, 0));
   sortto(l1, t, 0, l2);
   sortto(0, a, l2, l1);
   return merge(l2, l1, t, 0, l2, a, 0);
@@ -472,7 +479,7 @@ function stable_sort(cmp, a) {
 
 var create_matrix = make_matrix;
 
-var concat = Caml_array.caml_array_concat;
+var concat = Caml_array.concat;
 
 var fast_sort = stable_sort;
 

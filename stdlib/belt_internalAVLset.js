@@ -4,21 +4,13 @@ var Curry = require("./curry.js");
 var Caml_option = require("./caml_option.js");
 var Belt_SortArray = require("./belt_SortArray.js");
 
-function treeHeight(n) {
-  if (n !== undefined) {
-    return n.height;
-  } else {
-    return 0;
-  }
-}
-
 function copy(n) {
   if (n !== undefined) {
     return {
-            value: n.value,
-            height: n.height,
-            left: copy(n.left),
-            right: copy(n.right)
+            v: n.v,
+            h: n.h,
+            l: copy(n.l),
+            r: copy(n.r)
           };
   } else {
     return n;
@@ -26,29 +18,31 @@ function copy(n) {
 }
 
 function create(l, v, r) {
-  var hl = l !== undefined ? l.height : 0;
-  var hr = r !== undefined ? r.height : 0;
+  var hl = l !== undefined ? l.h : 0;
+  var hr = r !== undefined ? r.h : 0;
   return {
-          value: v,
-          height: hl >= hr ? hl + 1 | 0 : hr + 1 | 0,
-          left: l,
-          right: r
+          v: v,
+          h: (
+            hl >= hr ? hl : hr
+          ) + 1 | 0,
+          l: l,
+          r: r
         };
 }
 
 function singleton(x) {
   return {
-          value: x,
-          height: 1,
-          left: undefined,
-          right: undefined
+          v: x,
+          h: 1,
+          l: undefined,
+          r: undefined
         };
 }
 
 function heightGe(l, r) {
   if (r !== undefined) {
     if (l !== undefined) {
-      return l.height >= r.height;
+      return l.h >= r.h;
     } else {
       return false;
     }
@@ -58,42 +52,42 @@ function heightGe(l, r) {
 }
 
 function bal(l, v, r) {
-  var hl = l !== undefined ? l.height : 0;
-  var hr = r !== undefined ? r.height : 0;
+  var hl = l !== undefined ? l.h : 0;
+  var hr = r !== undefined ? r.h : 0;
   if (hl > (hr + 2 | 0)) {
-    var lv = l.value;
-    var ll = l.left;
-    var lr = l.right;
+    var ll = l.l;
+    var lr = l.r;
     if (heightGe(ll, lr)) {
-      return create(ll, lv, create(lr, v, r));
+      return create(ll, l.v, create(lr, v, r));
     } else {
-      return create(create(ll, lv, lr.left), lr.value, create(lr.right, v, r));
+      return create(create(ll, l.v, lr.l), lr.v, create(lr.r, v, r));
     }
   }
   if (hr <= (hl + 2 | 0)) {
     return {
-            value: v,
-            height: hl >= hr ? hl + 1 | 0 : hr + 1 | 0,
-            left: l,
-            right: r
+            v: v,
+            h: (
+              hl >= hr ? hl : hr
+            ) + 1 | 0,
+            l: l,
+            r: r
           };
   }
-  var rv = r.value;
-  var rl = r.left;
-  var rr = r.right;
+  var rl = r.l;
+  var rr = r.r;
   if (heightGe(rr, rl)) {
-    return create(create(l, v, rl), rv, rr);
+    return create(create(l, v, rl), r.v, rr);
   } else {
-    return create(create(l, v, rl.left), rl.value, create(rl.right, rv, rr));
+    return create(create(l, v, rl.l), rl.v, create(rl.r, r.v, rr));
   }
 }
 
 function min0Aux(_n) {
   while(true) {
     var n = _n;
-    var n$1 = n.left;
+    var n$1 = n.l;
     if (n$1 === undefined) {
-      return n.value;
+      return n.v;
     }
     _n = n$1;
     continue ;
@@ -117,9 +111,9 @@ function minUndefined(n) {
 function max0Aux(_n) {
   while(true) {
     var n = _n;
-    var n$1 = n.right;
+    var n$1 = n.r;
     if (n$1 === undefined) {
-      return n.value;
+      return n.v;
     }
     _n = n$1;
     continue ;
@@ -141,14 +135,12 @@ function maxUndefined(n) {
 }
 
 function removeMinAuxWithRef(n, v) {
-  var kn = n.value;
-  var ln = n.left;
-  var rn = n.right;
+  var ln = n.l;
   if (ln !== undefined) {
-    return bal(removeMinAuxWithRef(ln, v), kn, rn);
+    return bal(removeMinAuxWithRef(ln, v), n.v, n.r);
   } else {
-    v.contents = kn;
-    return rn;
+    v.contents = n.v;
+    return n.r;
   }
 }
 
@@ -163,11 +155,11 @@ function stackAllLeft(_v, _s) {
     if (v === undefined) {
       return s;
     }
-    _s = /* :: */[
-      v,
-      s
-    ];
-    _v = v.left;
+    _s = {
+      hd: v,
+      tl: s
+    };
+    _v = v.l;
     continue ;
   };
 }
@@ -178,9 +170,9 @@ function forEachU(_n, f) {
     if (n === undefined) {
       return ;
     }
-    forEachU(n.left, f);
-    f(n.value);
-    _n = n.right;
+    forEachU(n.l, f);
+    f(n.v);
+    _n = n.r;
     continue ;
   };
 }
@@ -196,11 +188,8 @@ function reduceU(_s, _accu, f) {
     if (s === undefined) {
       return accu;
     }
-    var k = s.value;
-    var l = s.left;
-    var r = s.right;
-    _accu = f(reduceU(l, accu, f), k);
-    _s = r;
+    _accu = f(reduceU(s.l, accu, f), s.v);
+    _s = s.r;
     continue ;
   };
 }
@@ -215,13 +204,13 @@ function everyU(_n, p) {
     if (n === undefined) {
       return true;
     }
-    if (!p(n.value)) {
+    if (!p(n.v)) {
       return false;
     }
-    if (!everyU(n.left, p)) {
+    if (!everyU(n.l, p)) {
       return false;
     }
-    _n = n.right;
+    _n = n.r;
     continue ;
   };
 }
@@ -236,13 +225,13 @@ function someU(_n, p) {
     if (n === undefined) {
       return false;
     }
-    if (p(n.value)) {
+    if (p(n.v)) {
       return true;
     }
-    if (someU(n.left, p)) {
+    if (someU(n.l, p)) {
       return true;
     }
-    _n = n.right;
+    _n = n.r;
     continue ;
   };
 }
@@ -253,7 +242,7 @@ function some(n, p) {
 
 function addMinElement(n, v) {
   if (n !== undefined) {
-    return bal(addMinElement(n.left, v), n.value, n.right);
+    return bal(addMinElement(n.l, v), n.v, n.r);
   } else {
     return singleton(v);
   }
@@ -261,7 +250,7 @@ function addMinElement(n, v) {
 
 function addMaxElement(n, v) {
   if (n !== undefined) {
-    return bal(n.left, n.value, addMaxElement(n.right, v));
+    return bal(n.l, n.v, addMaxElement(n.r, v));
   } else {
     return singleton(v);
   }
@@ -274,12 +263,12 @@ function joinShared(ln, v, rn) {
   if (rn === undefined) {
     return addMaxElement(ln, v);
   }
-  var lh = ln.height;
-  var rh = rn.height;
+  var lh = ln.h;
+  var rh = rn.h;
   if (lh > (rh + 2 | 0)) {
-    return bal(ln.left, ln.value, joinShared(ln.right, v, rn));
+    return bal(ln.l, ln.v, joinShared(ln.r, v, rn));
   } else if (rh > (lh + 2 | 0)) {
-    return bal(joinShared(ln, v, rn.left), rn.value, rn.right);
+    return bal(joinShared(ln, v, rn.l), rn.v, rn.r);
   } else {
     return create(ln, v, rn);
   }
@@ -293,7 +282,7 @@ function concatShared(t1, t2) {
     return t1;
   }
   var v = {
-    contents: t2.value
+    contents: t2.v
   };
   var t2r = removeMinAuxWithRef(t2, v);
   return joinShared(t1, v.contents, t2r);
@@ -301,26 +290,26 @@ function concatShared(t1, t2) {
 
 function partitionSharedU(n, p) {
   if (n === undefined) {
-    return /* tuple */[
+    return [
             undefined,
             undefined
           ];
   }
-  var value = n.value;
-  var match = partitionSharedU(n.left, p);
+  var value = n.v;
+  var match = partitionSharedU(n.l, p);
   var lf = match[1];
   var lt = match[0];
   var pv = p(value);
-  var match$1 = partitionSharedU(n.right, p);
+  var match$1 = partitionSharedU(n.r, p);
   var rf = match$1[1];
   var rt = match$1[0];
   if (pv) {
-    return /* tuple */[
+    return [
             joinShared(lt, value, rt),
             concatShared(lf, rf)
           ];
   } else {
-    return /* tuple */[
+    return [
             concatShared(lt, rt),
             joinShared(lf, value, rf)
           ];
@@ -332,8 +321,8 @@ function partitionShared(n, p) {
 }
 
 function lengthNode(n) {
-  var l = n.left;
-  var r = n.right;
+  var l = n.l;
+  var r = n.r;
   var sizeL = l !== undefined ? lengthNode(l) : 0;
   var sizeR = r !== undefined ? lengthNode(r) : 0;
   return (1 + sizeL | 0) + sizeR | 0;
@@ -354,11 +343,11 @@ function toListAux(_n, _accu) {
     if (n === undefined) {
       return accu;
     }
-    _accu = /* :: */[
-      n.value,
-      toListAux(n.right, accu)
-    ];
-    _n = n.left;
+    _accu = {
+      hd: n.v,
+      tl: toListAux(n.r, accu)
+    };
+    _n = n.l;
     continue ;
   };
 }
@@ -373,11 +362,23 @@ function checkInvariantInternal(_v) {
     if (v === undefined) {
       return ;
     }
-    var l = v.left;
-    var r = v.right;
-    var diff = treeHeight(l) - treeHeight(r) | 0;
+    var l = v.l;
+    var r = v.r;
+    var diff = (
+      l !== undefined ? l.h : 0
+    ) - (
+      r !== undefined ? r.h : 0
+    ) | 0;
     if (!(diff <= 2 && diff >= -2)) {
-      throw new Error("File \"belt_internalAVLset.ml\", line 300, characters 6-12");
+      throw {
+            RE_EXN_ID: "Assert_failure",
+            _1: [
+              "belt_internalAVLset.ml",
+              290,
+              4
+            ],
+            Error: new Error()
+          };
     }
     checkInvariantInternal(l);
     _v = r;
@@ -389,9 +390,9 @@ function fillArray(_n, _i, arr) {
   while(true) {
     var i = _i;
     var n = _n;
-    var v = n.value;
-    var l = n.left;
-    var r = n.right;
+    var v = n.v;
+    var l = n.l;
+    var r = n.r;
     var next = l !== undefined ? fillArray(l, i, arr) : i;
     arr[next] = v;
     var rnext = next + 1 | 0;
@@ -407,9 +408,9 @@ function fillArray(_n, _i, arr) {
 function fillArrayWithPartition(_n, cursor, arr, p) {
   while(true) {
     var n = _n;
-    var v = n.value;
-    var l = n.left;
-    var r = n.right;
+    var v = n.v;
+    var l = n.l;
+    var r = n.r;
     if (l !== undefined) {
       fillArrayWithPartition(l, cursor, arr, p);
     }
@@ -434,9 +435,9 @@ function fillArrayWithFilter(_n, _i, arr, p) {
   while(true) {
     var i = _i;
     var n = _n;
-    var v = n.value;
-    var l = n.left;
-    var r = n.right;
+    var v = n.v;
+    var l = n.l;
+    var r = n.r;
     var next = l !== undefined ? fillArrayWithFilter(l, i, arr, p) : i;
     var rnext = p(v) ? (arr[next] = v, next + 1 | 0) : next;
     if (r === undefined) {
@@ -468,20 +469,20 @@ function fromSortedArrayRevAux(arr, off, len) {
         var x0 = arr[off];
         var x1 = arr[off - 1 | 0];
         return {
-                value: x1,
-                height: 2,
-                left: singleton(x0),
-                right: undefined
+                v: x1,
+                h: 2,
+                l: singleton(x0),
+                r: undefined
               };
     case 3 :
         var x0$1 = arr[off];
         var x1$1 = arr[off - 1 | 0];
         var x2 = arr[off - 2 | 0];
         return {
-                value: x1$1,
-                height: 2,
-                left: singleton(x0$1),
-                right: singleton(x2)
+                v: x1$1,
+                h: 2,
+                l: singleton(x0$1),
+                r: singleton(x2)
               };
     default:
       var nl = len / 2 | 0;
@@ -502,20 +503,20 @@ function fromSortedArrayAux(arr, off, len) {
         var x0 = arr[off];
         var x1 = arr[off + 1 | 0];
         return {
-                value: x1,
-                height: 2,
-                left: singleton(x0),
-                right: undefined
+                v: x1,
+                h: 2,
+                l: singleton(x0),
+                r: undefined
               };
     case 3 :
         var x0$1 = arr[off];
         var x1$1 = arr[off + 1 | 0];
         var x2 = arr[off + 2 | 0];
         return {
-                value: x1$1,
-                height: 2,
-                left: singleton(x0$1),
-                right: singleton(x2)
+                v: x1$1,
+                h: 2,
+                l: singleton(x0$1),
+                r: singleton(x2)
               };
     default:
       var nl = len / 2 | 0;
@@ -534,9 +535,9 @@ function keepSharedU(n, p) {
   if (n === undefined) {
     return ;
   }
-  var v = n.value;
-  var l = n.left;
-  var r = n.right;
+  var v = n.v;
+  var l = n.l;
+  var r = n.r;
   var newL = keepSharedU(l, p);
   var pv = p(v);
   var newR = keepSharedU(r, p);
@@ -571,7 +572,7 @@ function keepCopy(n, p) {
 
 function partitionCopyU(n, p) {
   if (n === undefined) {
-    return /* tuple */[
+    return [
             undefined,
             undefined
           ];
@@ -585,7 +586,7 @@ function partitionCopyU(n, p) {
   };
   fillArrayWithPartition(n, cursor, v, p);
   var forwardLen = cursor.forward;
-  return /* tuple */[
+  return [
           fromSortedArrayAux(v, 0, forwardLen),
           fromSortedArrayRevAux(v, backward, size - forwardLen | 0)
         ];
@@ -601,12 +602,12 @@ function has(_t, x, cmp) {
     if (t === undefined) {
       return false;
     }
-    var v = t.value;
+    var v = t.v;
     var c = cmp(x, v);
     if (c === 0) {
       return true;
     }
-    _t = c < 0 ? t.left : t.right;
+    _t = c < 0 ? t.l : t.r;
     continue ;
   };
 }
@@ -626,14 +627,14 @@ function cmp(s1, s2, cmp$1) {
       if (!e2) {
         return 0;
       }
-      var h2 = e2[0];
-      var h1 = e1[0];
-      var c = cmp$1(h1.value, h2.value);
+      var h2 = e2.hd;
+      var h1 = e1.hd;
+      var c = cmp$1(h1.v, h2.v);
       if (c !== 0) {
         return c;
       }
-      _e2 = stackAllLeft(h2.right, e2[1]);
-      _e1 = stackAllLeft(h1.right, e1[1]);
+      _e2 = stackAllLeft(h2.r, e2.tl);
+      _e1 = stackAllLeft(h1.r, e1.tl);
       continue ;
     };
   } else if (len1 < len2) {
@@ -657,12 +658,12 @@ function subset(_s1, _s2, cmp) {
     if (s2 === undefined) {
       return false;
     }
-    var v1 = s1.value;
-    var l1 = s1.left;
-    var r1 = s1.right;
-    var v2 = s2.value;
-    var l2 = s2.left;
-    var r2 = s2.right;
+    var v1 = s1.v;
+    var l1 = s1.l;
+    var r1 = s1.r;
+    var v2 = s2.v;
+    var l2 = s2.l;
+    var r2 = s2.r;
     var c = cmp(v1, v2);
     if (c === 0) {
       if (!subset(l1, l2, cmp)) {
@@ -693,12 +694,12 @@ function get(_n, x, cmp) {
     if (n === undefined) {
       return ;
     }
-    var v = n.value;
+    var v = n.v;
     var c = cmp(x, v);
     if (c === 0) {
       return Caml_option.some(v);
     }
-    _n = c < 0 ? n.left : n.right;
+    _n = c < 0 ? n.l : n.r;
     continue ;
   };
 }
@@ -709,12 +710,12 @@ function getUndefined(_n, x, cmp) {
     if (n === undefined) {
       return ;
     }
-    var v = n.value;
+    var v = n.v;
     var c = cmp(x, v);
     if (c === 0) {
       return v;
     }
-    _n = c < 0 ? n.left : n.right;
+    _n = c < 0 ? n.l : n.r;
     continue ;
   };
 }
@@ -723,81 +724,94 @@ function getExn(_n, x, cmp) {
   while(true) {
     var n = _n;
     if (n !== undefined) {
-      var v = n.value;
+      var v = n.v;
       var c = cmp(x, v);
       if (c === 0) {
         return v;
       }
-      _n = c < 0 ? n.left : n.right;
+      _n = c < 0 ? n.l : n.r;
       continue ;
     }
-    throw new Error("getExn0");
+    throw {
+          RE_EXN_ID: "Not_found",
+          Error: new Error()
+        };
   };
 }
 
 function rotateWithLeftChild(k2) {
-  var k1 = k2.left;
-  k2.left = k1.right;
-  k1.right = k2;
-  var hlk2 = treeHeight(k2.left);
-  var hrk2 = treeHeight(k2.right);
-  k2.height = (
+  var k1 = k2.l;
+  k2.l = k1.r;
+  k1.r = k2;
+  var n = k2.l;
+  var hlk2 = n !== undefined ? n.h : 0;
+  var n$1 = k2.r;
+  var hrk2 = n$1 !== undefined ? n$1.h : 0;
+  k2.h = (
     hlk2 > hrk2 ? hlk2 : hrk2
   ) + 1 | 0;
-  var hlk1 = treeHeight(k1.left);
-  var hk2 = k2.height;
-  k1.height = (
+  var n$2 = k1.l;
+  var hlk1 = n$2 !== undefined ? n$2.h : 0;
+  var hk2 = k2.h;
+  k1.h = (
     hlk1 > hk2 ? hlk1 : hk2
   ) + 1 | 0;
   return k1;
 }
 
 function rotateWithRightChild(k1) {
-  var k2 = k1.right;
-  k1.right = k2.left;
-  k2.left = k1;
-  var hlk1 = treeHeight(k1.left);
-  var hrk1 = treeHeight(k1.right);
-  k1.height = (
+  var k2 = k1.r;
+  k1.r = k2.l;
+  k2.l = k1;
+  var n = k1.l;
+  var hlk1 = n !== undefined ? n.h : 0;
+  var n$1 = k1.r;
+  var hrk1 = n$1 !== undefined ? n$1.h : 0;
+  k1.h = (
     hlk1 > hrk1 ? hlk1 : hrk1
   ) + 1 | 0;
-  var hrk2 = treeHeight(k2.right);
-  var hk1 = k1.height;
-  k2.height = (
+  var n$2 = k2.r;
+  var hrk2 = n$2 !== undefined ? n$2.h : 0;
+  var hk1 = k1.h;
+  k2.h = (
     hrk2 > hk1 ? hrk2 : hk1
   ) + 1 | 0;
   return k2;
 }
 
 function doubleWithLeftChild(k3) {
-  var v = rotateWithRightChild(k3.left);
-  k3.left = v;
+  var k3l = k3.l;
+  var v = rotateWithRightChild(k3l);
+  k3.l = v;
   return rotateWithLeftChild(k3);
 }
 
 function doubleWithRightChild(k2) {
-  var v = rotateWithLeftChild(k2.right);
-  k2.right = v;
+  var k2r = k2.r;
+  var v = rotateWithLeftChild(k2r);
+  k2.r = v;
   return rotateWithRightChild(k2);
 }
 
 function heightUpdateMutate(t) {
-  var hlt = treeHeight(t.left);
-  var hrt = treeHeight(t.right);
-  t.height = (
+  var n = t.l;
+  var hlt = n !== undefined ? n.h : 0;
+  var n$1 = t.r;
+  var hrt = n$1 !== undefined ? n$1.h : 0;
+  t.h = (
     hlt > hrt ? hlt : hrt
   ) + 1 | 0;
   return t;
 }
 
 function balMutate(nt) {
-  var l = nt.left;
-  var r = nt.right;
-  var hl = treeHeight(l);
-  var hr = treeHeight(r);
+  var l = nt.l;
+  var r = nt.r;
+  var hl = l !== undefined ? l.h : 0;
+  var hr = r !== undefined ? r.h : 0;
   if (hl > (2 + hr | 0)) {
-    var ll = l.left;
-    var lr = l.right;
+    var ll = l.l;
+    var lr = l.r;
     if (heightGe(ll, lr)) {
       return heightUpdateMutate(rotateWithLeftChild(nt));
     } else {
@@ -805,15 +819,15 @@ function balMutate(nt) {
     }
   }
   if (hr > (2 + hl | 0)) {
-    var rl = r.left;
-    var rr = r.right;
+    var rl = r.l;
+    var rr = r.r;
     if (heightGe(rr, rl)) {
       return heightUpdateMutate(rotateWithRightChild(nt));
     } else {
       return heightUpdateMutate(doubleWithRightChild(nt));
     }
   }
-  nt.height = (
+  nt.h = (
     hl > hr ? hl : hr
   ) + 1 | 0;
   return nt;
@@ -823,18 +837,18 @@ function addMutate(cmp, t, x) {
   if (t === undefined) {
     return singleton(x);
   }
-  var k = t.value;
+  var k = t.v;
   var c = cmp(x, k);
   if (c === 0) {
     return t;
   }
-  var l = t.left;
-  var r = t.right;
+  var l = t.l;
+  var r = t.r;
   if (c < 0) {
     var ll = addMutate(cmp, l, x);
-    t.left = ll;
+    t.l = ll;
   } else {
-    t.right = addMutate(cmp, r, x);
+    t.r = addMutate(cmp, r, x);
   }
   return balMutate(t);
 }
@@ -861,13 +875,13 @@ function fromArray(xs, cmp) {
 }
 
 function removeMinAuxWithRootMutate(nt, n) {
-  var ln = n.left;
-  var rn = n.right;
+  var ln = n.l;
+  var rn = n.r;
   if (ln !== undefined) {
-    n.left = removeMinAuxWithRootMutate(nt, ln);
+    n.l = removeMinAuxWithRootMutate(nt, ln);
     return balMutate(n);
   } else {
-    nt.value = n.value;
+    nt.v = n.v;
     return rn;
   }
 }

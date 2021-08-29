@@ -6,13 +6,13 @@ function add(t, x, cmp) {
   if (t === undefined) {
     return Belt_internalAVLset.singleton(x);
   }
-  var k = t.value;
+  var k = t.v;
   var c = cmp(x, k);
   if (c === 0) {
     return t;
   }
-  var l = t.left;
-  var r = t.right;
+  var l = t.l;
+  var r = t.r;
   if (c < 0) {
     var ll = add(l, x, cmp);
     if (ll === l) {
@@ -33,9 +33,9 @@ function remove(t, x, cmp) {
   if (t === undefined) {
     return t;
   }
-  var v = t.value;
-  var l = t.left;
-  var r = t.right;
+  var v = t.v;
+  var l = t.l;
+  var r = t.r;
   var c = cmp(x, v);
   if (c === 0) {
     if (l === undefined) {
@@ -45,7 +45,7 @@ function remove(t, x, cmp) {
       return l;
     }
     var v$1 = {
-      contents: r.value
+      contents: r.v
     };
     var r$1 = Belt_internalAVLset.removeMinAuxWithRef(r, v$1);
     return Belt_internalAVLset.bal(l, v$1.contents, r$1);
@@ -87,75 +87,75 @@ function removeMany(h, arr, cmp) {
 }
 
 function splitAuxNoPivot(cmp, n, x) {
-  var v = n.value;
-  var l = n.left;
-  var r = n.right;
+  var v = n.v;
+  var l = n.l;
+  var r = n.r;
   var c = cmp(x, v);
   if (c === 0) {
-    return /* tuple */[
+    return [
             l,
             r
           ];
   }
   if (c < 0) {
     if (l === undefined) {
-      return /* tuple */[
+      return [
               undefined,
               n
             ];
     }
     var match = splitAuxNoPivot(cmp, l, x);
-    return /* tuple */[
+    return [
             match[0],
             Belt_internalAVLset.joinShared(match[1], v, r)
           ];
   }
   if (r === undefined) {
-    return /* tuple */[
+    return [
             n,
             undefined
           ];
   }
   var match$1 = splitAuxNoPivot(cmp, r, x);
-  return /* tuple */[
+  return [
           Belt_internalAVLset.joinShared(l, v, match$1[0]),
           match$1[1]
         ];
 }
 
 function splitAuxPivot(cmp, n, x, pres) {
-  var v = n.value;
-  var l = n.left;
-  var r = n.right;
+  var v = n.v;
+  var l = n.l;
+  var r = n.r;
   var c = cmp(x, v);
   if (c === 0) {
     pres.contents = true;
-    return /* tuple */[
+    return [
             l,
             r
           ];
   }
   if (c < 0) {
     if (l === undefined) {
-      return /* tuple */[
+      return [
               undefined,
               n
             ];
     }
     var match = splitAuxPivot(cmp, l, x, pres);
-    return /* tuple */[
+    return [
             match[0],
             Belt_internalAVLset.joinShared(match[1], v, r)
           ];
   }
   if (r === undefined) {
-    return /* tuple */[
+    return [
             n,
             undefined
           ];
   }
   var match$1 = splitAuxPivot(cmp, r, x, pres);
-  return /* tuple */[
+  return [
           Belt_internalAVLset.joinShared(l, v, match$1[0]),
           match$1[1]
         ];
@@ -163,8 +163,8 @@ function splitAuxPivot(cmp, n, x, pres) {
 
 function split(t, x, cmp) {
   if (t === undefined) {
-    return /* tuple */[
-            /* tuple */[
+    return [
+            [
               undefined,
               undefined
             ],
@@ -175,7 +175,7 @@ function split(t, x, cmp) {
     contents: false
   };
   var v = splitAuxPivot(cmp, t, x, pres);
-  return /* tuple */[
+  return [
           v,
           pres.contents
         ];
@@ -188,24 +188,24 @@ function union(s1, s2, cmp) {
   if (s2 === undefined) {
     return s1;
   }
-  var h1 = s1.height;
-  var h2 = s2.height;
+  var h1 = s1.h;
+  var h2 = s2.h;
   if (h1 >= h2) {
     if (h2 === 1) {
-      return add(s1, s2.value, cmp);
+      return add(s1, s2.v, cmp);
     }
-    var v1 = s1.value;
-    var l1 = s1.left;
-    var r1 = s1.right;
+    var v1 = s1.v;
+    var l1 = s1.l;
+    var r1 = s1.r;
     var match = splitAuxNoPivot(cmp, s2, v1);
     return Belt_internalAVLset.joinShared(union(l1, match[0], cmp), v1, union(r1, match[1], cmp));
   }
   if (h1 === 1) {
-    return add(s2, s1.value, cmp);
+    return add(s2, s1.v, cmp);
   }
-  var v2 = s2.value;
-  var l2 = s2.left;
-  var r2 = s2.right;
+  var v2 = s2.v;
+  var l2 = s2.l;
+  var r2 = s2.r;
   var match$1 = splitAuxNoPivot(cmp, s1, v2);
   return Belt_internalAVLset.joinShared(union(match$1[0], l2, cmp), v2, union(match$1[1], r2, cmp));
 }
@@ -217,9 +217,9 @@ function intersect(s1, s2, cmp) {
   if (s2 === undefined) {
     return ;
   }
-  var v1 = s1.value;
-  var l1 = s1.left;
-  var r1 = s1.right;
+  var v1 = s1.v;
+  var l1 = s1.l;
+  var r1 = s1.r;
   var pres = {
     contents: false
   };
@@ -240,9 +240,9 @@ function diff(s1, s2, cmp) {
   if (s2 === undefined) {
     return s1;
   }
-  var v1 = s1.value;
-  var l1 = s1.left;
-  var r1 = s1.right;
+  var v1 = s1.v;
+  var l1 = s1.l;
+  var r1 = s1.r;
   var pres = {
     contents: false
   };

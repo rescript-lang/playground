@@ -2,16 +2,15 @@
 
 var Char = require("./char.js");
 var List = require("./list.js");
-var Block = require("./block.js");
 var Bytes = require("./bytes.js");
 var Stream = require("./stream.js");
 var Hashtbl = require("./hashtbl.js");
 var Caml_bytes = require("./caml_bytes.js");
-var Caml_int32 = require("./caml_int32.js");
 var Caml_format = require("./caml_format.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
+var Caml_string = require("./caml_string.js");
+var Caml_js_exceptions = require("./caml_js_exceptions.js");
 
-var initial_buffer = Caml_bytes.caml_create_bytes(32);
+var initial_buffer = Caml_bytes.create(32);
 
 var buffer = {
   contents: initial_buffer
@@ -29,11 +28,11 @@ function reset_buffer(param) {
 
 function store(c) {
   if (bufpos.contents >= buffer.contents.length) {
-    var newbuffer = Caml_bytes.caml_create_bytes((bufpos.contents << 1));
+    var newbuffer = Caml_bytes.create((bufpos.contents << 1));
     Bytes.blit(buffer.contents, 0, newbuffer, 0, bufpos.contents);
     buffer.contents = newbuffer;
   }
-  buffer.contents[bufpos.contents] = c;
+  Caml_bytes.set(buffer.contents, bufpos.contents, c);
   bufpos.contents = bufpos.contents + 1 | 0;
   
 }
@@ -47,30 +46,39 @@ function get_string(param) {
 function make_lexer(keywords) {
   var kwd_table = Hashtbl.create(undefined, 17);
   List.iter((function (s) {
-          return Hashtbl.add(kwd_table, s, /* Kwd */Block.__(0, [s]));
+          return Hashtbl.add(kwd_table, s, {
+                      TAG: /* Kwd */0,
+                      _0: s
+                    });
         }), keywords);
   var ident_or_keyword = function (id) {
     try {
       return Hashtbl.find(kwd_table, id);
     }
-    catch (exn){
-      if (exn === Caml_builtin_exceptions.not_found) {
-        return /* Ident */Block.__(1, [id]);
+    catch (raw_exn){
+      var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+      if (exn.RE_EXN_ID === "Not_found") {
+        return {
+                TAG: /* Ident */1,
+                _0: id
+              };
       }
       throw exn;
     }
   };
   var keyword_or_error = function (c) {
-    var s = Caml_bytes.bytes_to_string(Bytes.make(1, c));
+    var s = Caml_string.make(1, c);
     try {
       return Hashtbl.find(kwd_table, s);
     }
-    catch (exn){
-      if (exn === Caml_builtin_exceptions.not_found) {
-        throw [
-              Stream.$$Error,
-              "Illegal character " + s
-            ];
+    catch (raw_exn){
+      var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+      if (exn.RE_EXN_ID === "Not_found") {
+        throw {
+              RE_EXN_ID: Stream.$$Error,
+              _1: "Illegal character " + s,
+              Error: new Error()
+            };
       }
       throw exn;
     }
@@ -83,12 +91,11 @@ function make_lexer(keywords) {
       }
       var exit = 0;
       if (c < 124) {
-        var switcher = c - 65 | 0;
-        if (switcher > 57 || switcher < 0) {
-          if (switcher >= 58) {
+        if (c > 122 || c < 65) {
+          if (c >= 123) {
             exit = 1;
           } else {
-            switch (switcher + 65 | 0) {
+            switch (c) {
               case 9 :
               case 10 :
               case 12 :
@@ -100,37 +107,47 @@ function make_lexer(keywords) {
               case 34 :
                   Stream.junk(strm__);
                   reset_buffer(undefined);
-                  return /* String */Block.__(4, [string(strm__)]);
+                  return {
+                          TAG: /* String */4,
+                          _0: string(strm__)
+                        };
               case 39 :
                   Stream.junk(strm__);
                   var c$1;
                   try {
                     c$1 = $$char(strm__);
                   }
-                  catch (exn){
-                    if (exn === Stream.Failure) {
-                      throw [
-                            Stream.$$Error,
-                            ""
-                          ];
+                  catch (raw_exn){
+                    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+                    if (exn.RE_EXN_ID === Stream.Failure) {
+                      throw {
+                            RE_EXN_ID: Stream.$$Error,
+                            _1: "",
+                            Error: new Error()
+                          };
                     }
                     throw exn;
                   }
                   var match = Stream.peek(strm__);
                   if (match !== undefined) {
                     if (match !== 39) {
-                      throw [
-                            Stream.$$Error,
-                            ""
-                          ];
+                      throw {
+                            RE_EXN_ID: Stream.$$Error,
+                            _1: "",
+                            Error: new Error()
+                          };
                     }
                     Stream.junk(strm__);
-                    return /* Char */Block.__(5, [c$1]);
+                    return {
+                            TAG: /* Char */5,
+                            _0: c$1
+                          };
                   }
-                  throw [
-                        Stream.$$Error,
-                        ""
-                      ];
+                  throw {
+                        RE_EXN_ID: Stream.$$Error,
+                        _1: "",
+                        Error: new Error()
+                      };
               case 40 :
                   Stream.junk(strm__);
                   var match$1 = Stream.peek(strm__);
@@ -139,7 +156,7 @@ function make_lexer(keywords) {
                     comment(strm__);
                     return next_token(strm__);
                   } else {
-                    return keyword_or_error(/* "(" */40);
+                    return keyword_or_error(/* '(' */40);
                   }
               case 45 :
                   Stream.junk(strm__);
@@ -147,12 +164,12 @@ function make_lexer(keywords) {
                   if (c$2 !== undefined && !(c$2 > 57 || c$2 < 48)) {
                     Stream.junk(strm__);
                     reset_buffer(undefined);
-                    store(/* "-" */45);
+                    store(/* '-' */45);
                     store(c$2);
                     return number(strm__);
                   } else {
                     reset_buffer(undefined);
-                    store(/* "-" */45);
+                    store(/* '-' */45);
                     return ident2(strm__);
                   }
               case 48 :
@@ -220,17 +237,17 @@ function make_lexer(keywords) {
             }
           }
         } else {
-          switch (switcher) {
-            case 27 :
-            case 29 :
+          switch (c) {
+            case 92 :
+            case 94 :
                 exit = 3;
                 break;
-            case 30 :
+            case 95 :
                 exit = 2;
                 break;
-            case 26 :
-            case 28 :
-            case 31 :
+            case 91 :
+            case 93 :
+            case 96 :
                 exit = 1;
                 break;
             default:
@@ -239,7 +256,7 @@ function make_lexer(keywords) {
         }
       } else {
         exit = c >= 127 ? (
-            c >= 192 ? 2 : 1
+            c > 255 || c < 192 ? 1 : 2
           ) : (
             c !== 125 ? 3 : 1
           );
@@ -258,13 +275,12 @@ function make_lexer(keywords) {
                 return ident_or_keyword(get_string(undefined));
               }
               if (c$3 >= 91) {
-                var switcher$1 = c$3 - 95 | 0;
-                if (switcher$1 > 27 || switcher$1 < 0) {
-                  if (switcher$1 < 97) {
+                if (c$3 > 122 || c$3 < 95) {
+                  if (c$3 > 255 || c$3 < 192) {
                     return ident_or_keyword(get_string(undefined));
                   }
                   
-                } else if (switcher$1 === 1) {
+                } else if (c$3 === 96) {
                   return ident_or_keyword(get_string(undefined));
                 }
                 
@@ -301,13 +317,12 @@ function make_lexer(keywords) {
         return ident_or_keyword(get_string(undefined));
       }
       if (c >= 94) {
-        var switcher = c - 95 | 0;
-        if (switcher > 30 || switcher < 0) {
-          if (switcher >= 32) {
+        if (c > 125 || c < 95) {
+          if (c >= 127) {
             return ident_or_keyword(get_string(undefined));
           }
           
-        } else if (switcher !== 29) {
+        } else if (c !== 124) {
           return ident_or_keyword(get_string(undefined));
         }
         
@@ -320,40 +335,40 @@ function make_lexer(keywords) {
         if (c < 33) {
           return ident_or_keyword(get_string(undefined));
         }
-        switch (c - 33 | 0) {
-          case 1 :
-          case 6 :
-          case 7 :
-          case 8 :
-          case 11 :
-          case 13 :
-          case 15 :
-          case 16 :
-          case 17 :
-          case 18 :
-          case 19 :
-          case 20 :
-          case 21 :
-          case 22 :
-          case 23 :
-          case 24 :
-          case 26 :
+        switch (c) {
+          case 34 :
+          case 39 :
+          case 40 :
+          case 41 :
+          case 44 :
+          case 46 :
+          case 48 :
+          case 49 :
+          case 50 :
+          case 51 :
+          case 52 :
+          case 53 :
+          case 54 :
+          case 55 :
+          case 56 :
+          case 57 :
+          case 59 :
               return ident_or_keyword(get_string(undefined));
-          case 0 :
-          case 2 :
-          case 3 :
-          case 4 :
-          case 5 :
-          case 9 :
-          case 10 :
-          case 12 :
-          case 14 :
-          case 25 :
-          case 27 :
-          case 28 :
-          case 29 :
-          case 30 :
-          case 31 :
+          case 33 :
+          case 35 :
+          case 36 :
+          case 37 :
+          case 38 :
+          case 42 :
+          case 43 :
+          case 45 :
+          case 47 :
+          case 58 :
+          case 60 :
+          case 61 :
+          case 62 :
+          case 63 :
+          case 64 :
               break;
           
         }
@@ -370,7 +385,7 @@ function make_lexer(keywords) {
         if (c >= 58) {
           if (!(c !== 69 && c !== 101)) {
             Stream.junk(strm__);
-            store(/* "E" */69);
+            store(/* 'E' */69);
             return exponent_part(strm__);
           }
           
@@ -383,30 +398,35 @@ function make_lexer(keywords) {
           
         } else {
           Stream.junk(strm__);
-          store(/* "." */46);
+          store(/* '.' */46);
           while(true) {
             var c$1 = Stream.peek(strm__);
             if (c$1 !== undefined) {
-              var switcher = c$1 - 69 | 0;
-              if (switcher > 32 || switcher < 0) {
-                if ((switcher + 21 >>> 0) <= 9) {
+              if (c$1 > 101 || c$1 < 69) {
+                if (!(c$1 > 57 || c$1 < 48)) {
                   Stream.junk(strm__);
                   store(c$1);
                   continue ;
                 }
                 
-              } else if (switcher > 31 || switcher < 1) {
+              } else if (c$1 > 100 || c$1 < 70) {
                 Stream.junk(strm__);
-                store(/* "E" */69);
+                store(/* 'E' */69);
                 return exponent_part(strm__);
               }
               
             }
-            return /* Float */Block.__(3, [Caml_format.caml_float_of_string(get_string(undefined))]);
+            return {
+                    TAG: /* Float */3,
+                    _0: Caml_format.float_of_string(get_string(undefined))
+                  };
           };
         }
       }
-      return /* Int */Block.__(2, [Caml_format.caml_int_of_string(get_string(undefined))]);
+      return {
+              TAG: /* Int */2,
+              _0: Caml_format.int_of_string(get_string(undefined))
+            };
     };
   };
   var exponent_part = function (strm__) {
@@ -423,10 +443,16 @@ function make_lexer(keywords) {
     while(true) {
       var c = Stream.peek(strm__);
       if (c === undefined) {
-        return /* Float */Block.__(3, [Caml_format.caml_float_of_string(get_string(undefined))]);
+        return {
+                TAG: /* Float */3,
+                _0: Caml_format.float_of_string(get_string(undefined))
+              };
       }
       if (c > 57 || c < 48) {
-        return /* Float */Block.__(3, [Caml_format.caml_float_of_string(get_string(undefined))]);
+        return {
+                TAG: /* Float */3,
+                _0: Caml_format.float_of_string(get_string(undefined))
+              };
       }
       Stream.junk(strm__);
       store(c);
@@ -448,12 +474,14 @@ function make_lexer(keywords) {
           try {
             c$1 = $$escape(strm__);
           }
-          catch (exn){
-            if (exn === Stream.Failure) {
-              throw [
-                    Stream.$$Error,
-                    ""
-                  ];
+          catch (raw_exn){
+            var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+            if (exn.RE_EXN_ID === Stream.Failure) {
+              throw {
+                    RE_EXN_ID: Stream.$$Error,
+                    _1: "",
+                    Error: new Error()
+                  };
             }
             throw exn;
           }
@@ -463,7 +491,10 @@ function make_lexer(keywords) {
         Stream.junk(strm__);
         return get_string(undefined);
       }
-      throw Stream.Failure;
+      throw {
+            RE_EXN_ID: Stream.Failure,
+            Error: new Error()
+          };
     };
   };
   var $$char = function (strm__) {
@@ -477,17 +508,22 @@ function make_lexer(keywords) {
       try {
         return $$escape(strm__);
       }
-      catch (exn){
-        if (exn === Stream.Failure) {
-          throw [
-                Stream.$$Error,
-                ""
-              ];
+      catch (raw_exn){
+        var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+        if (exn.RE_EXN_ID === Stream.Failure) {
+          throw {
+                RE_EXN_ID: Stream.$$Error,
+                _1: "",
+                Error: new Error()
+              };
         }
         throw exn;
       }
     } else {
-      throw Stream.Failure;
+      throw {
+            RE_EXN_ID: Stream.Failure,
+            Error: new Error()
+          };
     }
   };
   var $$escape = function (strm__) {
@@ -497,10 +533,10 @@ function make_lexer(keywords) {
         switch (c1) {
           case 110 :
               Stream.junk(strm__);
-              return /* "\n" */10;
+              return /* '\n' */10;
           case 114 :
               Stream.junk(strm__);
-              return /* "\r" */13;
+              return /* '\r' */13;
           case 111 :
           case 112 :
           case 113 :
@@ -509,7 +545,7 @@ function make_lexer(keywords) {
               return c1;
           case 116 :
               Stream.junk(strm__);
-              return /* "\t" */9;
+              return /* '\t' */9;
           default:
             Stream.junk(strm__);
             return c1;
@@ -520,38 +556,45 @@ function make_lexer(keywords) {
           var c2 = Stream.peek(strm__);
           if (c2 !== undefined) {
             if (c2 > 57 || c2 < 48) {
-              throw [
-                    Stream.$$Error,
-                    ""
-                  ];
+              throw {
+                    RE_EXN_ID: Stream.$$Error,
+                    _1: "",
+                    Error: new Error()
+                  };
             }
             Stream.junk(strm__);
             var c3 = Stream.peek(strm__);
             if (c3 !== undefined) {
               if (c3 > 57 || c3 < 48) {
-                throw [
-                      Stream.$$Error,
-                      ""
-                    ];
+                throw {
+                      RE_EXN_ID: Stream.$$Error,
+                      _1: "",
+                      Error: new Error()
+                    };
               }
               Stream.junk(strm__);
-              return Char.chr((Caml_int32.imul(c1 - 48 | 0, 100) + Caml_int32.imul(c2 - 48 | 0, 10) | 0) + (c3 - 48 | 0) | 0);
+              return Char.chr((Math.imul(c1 - 48 | 0, 100) + Math.imul(c2 - 48 | 0, 10) | 0) + (c3 - 48 | 0) | 0);
             }
-            throw [
-                  Stream.$$Error,
-                  ""
-                ];
+            throw {
+                  RE_EXN_ID: Stream.$$Error,
+                  _1: "",
+                  Error: new Error()
+                };
           }
-          throw [
-                Stream.$$Error,
-                ""
-              ];
+          throw {
+                RE_EXN_ID: Stream.$$Error,
+                _1: "",
+                Error: new Error()
+              };
         }
         Stream.junk(strm__);
         return c1;
       }
     } else {
-      throw Stream.Failure;
+      throw {
+            RE_EXN_ID: Stream.Failure,
+            Error: new Error()
+          };
     }
   };
   var comment = function (strm__) {
@@ -572,7 +615,10 @@ function make_lexer(keywords) {
                   return comment(strm__);
                 }
               }
-              throw Stream.Failure;
+              throw {
+                    RE_EXN_ID: Stream.Failure,
+                    Error: new Error()
+                  };
           case 41 :
               Stream.junk(strm__);
               continue ;
@@ -592,22 +638,28 @@ function make_lexer(keywords) {
                   Stream.junk(strm__);
                   return ;
                 }
-                throw Stream.Failure;
+                throw {
+                      RE_EXN_ID: Stream.Failure,
+                      Error: new Error()
+                    };
               };
           default:
             Stream.junk(strm__);
             continue ;
         }
       } else {
-        throw Stream.Failure;
+        throw {
+              RE_EXN_ID: Stream.Failure,
+              Error: new Error()
+            };
       }
     };
   };
-  return (function (input) {
-      return Stream.from((function (_count) {
-                    return next_token(input);
-                  }));
-    });
+  return function (input) {
+    return Stream.from(function (_count) {
+                return next_token(input);
+              });
+  };
 }
 
 exports.make_lexer = make_lexer;

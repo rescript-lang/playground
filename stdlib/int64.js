@@ -1,16 +1,16 @@
 'use strict';
 
+var Caml = require("./caml.js");
 var Caml_int64 = require("./caml_int64.js");
 var Caml_format = require("./caml_format.js");
 var Caml_js_exceptions = require("./caml_js_exceptions.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function pred(n) {
   return Caml_int64.sub(n, Caml_int64.one);
 }
 
 function abs(n) {
-  if (Caml_int64.ge(n, Caml_int64.zero)) {
+  if (Caml.i64_ge(n, Caml_int64.zero)) {
     return n;
   } else {
     return Caml_int64.neg(n);
@@ -23,11 +23,11 @@ function lognot(n) {
 
 function of_string_opt(s) {
   try {
-    return Caml_format.caml_int64_of_string(s);
+    return Caml_format.int64_of_string(s);
   }
   catch (raw_exn){
     var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
-    if (exn[0] === Caml_builtin_exceptions.failure) {
+    if (exn.RE_EXN_ID === "Failure") {
       return ;
     }
     throw exn;
@@ -36,9 +36,7 @@ function of_string_opt(s) {
 
 var compare = Caml_int64.compare;
 
-function equal(x, y) {
-  return Caml_int64.compare(x, y) === 0;
-}
+var equal = Caml_int64.equal;
 
 var zero = Caml_int64.zero;
 

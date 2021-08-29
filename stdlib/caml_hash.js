@@ -1,7 +1,6 @@
 'use strict';
 
 var Caml_hash_primitive = require("./caml_hash_primitive.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function push_back(q, v) {
   var cell = {
@@ -13,13 +12,12 @@ function push_back(q, v) {
     q.length = q.length + 1 | 0;
     last.next = cell;
     q.last = cell;
-    return ;
   } else {
     q.length = 1;
     q.first = cell;
     q.last = cell;
-    return ;
   }
+  
 }
 
 function unsafe_pop(q) {
@@ -36,16 +34,16 @@ function unsafe_pop(q) {
   return cell.content;
 }
 
-function caml_hash(count, _limit, seed, obj) {
-  var hash = seed;
+function hash(count, _limit, seed, obj) {
+  var s = seed;
   if (typeof obj === "number") {
     var u = obj | 0;
-    hash = Caml_hash_primitive.caml_hash_mix_int(hash, (u + u | 0) + 1 | 0);
-    return Caml_hash_primitive.caml_hash_final_mix(hash);
+    s = Caml_hash_primitive.hash_mix_int(s, (u + u | 0) + 1 | 0);
+    return Caml_hash_primitive.hash_final_mix(s);
   }
   if (typeof obj === "string") {
-    hash = Caml_hash_primitive.caml_hash_mix_string(hash, obj);
-    return Caml_hash_primitive.caml_hash_final_mix(hash);
+    s = Caml_hash_primitive.hash_mix_string(s, obj);
+    return Caml_hash_primitive.hash_final_mix(s);
   }
   var queue = {
     length: 0,
@@ -59,46 +57,44 @@ function caml_hash(count, _limit, seed, obj) {
     var obj$1 = unsafe_pop(queue);
     if (typeof obj$1 === "number") {
       var u$1 = obj$1 | 0;
-      hash = Caml_hash_primitive.caml_hash_mix_int(hash, (u$1 + u$1 | 0) + 1 | 0);
+      s = Caml_hash_primitive.hash_mix_int(s, (u$1 + u$1 | 0) + 1 | 0);
       num = num - 1 | 0;
     } else if (typeof obj$1 === "string") {
-      hash = Caml_hash_primitive.caml_hash_mix_string(hash, obj$1);
+      s = Caml_hash_primitive.hash_mix_string(s, obj$1);
       num = num - 1 | 0;
-    } else if (typeof obj$1 !== "boolean" && typeof obj$1 !== "undefined") {
-      if (typeof obj$1 === "symbol") {
-        throw [
-              Caml_builtin_exceptions.assert_failure,
-              /* tuple */[
-                "caml_hash.ml",
-                128,
-                8
-              ]
-            ];
-      }
-      if (typeof obj$1 !== "function") {
-        var size = obj$1.length;
-        if (size !== undefined) {
-          var obj_tag = obj$1.tag | 0;
-          var tag = (size << 10) | obj_tag;
-          if (tag === 248) {
-            hash = Caml_hash_primitive.caml_hash_mix_int(hash, obj$1[1]);
-          } else {
-            hash = Caml_hash_primitive.caml_hash_mix_int(hash, tag);
-            var v = size - 1 | 0;
-            var block = v < num ? v : num;
-            for(var i = 0; i <= block; ++i){
-              push_back(queue, obj$1[i]);
-            }
+    } else if (typeof obj$1 !== "boolean" && typeof obj$1 !== "undefined" && typeof obj$1 !== "symbol" && typeof obj$1 !== "function") {
+      var size = obj$1.length | 0;
+      if (size !== 0) {
+        var obj_tag = obj$1.TAG | 0;
+        var tag = (size << 10) | obj_tag;
+        if (obj_tag === 248) {
+          s = Caml_hash_primitive.hash_mix_int(s, obj$1[1]);
+        } else {
+          s = Caml_hash_primitive.hash_mix_int(s, tag);
+          var v = size - 1 | 0;
+          var block = v < num ? v : num;
+          for(var i = 0; i <= block; ++i){
+            push_back(queue, obj$1[i]);
           }
         }
-        
+      } else {
+        var size$1 = (function(obj,cb){
+            var size = 0  
+            for(var k in obj){
+              cb(obj[k])
+              ++ size
+            }
+            return size
+          })(obj$1, (function (v) {
+                return push_back(queue, v);
+              }));
+        s = Caml_hash_primitive.hash_mix_int(s, (size$1 << 10) | 0);
       }
-      
     }
     
   };
-  return Caml_hash_primitive.caml_hash_final_mix(hash);
+  return Caml_hash_primitive.hash_final_mix(s);
 }
 
-exports.caml_hash = caml_hash;
+exports.hash = hash;
 /* No side effect */

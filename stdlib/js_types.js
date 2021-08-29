@@ -1,6 +1,5 @@
 'use strict';
 
-var Block = require("./block.js");
 
 function classify(x) {
   var ty = typeof x;
@@ -9,9 +8,15 @@ function classify(x) {
   } else if (x === null) {
     return /* JSNull */2;
   } else if (ty === "number") {
-    return /* JSNumber */Block.__(0, [x]);
+    return {
+            TAG: /* JSNumber */0,
+            _0: x
+          };
   } else if (ty === "string") {
-    return /* JSString */Block.__(1, [x]);
+    return {
+            TAG: /* JSString */1,
+            _0: x
+          };
   } else if (ty === "boolean") {
     if (x === true) {
       return /* JSTrue */1;
@@ -19,11 +24,20 @@ function classify(x) {
       return /* JSFalse */0;
     }
   } else if (ty === "function") {
-    return /* JSFunction */Block.__(2, [x]);
+    return {
+            TAG: /* JSFunction */2,
+            _0: x
+          };
   } else if (ty === "object") {
-    return /* JSObject */Block.__(3, [x]);
+    return {
+            TAG: /* JSObject */3,
+            _0: x
+          };
   } else {
-    return /* JSSymbol */Block.__(4, [x]);
+    return {
+            TAG: /* JSSymbol */4,
+            _0: x
+          };
   }
 }
 

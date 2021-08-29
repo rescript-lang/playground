@@ -28,13 +28,12 @@ function add(q, x) {
     q.length = q.length + 1 | 0;
     last.next = cell;
     q.last = cell;
-    return ;
   } else {
     q.length = 1;
     q.first = cell;
     q.last = cell;
-    return ;
   }
+  
 }
 
 function peek(q) {
@@ -58,7 +57,10 @@ function peekExn(q) {
   if (v !== undefined) {
     return v.content;
   }
-  throw new Error("Belt.Queue.Empty");
+  throw {
+        RE_EXN_ID: "Not_found",
+        Error: new Error()
+      };
 }
 
 function pop(q) {
@@ -90,7 +92,10 @@ function popExn(q) {
       return x.content;
     }
   }
-  throw new Error("Empty");
+  throw {
+        RE_EXN_ID: "Not_found",
+        Error: new Error()
+      };
 }
 
 function popUndefined(q) {

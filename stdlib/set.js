@@ -3,90 +3,93 @@
 var List = require("./list.js");
 var Curry = require("./curry.js");
 var Caml_option = require("./caml_option.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function Make(funarg) {
   var height = function (param) {
     if (param) {
-      return param[/* h */3];
+      return param.h;
     } else {
       return 0;
     }
   };
   var create = function (l, v, r) {
-    var hl = l ? l[/* h */3] : 0;
-    var hr = r ? r[/* h */3] : 0;
-    return /* Node */[
-            /* l */l,
-            /* v */v,
-            /* r */r,
-            /* h */hl >= hr ? hl + 1 | 0 : hr + 1 | 0
-          ];
+    var hl = l ? l.h : 0;
+    var hr = r ? r.h : 0;
+    return /* Node */{
+            l: l,
+            v: v,
+            r: r,
+            h: hl >= hr ? hl + 1 | 0 : hr + 1 | 0
+          };
   };
   var bal = function (l, v, r) {
-    var hl = l ? l[/* h */3] : 0;
-    var hr = r ? r[/* h */3] : 0;
+    var hl = l ? l.h : 0;
+    var hr = r ? r.h : 0;
     if (hl > (hr + 2 | 0)) {
       if (l) {
-        var lr = l[/* r */2];
-        var lv = l[/* v */1];
-        var ll = l[/* l */0];
+        var lr = l.r;
+        var lv = l.v;
+        var ll = l.l;
         if (height(ll) >= height(lr)) {
           return create(ll, lv, create(lr, v, r));
         }
         if (lr) {
-          return create(create(ll, lv, lr[/* l */0]), lr[/* v */1], create(lr[/* r */2], v, r));
+          return create(create(ll, lv, lr.l), lr.v, create(lr.r, v, r));
         }
-        throw [
-              Caml_builtin_exceptions.invalid_argument,
-              "Set.bal"
-            ];
+        throw {
+              RE_EXN_ID: "Invalid_argument",
+              _1: "Set.bal",
+              Error: new Error()
+            };
       }
-      throw [
-            Caml_builtin_exceptions.invalid_argument,
-            "Set.bal"
-          ];
+      throw {
+            RE_EXN_ID: "Invalid_argument",
+            _1: "Set.bal",
+            Error: new Error()
+          };
     }
     if (hr <= (hl + 2 | 0)) {
-      return /* Node */[
-              /* l */l,
-              /* v */v,
-              /* r */r,
-              /* h */hl >= hr ? hl + 1 | 0 : hr + 1 | 0
-            ];
+      return /* Node */{
+              l: l,
+              v: v,
+              r: r,
+              h: hl >= hr ? hl + 1 | 0 : hr + 1 | 0
+            };
     }
     if (r) {
-      var rr = r[/* r */2];
-      var rv = r[/* v */1];
-      var rl = r[/* l */0];
+      var rr = r.r;
+      var rv = r.v;
+      var rl = r.l;
       if (height(rr) >= height(rl)) {
         return create(create(l, v, rl), rv, rr);
       }
       if (rl) {
-        return create(create(l, v, rl[/* l */0]), rl[/* v */1], create(rl[/* r */2], rv, rr));
+        return create(create(l, v, rl.l), rl.v, create(rl.r, rv, rr));
       }
-      throw [
-            Caml_builtin_exceptions.invalid_argument,
-            "Set.bal"
-          ];
+      throw {
+            RE_EXN_ID: "Invalid_argument",
+            _1: "Set.bal",
+            Error: new Error()
+          };
     }
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Set.bal"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Set.bal",
+          Error: new Error()
+        };
   };
   var add = function (x, t) {
     if (!t) {
-      return /* Node */[
-              /* l : Empty */0,
-              /* v */x,
-              /* r : Empty */0,
-              /* h */1
-            ];
+      return /* Node */{
+              l: /* Empty */0,
+              v: x,
+              r: /* Empty */0,
+              h: 1
+            };
     }
-    var r = t[/* r */2];
-    var v = t[/* v */1];
-    var l = t[/* l */0];
+    var r = t.r;
+    var v = t.v;
+    var l = t.l;
     var c = Curry._2(funarg.compare, x, v);
     if (c === 0) {
       return t;
@@ -107,23 +110,23 @@ function Make(funarg) {
     }
   };
   var singleton = function (x) {
-    return /* Node */[
-            /* l : Empty */0,
-            /* v */x,
-            /* r : Empty */0,
-            /* h */1
-          ];
+    return /* Node */{
+            l: /* Empty */0,
+            v: x,
+            r: /* Empty */0,
+            h: 1
+          };
   };
   var add_min_element = function (x, param) {
     if (param) {
-      return bal(add_min_element(x, param[/* l */0]), param[/* v */1], param[/* r */2]);
+      return bal(add_min_element(x, param.l), param.v, param.r);
     } else {
       return singleton(x);
     }
   };
   var add_max_element = function (x, param) {
     if (param) {
-      return bal(param[/* l */0], param[/* v */1], add_max_element(x, param[/* r */2]));
+      return bal(param.l, param.v, add_max_element(x, param.r));
     } else {
       return singleton(x);
     }
@@ -135,12 +138,12 @@ function Make(funarg) {
     if (!r) {
       return add_max_element(v, l);
     }
-    var rh = r[/* h */3];
-    var lh = l[/* h */3];
+    var rh = r.h;
+    var lh = l.h;
     if (lh > (rh + 2 | 0)) {
-      return bal(l[/* l */0], l[/* v */1], join(l[/* r */2], v, r));
+      return bal(l.l, l.v, join(l.r, v, r));
     } else if (rh > (lh + 2 | 0)) {
-      return bal(join(l, v, r[/* l */0]), r[/* v */1], r[/* r */2]);
+      return bal(join(l, v, r.l), r.v, r.r);
     } else {
       return create(l, v, r);
     }
@@ -149,14 +152,17 @@ function Make(funarg) {
     while(true) {
       var param = _param;
       if (param) {
-        var l = param[/* l */0];
+        var l = param.l;
         if (!l) {
-          return param[/* v */1];
+          return param.v;
         }
         _param = l;
         continue ;
       }
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     };
   };
   var min_elt_opt = function (_param) {
@@ -165,9 +171,9 @@ function Make(funarg) {
       if (!param) {
         return ;
       }
-      var l = param[/* l */0];
+      var l = param.l;
       if (!l) {
-        return Caml_option.some(param[/* v */1]);
+        return Caml_option.some(param.v);
       }
       _param = l;
       continue ;
@@ -177,14 +183,17 @@ function Make(funarg) {
     while(true) {
       var param = _param;
       if (param) {
-        var r = param[/* r */2];
+        var r = param.r;
         if (!r) {
-          return param[/* v */1];
+          return param.v;
         }
         _param = r;
         continue ;
       }
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     };
   };
   var max_elt_opt = function (_param) {
@@ -193,9 +202,9 @@ function Make(funarg) {
       if (!param) {
         return ;
       }
-      var r = param[/* r */2];
+      var r = param.r;
       if (!r) {
-        return Caml_option.some(param[/* v */1]);
+        return Caml_option.some(param.v);
       }
       _param = r;
       continue ;
@@ -203,17 +212,18 @@ function Make(funarg) {
   };
   var remove_min_elt = function (param) {
     if (param) {
-      var l = param[/* l */0];
+      var l = param.l;
       if (l) {
-        return bal(remove_min_elt(l), param[/* v */1], param[/* r */2]);
+        return bal(remove_min_elt(l), param.v, param.r);
       } else {
-        return param[/* r */2];
+        return param.r;
       }
     }
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Set.remove_min_elt"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Set.remove_min_elt",
+          Error: new Error()
+        };
   };
   var concat = function (t1, t2) {
     if (t1) {
@@ -228,18 +238,18 @@ function Make(funarg) {
   };
   var split = function (x, param) {
     if (!param) {
-      return /* tuple */[
+      return [
               /* Empty */0,
               false,
               /* Empty */0
             ];
     }
-    var r = param[/* r */2];
-    var v = param[/* v */1];
-    var l = param[/* l */0];
+    var r = param.r;
+    var v = param.v;
+    var l = param.l;
     var c = Curry._2(funarg.compare, x, v);
     if (c === 0) {
-      return /* tuple */[
+      return [
               l,
               true,
               r
@@ -247,14 +257,14 @@ function Make(funarg) {
     }
     if (c < 0) {
       var match = split(x, l);
-      return /* tuple */[
+      return [
               match[0],
               match[1],
               join(match[2], v, r)
             ];
     }
     var match$1 = split(x, r);
-    return /* tuple */[
+    return [
             join(l, v, match$1[0]),
             match$1[1],
             match$1[2]
@@ -273,11 +283,11 @@ function Make(funarg) {
       if (!param) {
         return false;
       }
-      var c = Curry._2(funarg.compare, x, param[/* v */1]);
+      var c = Curry._2(funarg.compare, x, param.v);
       if (c === 0) {
         return true;
       }
-      _param = c < 0 ? param[/* l */0] : param[/* r */2];
+      _param = c < 0 ? param.l : param.r;
       continue ;
     };
   };
@@ -285,9 +295,9 @@ function Make(funarg) {
     if (!t) {
       return /* Empty */0;
     }
-    var r = t[/* r */2];
-    var v = t[/* v */1];
-    var l = t[/* l */0];
+    var r = t.r;
+    var v = t.v;
+    var l = t.l;
     var c = Curry._2(funarg.compare, x, v);
     if (c === 0) {
       if (l) {
@@ -322,22 +332,22 @@ function Make(funarg) {
     if (!s2) {
       return s1;
     }
-    var h2 = s2[/* h */3];
-    var v2 = s2[/* v */1];
-    var h1 = s1[/* h */3];
-    var v1 = s1[/* v */1];
+    var h2 = s2.h;
+    var v2 = s2.v;
+    var h1 = s1.h;
+    var v1 = s1.v;
     if (h1 >= h2) {
       if (h2 === 1) {
         return add(v2, s1);
       }
       var match = split(v1, s2);
-      return join(union(s1[/* l */0], match[0]), v1, union(s1[/* r */2], match[2]));
+      return join(union(s1.l, match[0]), v1, union(s1.r, match[2]));
     }
     if (h1 === 1) {
       return add(v1, s2);
     }
     var match$1 = split(v2, s1);
-    return join(union(match$1[0], s2[/* l */0]), v2, union(match$1[2], s2[/* r */2]));
+    return join(union(match$1[0], s2.l), v2, union(match$1[2], s2.r));
   };
   var inter = function (s1, s2) {
     if (!s1) {
@@ -346,9 +356,9 @@ function Make(funarg) {
     if (!s2) {
       return /* Empty */0;
     }
-    var r1 = s1[/* r */2];
-    var v1 = s1[/* v */1];
-    var l1 = s1[/* l */0];
+    var r1 = s1.r;
+    var v1 = s1.v;
+    var l1 = s1.l;
     var match = split(v1, s2);
     var l2 = match[0];
     if (match[1]) {
@@ -364,9 +374,9 @@ function Make(funarg) {
     if (!s2) {
       return s1;
     }
-    var r1 = s1[/* r */2];
-    var v1 = s1[/* v */1];
-    var l1 = s1[/* l */0];
+    var r1 = s1.r;
+    var v1 = s1.v;
+    var l1 = s1.l;
     var match = split(v1, s2);
     var l2 = match[0];
     if (match[1]) {
@@ -382,12 +392,12 @@ function Make(funarg) {
       if (!s) {
         return e;
       }
-      _e = /* More */[
-        s[/* v */1],
-        s[/* r */2],
-        e
-      ];
-      _s = s[/* l */0];
+      _e = /* More */{
+        _0: s.v,
+        _1: s.r,
+        _2: e
+      };
+      _s = s.l;
       continue ;
     };
   };
@@ -407,12 +417,12 @@ function Make(funarg) {
       if (!e2) {
         return 1;
       }
-      var c = Curry._2(funarg.compare, e1[0], e2[0]);
+      var c = Curry._2(funarg.compare, e1._0, e2._0);
       if (c !== 0) {
         return c;
       }
-      _e2 = cons_enum(e2[1], e2[2]);
-      _e1 = cons_enum(e1[1], e1[2]);
+      _e2 = cons_enum(e2._1, e2._2);
+      _e1 = cons_enum(e1._1, e1._2);
       continue ;
     };
   };
@@ -429,12 +439,12 @@ function Make(funarg) {
       if (!s2) {
         return false;
       }
-      var r2 = s2[/* r */2];
-      var l2 = s2[/* l */0];
-      var r1 = s1[/* r */2];
-      var v1 = s1[/* v */1];
-      var l1 = s1[/* l */0];
-      var c = Curry._2(funarg.compare, v1, s2[/* v */1]);
+      var r2 = s2.r;
+      var l2 = s2.l;
+      var r1 = s1.r;
+      var v1 = s1.v;
+      var l1 = s1.l;
+      var c = Curry._2(funarg.compare, v1, s2.v);
       if (c === 0) {
         if (!subset(l1, l2)) {
           return false;
@@ -444,23 +454,23 @@ function Make(funarg) {
         continue ;
       }
       if (c < 0) {
-        if (!subset(/* Node */[
-                /* l */l1,
-                /* v */v1,
-                /* r : Empty */0,
-                /* h */0
-              ], l2)) {
+        if (!subset(/* Node */{
+                l: l1,
+                v: v1,
+                r: /* Empty */0,
+                h: 0
+              }, l2)) {
           return false;
         }
         _s1 = r1;
         continue ;
       }
-      if (!subset(/* Node */[
-              /* l : Empty */0,
-              /* v */v1,
-              /* r */r1,
-              /* h */0
-            ], r2)) {
+      if (!subset(/* Node */{
+              l: /* Empty */0,
+              v: v1,
+              r: r1,
+              h: 0
+            }, r2)) {
         return false;
       }
       _s1 = l1;
@@ -473,9 +483,9 @@ function Make(funarg) {
       if (!param) {
         return ;
       }
-      iter(f, param[/* l */0]);
-      Curry._1(f, param[/* v */1]);
-      _param = param[/* r */2];
+      iter(f, param.l);
+      Curry._1(f, param.v);
+      _param = param.r;
       continue ;
     };
   };
@@ -486,8 +496,8 @@ function Make(funarg) {
       if (!s) {
         return accu;
       }
-      _accu = Curry._2(f, s[/* v */1], fold(f, s[/* l */0], accu));
-      _s = s[/* r */2];
+      _accu = Curry._2(f, s.v, fold(f, s.l, accu));
+      _s = s.r;
       continue ;
     };
   };
@@ -497,13 +507,13 @@ function Make(funarg) {
       if (!param) {
         return true;
       }
-      if (!Curry._1(p, param[/* v */1])) {
+      if (!Curry._1(p, param.v)) {
         return false;
       }
-      if (!for_all(p, param[/* l */0])) {
+      if (!for_all(p, param.l)) {
         return false;
       }
-      _param = param[/* r */2];
+      _param = param.r;
       continue ;
     };
   };
@@ -513,13 +523,13 @@ function Make(funarg) {
       if (!param) {
         return false;
       }
-      if (Curry._1(p, param[/* v */1])) {
+      if (Curry._1(p, param.v)) {
         return true;
       }
-      if (exists(p, param[/* l */0])) {
+      if (exists(p, param.l)) {
         return true;
       }
-      _param = param[/* r */2];
+      _param = param.r;
       continue ;
     };
   };
@@ -527,44 +537,44 @@ function Make(funarg) {
     if (!t) {
       return /* Empty */0;
     }
-    var r = t[/* r */2];
-    var v = t[/* v */1];
-    var l = t[/* l */0];
-    var l$prime = filter(p, l);
+    var r = t.r;
+    var v = t.v;
+    var l = t.l;
+    var l$p = filter(p, l);
     var pv = Curry._1(p, v);
-    var r$prime = filter(p, r);
+    var r$p = filter(p, r);
     if (pv) {
-      if (l === l$prime && r === r$prime) {
+      if (l === l$p && r === r$p) {
         return t;
       } else {
-        return join(l$prime, v, r$prime);
+        return join(l$p, v, r$p);
       }
     } else {
-      return concat(l$prime, r$prime);
+      return concat(l$p, r$p);
     }
   };
   var partition = function (p, param) {
     if (!param) {
-      return /* tuple */[
+      return [
               /* Empty */0,
               /* Empty */0
             ];
     }
-    var v = param[/* v */1];
-    var match = partition(p, param[/* l */0]);
+    var v = param.v;
+    var match = partition(p, param.l);
     var lf = match[1];
     var lt = match[0];
     var pv = Curry._1(p, v);
-    var match$1 = partition(p, param[/* r */2]);
+    var match$1 = partition(p, param.r);
     var rf = match$1[1];
     var rt = match$1[0];
     if (pv) {
-      return /* tuple */[
+      return [
               join(lt, v, rt),
               concat(lf, rf)
             ];
     } else {
-      return /* tuple */[
+      return [
               concat(lt, rt),
               join(lf, v, rf)
             ];
@@ -572,7 +582,7 @@ function Make(funarg) {
   };
   var cardinal = function (param) {
     if (param) {
-      return (cardinal(param[/* l */0]) + 1 | 0) + cardinal(param[/* r */2]) | 0;
+      return (cardinal(param.l) + 1 | 0) + cardinal(param.r) | 0;
     } else {
       return 0;
     }
@@ -584,11 +594,11 @@ function Make(funarg) {
       if (!param) {
         return accu;
       }
-      _param = param[/* l */0];
-      _accu = /* :: */[
-        param[/* v */1],
-        elements_aux(accu, param[/* r */2])
-      ];
+      _param = param.l;
+      _accu = {
+        hd: param.v,
+        tl: elements_aux(accu, param.r)
+      };
       continue ;
     };
   };
@@ -599,45 +609,51 @@ function Make(funarg) {
     while(true) {
       var param = _param;
       if (param) {
-        var v = param[/* v */1];
+        var v = param.v;
         var c = Curry._2(funarg.compare, x, v);
         if (c === 0) {
           return v;
         }
-        _param = c < 0 ? param[/* l */0] : param[/* r */2];
+        _param = c < 0 ? param.l : param.r;
         continue ;
       }
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     };
   };
   var find_first = function (f, _param) {
     while(true) {
       var param = _param;
       if (param) {
-        var v = param[/* v */1];
+        var v = param.v;
         if (Curry._1(f, v)) {
           var _v0 = v;
-          var _param$1 = param[/* l */0];
+          var _param$1 = param.l;
           while(true) {
             var param$1 = _param$1;
             var v0 = _v0;
             if (!param$1) {
               return v0;
             }
-            var v$1 = param$1[/* v */1];
+            var v$1 = param$1.v;
             if (Curry._1(f, v$1)) {
-              _param$1 = param$1[/* l */0];
+              _param$1 = param$1.l;
               _v0 = v$1;
               continue ;
             }
-            _param$1 = param$1[/* r */2];
+            _param$1 = param$1.r;
             continue ;
           };
         }
-        _param = param[/* r */2];
+        _param = param.r;
         continue ;
       }
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     };
   };
   var find_first_opt = function (f, _param) {
@@ -646,27 +662,27 @@ function Make(funarg) {
       if (!param) {
         return ;
       }
-      var v = param[/* v */1];
+      var v = param.v;
       if (Curry._1(f, v)) {
         var _v0 = v;
-        var _param$1 = param[/* l */0];
+        var _param$1 = param.l;
         while(true) {
           var param$1 = _param$1;
           var v0 = _v0;
           if (!param$1) {
             return Caml_option.some(v0);
           }
-          var v$1 = param$1[/* v */1];
+          var v$1 = param$1.v;
           if (Curry._1(f, v$1)) {
-            _param$1 = param$1[/* l */0];
+            _param$1 = param$1.l;
             _v0 = v$1;
             continue ;
           }
-          _param$1 = param$1[/* r */2];
+          _param$1 = param$1.r;
           continue ;
         };
       }
-      _param = param[/* r */2];
+      _param = param.r;
       continue ;
     };
   };
@@ -674,30 +690,33 @@ function Make(funarg) {
     while(true) {
       var param = _param;
       if (param) {
-        var v = param[/* v */1];
+        var v = param.v;
         if (Curry._1(f, v)) {
           var _v0 = v;
-          var _param$1 = param[/* r */2];
+          var _param$1 = param.r;
           while(true) {
             var param$1 = _param$1;
             var v0 = _v0;
             if (!param$1) {
               return v0;
             }
-            var v$1 = param$1[/* v */1];
+            var v$1 = param$1.v;
             if (Curry._1(f, v$1)) {
-              _param$1 = param$1[/* r */2];
+              _param$1 = param$1.r;
               _v0 = v$1;
               continue ;
             }
-            _param$1 = param$1[/* l */0];
+            _param$1 = param$1.l;
             continue ;
           };
         }
-        _param = param[/* l */0];
+        _param = param.l;
         continue ;
       }
-      throw Caml_builtin_exceptions.not_found;
+      throw {
+            RE_EXN_ID: "Not_found",
+            Error: new Error()
+          };
     };
   };
   var find_last_opt = function (f, _param) {
@@ -706,27 +725,27 @@ function Make(funarg) {
       if (!param) {
         return ;
       }
-      var v = param[/* v */1];
+      var v = param.v;
       if (Curry._1(f, v)) {
         var _v0 = v;
-        var _param$1 = param[/* r */2];
+        var _param$1 = param.r;
         while(true) {
           var param$1 = _param$1;
           var v0 = _v0;
           if (!param$1) {
             return Caml_option.some(v0);
           }
-          var v$1 = param$1[/* v */1];
+          var v$1 = param$1.v;
           if (Curry._1(f, v$1)) {
-            _param$1 = param$1[/* r */2];
+            _param$1 = param$1.r;
             _v0 = v$1;
             continue ;
           }
-          _param$1 = param$1[/* l */0];
+          _param$1 = param$1.l;
           continue ;
         };
       }
-      _param = param[/* l */0];
+      _param = param.l;
       continue ;
     };
   };
@@ -736,12 +755,12 @@ function Make(funarg) {
       if (!param) {
         return ;
       }
-      var v = param[/* v */1];
+      var v = param.v;
       var c = Curry._2(funarg.compare, x, v);
       if (c === 0) {
         return Caml_option.some(v);
       }
-      _param = c < 0 ? param[/* l */0] : param[/* r */2];
+      _param = c < 0 ? param.l : param.r;
       continue ;
     };
   };
@@ -749,81 +768,81 @@ function Make(funarg) {
     if (!t) {
       return /* Empty */0;
     }
-    var r = t[/* r */2];
-    var v = t[/* v */1];
-    var l = t[/* l */0];
-    var l$prime = map(f, l);
-    var v$prime = Curry._1(f, v);
-    var r$prime = map(f, r);
-    if (l === l$prime && v === v$prime && r === r$prime) {
+    var r = t.r;
+    var v = t.v;
+    var l = t.l;
+    var l$p = map(f, l);
+    var v$p = Curry._1(f, v);
+    var r$p = map(f, r);
+    if (l === l$p && v === v$p && r === r$p) {
       return t;
-    } else if ((l$prime === /* Empty */0 || Curry._2(funarg.compare, max_elt(l$prime), v$prime) < 0) && (r$prime === /* Empty */0 || Curry._2(funarg.compare, v$prime, min_elt(r$prime)) < 0)) {
-      return join(l$prime, v$prime, r$prime);
+    } else if ((l$p === /* Empty */0 || Curry._2(funarg.compare, max_elt(l$p), v$p) < 0) && (r$p === /* Empty */0 || Curry._2(funarg.compare, v$p, min_elt(r$p)) < 0)) {
+      return join(l$p, v$p, r$p);
     } else {
-      return union(l$prime, add(v$prime, r$prime));
+      return union(l$p, add(v$p, r$p));
     }
   };
   var of_list = function (l) {
     if (!l) {
       return /* Empty */0;
     }
-    var match = l[1];
-    var x0 = l[0];
+    var match = l.tl;
+    var x0 = l.hd;
     if (!match) {
       return singleton(x0);
     }
-    var match$1 = match[1];
-    var x1 = match[0];
+    var match$1 = match.tl;
+    var x1 = match.hd;
     if (!match$1) {
       return add(x1, singleton(x0));
     }
-    var match$2 = match$1[1];
-    var x2 = match$1[0];
+    var match$2 = match$1.tl;
+    var x2 = match$1.hd;
     if (!match$2) {
       return add(x2, add(x1, singleton(x0)));
     }
-    var match$3 = match$2[1];
-    var x3 = match$2[0];
+    var match$3 = match$2.tl;
+    var x3 = match$2.hd;
     if (match$3) {
-      if (match$3[1]) {
+      if (match$3.tl) {
         var l$1 = List.sort_uniq(funarg.compare, l);
         var sub = function (n, l) {
           switch (n) {
             case 0 :
-                return /* tuple */[
+                return [
                         /* Empty */0,
                         l
                       ];
             case 1 :
                 if (l) {
-                  return /* tuple */[
-                          /* Node */[
-                            /* l : Empty */0,
-                            /* v */l[0],
-                            /* r : Empty */0,
-                            /* h */1
-                          ],
-                          l[1]
+                  return [
+                          /* Node */{
+                            l: /* Empty */0,
+                            v: l.hd,
+                            r: /* Empty */0,
+                            h: 1
+                          },
+                          l.tl
                         ];
                 }
                 break;
             case 2 :
                 if (l) {
-                  var match = l[1];
+                  var match = l.tl;
                   if (match) {
-                    return /* tuple */[
-                            /* Node */[
-                              /* l : Node */[
-                                /* l : Empty */0,
-                                /* v */l[0],
-                                /* r : Empty */0,
-                                /* h */1
-                              ],
-                              /* v */match[0],
-                              /* r : Empty */0,
-                              /* h */2
-                            ],
-                            match[1]
+                    return [
+                            /* Node */{
+                              l: /* Node */{
+                                l: /* Empty */0,
+                                v: l.hd,
+                                r: /* Empty */0,
+                                h: 1
+                              },
+                              v: match.hd,
+                              r: /* Empty */0,
+                              h: 2
+                            },
+                            match.tl
                           ];
                   }
                   
@@ -831,28 +850,28 @@ function Make(funarg) {
                 break;
             case 3 :
                 if (l) {
-                  var match$1 = l[1];
+                  var match$1 = l.tl;
                   if (match$1) {
-                    var match$2 = match$1[1];
+                    var match$2 = match$1.tl;
                     if (match$2) {
-                      return /* tuple */[
-                              /* Node */[
-                                /* l : Node */[
-                                  /* l : Empty */0,
-                                  /* v */l[0],
-                                  /* r : Empty */0,
-                                  /* h */1
-                                ],
-                                /* v */match$1[0],
-                                /* r : Node */[
-                                  /* l : Empty */0,
-                                  /* v */match$2[0],
-                                  /* r : Empty */0,
-                                  /* h */1
-                                ],
-                                /* h */2
-                              ],
-                              match$2[1]
+                      return [
+                              /* Node */{
+                                l: /* Node */{
+                                  l: /* Empty */0,
+                                  v: l.hd,
+                                  r: /* Empty */0,
+                                  h: 1
+                                },
+                                v: match$1.hd,
+                                r: /* Node */{
+                                  l: /* Empty */0,
+                                  v: match$2.hd,
+                                  r: /* Empty */0,
+                                  h: 1
+                                },
+                                h: 2
+                              },
+                              match$2.tl
                             ];
                     }
                     
@@ -867,24 +886,25 @@ function Make(funarg) {
           var match$3 = sub(nl, l);
           var l$1 = match$3[1];
           if (l$1) {
-            var match$4 = sub((n - nl | 0) - 1 | 0, l$1[1]);
-            return /* tuple */[
-                    create(match$3[0], l$1[0], match$4[0]),
+            var match$4 = sub((n - nl | 0) - 1 | 0, l$1.tl);
+            return [
+                    create(match$3[0], l$1.hd, match$4[0]),
                     match$4[1]
                   ];
           }
-          throw [
-                Caml_builtin_exceptions.assert_failure,
-                /* tuple */[
+          throw {
+                RE_EXN_ID: "Assert_failure",
+                _1: [
                   "set.ml",
                   510,
                   18
-                ]
-              ];
+                ],
+                Error: new Error()
+              };
         };
         return sub(List.length(l$1), l$1)[0];
       } else {
-        return add(match$3[0], add(x3, add(x2, add(x1, singleton(x0)))));
+        return add(match$3.hd, add(x3, add(x2, add(x1, singleton(x0)))));
       }
     } else {
       return add(x3, add(x2, add(x1, singleton(x0))));

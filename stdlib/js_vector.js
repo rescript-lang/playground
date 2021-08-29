@@ -53,10 +53,10 @@ function toList(a) {
     if (i < 0) {
       return res;
     }
-    _res = /* :: */[
-      a[i],
-      res
-    ];
+    _res = {
+      hd: a[i],
+      tl: res
+    };
     _i = i - 1 | 0;
     continue ;
   };

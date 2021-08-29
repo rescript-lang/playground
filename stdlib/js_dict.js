@@ -19,7 +19,7 @@ function entries(dict) {
   var values = new Array(l);
   for(var i = 0; i < l; ++i){
     var key = keys[i];
-    values[i] = /* tuple */[
+    values[i] = [
       key,
       dict[key]
     ];
@@ -38,22 +38,22 @@ function values(dict) {
 }
 
 function fromList(entries) {
-  var dict = { };
+  var dict = {};
   var _param = entries;
   while(true) {
     var param = _param;
     if (!param) {
       return dict;
     }
-    var match = param[0];
+    var match = param.hd;
     dict[match[0]] = match[1];
-    _param = param[1];
+    _param = param.tl;
     continue ;
   };
 }
 
 function fromArray(entries) {
-  var dict = { };
+  var dict = {};
   var l = entries.length;
   for(var i = 0; i < l; ++i){
     var match = entries[i];
@@ -63,7 +63,7 @@ function fromArray(entries) {
 }
 
 function map(f, source) {
-  var target = { };
+  var target = {};
   var keys = Object.keys(source);
   var l = keys.length;
   for(var i = 0; i < l; ++i){

@@ -3,7 +3,7 @@
 var Curry = require("./curry.js");
 var Caml_exceptions = require("./caml_exceptions.js");
 
-var Empty = Caml_exceptions.create("Queue.Empty");
+var Empty = /* @__PURE__ */Caml_exceptions.create("Queue.Empty");
 
 function create(param) {
   return {
@@ -21,37 +21,39 @@ function clear(q) {
 }
 
 function add(x, q) {
-  var cell = /* Cons */[
-    /* content */x,
-    /* next : Nil */0
-  ];
+  var cell = /* Cons */{
+    content: x,
+    next: /* Nil */0
+  };
   var last = q.last;
   if (last) {
     q.length = q.length + 1 | 0;
-    last[/* next */1] = cell;
+    last.next = cell;
     q.last = cell;
-    return ;
   } else {
     q.length = 1;
     q.first = cell;
     q.last = cell;
-    return ;
   }
+  
 }
 
 function peek(q) {
   var match = q.first;
   if (match) {
-    return match[/* content */0];
+    return match.content;
   }
-  throw Empty;
+  throw {
+        RE_EXN_ID: Empty,
+        Error: new Error()
+      };
 }
 
 function take(q) {
   var match = q.first;
   if (match) {
-    var content = match[/* content */0];
-    var next = match[/* next */1];
+    var content = match.content;
+    var next = match.next;
     if (next) {
       q.length = q.length - 1 | 0;
       q.first = next;
@@ -61,7 +63,10 @@ function take(q) {
       return content;
     }
   }
-  throw Empty;
+  throw {
+        RE_EXN_ID: Empty,
+        Error: new Error()
+      };
 }
 
 function copy(q) {
@@ -76,13 +81,13 @@ function copy(q) {
     var cell = _cell;
     var prev = _prev;
     if (cell) {
-      var next = cell[/* next */1];
-      var res = /* Cons */[
-        /* content */cell[/* content */0],
-        /* next : Nil */0
-      ];
+      var next = cell.next;
+      var res = /* Cons */{
+        content: cell.content,
+        next: /* Nil */0
+      };
       if (prev) {
-        prev[/* next */1] = res;
+        prev.next = res;
       } else {
         q_res.first = res;
       }
@@ -110,8 +115,8 @@ function iter(f, q) {
     if (!cell) {
       return ;
     }
-    var next = cell[/* next */1];
-    Curry._1(f, cell[/* content */0]);
+    var next = cell.next;
+    Curry._1(f, cell.content);
     _cell = next;
     continue ;
   };
@@ -126,8 +131,8 @@ function fold(f, accu, q) {
     if (!cell) {
       return accu$1;
     }
-    var next = cell[/* next */1];
-    var accu$2 = Curry._2(f, accu$1, cell[/* content */0]);
+    var next = cell.next;
+    var accu$2 = Curry._2(f, accu$1, cell.content);
     _cell = next;
     _accu = accu$2;
     continue ;
@@ -141,7 +146,7 @@ function transfer(q1, q2) {
   var last = q2.last;
   if (last) {
     q2.length = q2.length + q1.length | 0;
-    last[/* next */1] = q1.first;
+    last.next = q1.first;
     q2.last = q1.last;
     return clear(q1);
   } else {

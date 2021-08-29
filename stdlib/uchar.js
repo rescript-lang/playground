@@ -1,15 +1,14 @@
 'use strict';
 
+var Caml = require("./caml.js");
 var Caml_format = require("./caml_format.js");
-var Caml_primitive = require("./caml_primitive.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
 
 function err_not_sv(i) {
-  return Caml_format.caml_format_int("%X", i) + " is not an Unicode scalar value";
+  return Caml_format.format_int("%X", i) + " is not an Unicode scalar value";
 }
 
 function err_not_latin1(u) {
-  return "U+" + (Caml_format.caml_format_int("%04X", u) + " is not a latin1 character");
+  return "U+" + (Caml_format.format_int("%04X", u) + " is not a latin1 character");
 }
 
 function succ(u) {
@@ -17,10 +16,11 @@ function succ(u) {
     return 57344;
   }
   if (u === 1114111) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "U+10FFFF has no successor"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "U+10FFFF has no successor",
+          Error: new Error()
+        };
   }
   return u + 1 | 0;
 }
@@ -30,10 +30,11 @@ function pred(u) {
     return 55295;
   }
   if (u === 0) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "U+0000 has no predecessor"
-        ];
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "U+0000 has no predecessor",
+          Error: new Error()
+        };
   }
   return u - 1 | 0;
 }
@@ -53,10 +54,11 @@ function of_int(i) {
     return i;
   }
   var s = err_not_sv(i);
-  throw [
-        Caml_builtin_exceptions.invalid_argument,
-        s
-      ];
+  throw {
+        RE_EXN_ID: "Invalid_argument",
+        _1: s,
+        Error: new Error()
+      };
 }
 
 function is_char(u) {
@@ -72,21 +74,22 @@ function to_char(u) {
     return u;
   }
   var s = err_not_latin1(u);
-  throw [
-        Caml_builtin_exceptions.invalid_argument,
-        s
-      ];
+  throw {
+        RE_EXN_ID: "Invalid_argument",
+        _1: s,
+        Error: new Error()
+      };
 }
 
 function unsafe_to_char(prim) {
   return prim;
 }
 
-function equal(prim, prim$1) {
-  return prim === prim$1;
+function equal(prim0, prim1) {
+  return prim0 === prim1;
 }
 
-var compare = Caml_primitive.caml_int_compare;
+var compare = Caml.int_compare;
 
 function hash(prim) {
   return prim;

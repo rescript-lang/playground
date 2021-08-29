@@ -65,7 +65,7 @@ var Result = {
 var PARSER_TRACE = false;
 ;
 
-var caml_parse_engine = (function (tables /* parser_table */, env /* parser_env */, cmd /* parser_input*/, arg /* Caml_obj_extern.t*/) {
+var parse_engine = (function (tables /* parser_table */, env /* parser_env */, cmd /* parser_input*/, arg /* Obj.t*/) {
     var ERRCODE = 256;
     //var START = 0;
     //var TOKEN_READ = 1;
@@ -86,7 +86,7 @@ var caml_parse_engine = (function (tables /* parser_table */, env /* parser_env 
     var env_stacksize = 'stacksize';
     var env_stackbase = 'stackbase';
     var env_curr_char = 'curr_char';
-    var env_lval = 'lval'; // Caml_obj_extern.t
+    var env_lval = 'lval'; // Obj.t
     var env_symb_start = 'symb_start'; // position
     var env_symb_end = 'symb_end'; // position
     var env_asp = 'asp';
@@ -153,12 +153,12 @@ var caml_parse_engine = (function (tables /* parser_table */, env /* parser_env 
             /* symb_start and symb_end */
             case Automata.TOKEN_READ:
                 if (typeof arg !== 'number') {
-                    env[env_curr_char] = tables[tbl_transl_block][arg.tag | 0 /* + 1 */];
-                    env[env_lval] = arg[0];
+                    env[env_curr_char] = tables[tbl_transl_block][arg.TAG | 0 /* + 1 */];
+                    env[env_lval] = arg._0; // token carries payload
                 }
                 else {
                     env[env_curr_char] = tables[tbl_transl_const][arg /* + 1 */];
-                    env[env_lval] = 0;
+                    env[env_lval] = 0; // const token
                 }
                 if (PARSER_TRACE) {
                     console.error("State %d, read token", state, arg);
@@ -290,12 +290,12 @@ var caml_parse_engine = (function (tables /* parser_table */, env /* parser_env 
     return res;
 });
 
-var caml_set_parser_trace = (function (v) {
+var set_parser_trace = (function (v) {
     var old = PARSER_TRACE;
     PARSER_TRACE = v;
     return old;
 });
 
-exports.caml_parse_engine = caml_parse_engine;
-exports.caml_set_parser_trace = caml_set_parser_trace;
+exports.parse_engine = parse_engine;
+exports.set_parser_trace = set_parser_trace;
 /*  Not a pure module */

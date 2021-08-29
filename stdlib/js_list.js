@@ -12,17 +12,17 @@ function length(l) {
     if (!param) {
       return len;
     }
-    _param = param[1];
+    _param = param.tl;
     _len = len + 1 | 0;
     continue ;
   };
 }
 
 function cons(x, xs) {
-  return /* :: */[
-          x,
-          xs
-        ];
+  return {
+          hd: x,
+          tl: xs
+        };
 }
 
 function isEmpty(x) {
@@ -31,14 +31,14 @@ function isEmpty(x) {
 
 function hd(param) {
   if (param) {
-    return Caml_option.some(param[0]);
+    return Caml_option.some(param.hd);
   }
   
 }
 
 function tl(param) {
   if (param) {
-    return param[1];
+    return param.tl;
   }
   
 }
@@ -56,10 +56,10 @@ function nth(l, n) {
       return ;
     }
     if (n$1 === 0) {
-      return Caml_option.some(l$1[0]);
+      return Caml_option.some(l$1.hd);
     }
     _n = n$1 - 1 | 0;
-    _l = l$1[1];
+    _l = l$1.tl;
     continue ;
   };
 }
@@ -71,11 +71,11 @@ function revAppend(_l1, _l2) {
     if (!l1) {
       return l2;
     }
-    _l2 = /* :: */[
-      l1[0],
-      l2
-    ];
-    _l1 = l1[1];
+    _l2 = {
+      hd: l1.hd,
+      tl: l2
+    };
+    _l1 = l1.tl;
     continue ;
   };
 }
@@ -91,11 +91,11 @@ function mapRevAux(f, _acc, _ls) {
     if (!ls) {
       return acc;
     }
-    _ls = ls[1];
-    _acc = /* :: */[
-      f(ls[0]),
-      acc
-    ];
+    _ls = ls.tl;
+    _acc = {
+      hd: f(ls.hd),
+      tl: acc
+    };
     continue ;
   };
 }
@@ -114,8 +114,8 @@ function iter(f, _param) {
     if (!param) {
       return ;
     }
-    f(param[0]);
-    _param = param[1];
+    f(param.hd);
+    _param = param.tl;
     continue ;
   };
 }
@@ -129,8 +129,8 @@ function iteri(f, l) {
     if (!param) {
       return ;
     }
-    f(i, param[0]);
-    _param = param[1];
+    f(i, param.hd);
+    _param = param.tl;
     _i = i + 1 | 0;
     continue ;
   };
@@ -143,8 +143,8 @@ function foldLeft(f, _accu, _l) {
     if (!l) {
       return accu;
     }
-    _l = l[1];
-    _accu = f(accu, l[0]);
+    _l = l.tl;
+    _accu = f(accu, l.hd);
     continue ;
   };
 }
@@ -156,8 +156,8 @@ function tailLoop(f, _acc, _param) {
     if (!param) {
       return acc;
     }
-    _param = param[1];
-    _acc = f(param[0], acc);
+    _param = param.tl;
+    _acc = f(param.hd, acc);
     continue ;
   };
 }
@@ -167,8 +167,8 @@ function foldRight(f, l, init) {
     if (!param) {
       return init;
     }
-    var t = param[1];
-    var h = param[0];
+    var t = param.tl;
+    var h = param.hd;
     if (n < 1000) {
       return f(h, loop(n + 1 | 0, t));
     } else {
@@ -187,8 +187,8 @@ function flatten(lx) {
     if (!lx$1) {
       return revAppend(acc, /* [] */0);
     }
-    _lx = lx$1[1];
-    _acc = revAppend(lx$1[0], acc);
+    _lx = lx$1.tl;
+    _acc = revAppend(lx$1.hd, acc);
     continue ;
   };
 }
@@ -200,14 +200,14 @@ function filterRevAux(f, _acc, _xs) {
     if (!xs) {
       return acc;
     }
-    var ys = xs[1];
-    var y = xs[0];
+    var ys = xs.tl;
+    var y = xs.hd;
     if (f(y)) {
       _xs = ys;
-      _acc = /* :: */[
-        y,
-        acc
-      ];
+      _acc = {
+        hd: y,
+        tl: acc
+      };
       continue ;
     }
     _xs = ys;
@@ -226,14 +226,14 @@ function filterMapRevAux(f, _acc, _xs) {
     if (!xs) {
       return acc;
     }
-    var ys = xs[1];
-    var z = f(xs[0]);
+    var ys = xs.tl;
+    var z = f(xs.hd);
     if (z !== undefined) {
       _xs = ys;
-      _acc = /* :: */[
-        Caml_option.valFromOption(z),
-        acc
-      ];
+      _acc = {
+        hd: Caml_option.valFromOption(z),
+        tl: acc
+      };
       continue ;
     }
     _xs = ys;
@@ -254,8 +254,8 @@ function countBy(f, xs) {
     if (!xs$1) {
       return acc;
     }
-    _xs = xs$1[1];
-    _acc = f(xs$1[0]) ? acc + 1 | 0 : acc;
+    _xs = xs$1.tl;
+    _acc = f(xs$1.hd) ? acc + 1 | 0 : acc;
     continue ;
   };
 }
@@ -277,8 +277,8 @@ function toVector(xs) {
     if (!param) {
       return a;
     }
-    a[i] = param[0];
-    _param = param[1];
+    a[i] = param.hd;
+    _param = param.tl;
     _i = i + 1 | 0;
     continue ;
   };
@@ -298,11 +298,11 @@ function equal(cmp, _xs, _ys) {
     if (!ys) {
       return false;
     }
-    if (!cmp(xs[0], ys[0])) {
+    if (!cmp(xs.hd, ys.hd)) {
       return false;
     }
-    _ys = ys[1];
-    _xs = xs[1];
+    _ys = ys.tl;
+    _xs = xs.tl;
     continue ;
   };
 }
